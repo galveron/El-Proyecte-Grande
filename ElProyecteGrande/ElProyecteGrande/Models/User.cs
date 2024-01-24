@@ -2,15 +2,15 @@
 
 public abstract class User
 {
-    public readonly int Id;
-    public readonly string Username;
-    private string _password;
-    public readonly Role Role;
+    public  int Id { get; set; }
+    public  string Username { get; set; }
+    public string Password { get; set; }
+    public  Role Role { get; set; }
 
     public User(int id, string username, string password, Role role)
     {
         Username = username;
-        _password = password;
+        Password = password;
         Role = role;
         Id = id;
     }
