@@ -13,20 +13,21 @@ public class UserController : ControllerBase
     public UserController()
     {
         _userRepository = new UserRepository();
-        
+        _userRepository.AddUser(new Admin(1,"bence", "bence"));
     }
 
     [HttpGet("GetAllUser")]
-    public ActionResult<List<User>> GetAll()
+    public List<User> GetAll()
     {
         try
         {
-            return Ok(_userRepository.GetUsers());
+            var users = _userRepository.GetUsers().ToList();
+            return users;
         }
         catch (Exception e)
         {
             Console.WriteLine(e);
-            return NotFound();
+            throw;
         }
     }
 
@@ -45,11 +46,11 @@ public class UserController : ControllerBase
     }
 
     [HttpPost]
-    public IActionResult AddAdmin(string username, string password)
+    public IActionResult AddAdmin(int id,string username, string password)
     {
         try
         {
-            _userRepository.AddUser(new Admin(username, password));
+            _userRepository.AddUser(new Admin(id,username, password));
             return Ok();
         }
         catch (Exception e)
