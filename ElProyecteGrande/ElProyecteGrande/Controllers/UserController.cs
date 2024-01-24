@@ -17,12 +17,11 @@ public class UserController : ControllerBase
     }
 
     [HttpGet("GetAllUser")]
-    public List<User> GetAll()
+    public ActionResult<List<User>> GetAll()
     {
         try
         {
-            var users = _userRepository.GetUsers().ToList();
-            return users;
+            return Ok(_userRepository.GetUsers().ToList());
         }
         catch (Exception e)
         {

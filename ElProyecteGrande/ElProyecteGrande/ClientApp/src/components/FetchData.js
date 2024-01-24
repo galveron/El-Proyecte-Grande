@@ -51,6 +51,7 @@ export class FetchData extends Component {
     const response = await fetch('User/GetAllUser');
     const data = await response.json();
     console.log(data)
+    console.log(data[0])
     this.setState({ user: data, loading: false });
   }
 }
