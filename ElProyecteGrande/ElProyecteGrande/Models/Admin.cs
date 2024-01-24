@@ -2,7 +2,7 @@
 
 public class Admin : User
 {
-    public Admin(string username, string password) : base(username, password, Role.Admin)
+    public Admin(int id, string username, string password) : base(id, username, password, Role.Admin)
     {
         
     }
