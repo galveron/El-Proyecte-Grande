@@ -1,18 +1,25 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 
-export class FetchData extends Component {
-  static displayName = FetchData.name;
-
-  constructor(props) {
-    super(props);
-    this.state = { user: [], loading: true };
+function FetchData(){
+  
+  const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(true);
+  
+   useEffect(() => {
+    let data = fetchAllUser();
+    data.then(userData => setUsers(userData), setLoading(false))
+  },[])
+  
+  async function fetchAllUser(){
+     try {
+       const response = await fetch('User/GetAllUser');
+       return await response.json();
+     } catch (error){
+       throw error
+     }
   }
-
-  componentDidMount() {
-    this.populateWeatherData();
-  }
-
-  static renderForecastsTable(user) {
+  
+  function RenderUsersTable() {
     return (
       <table className="table table-striped" aria-labelledby="tableLabel">
         <thead>
@@ -22,7 +29,7 @@ export class FetchData extends Component {
           </tr>
         </thead>
         <tbody>
-        {user.map(user => 
+        {users.map(user => 
           <tr key={user.id}>
             <th>{user.username}</th>
             <th>{user.password}</th>
@@ -33,25 +40,14 @@ export class FetchData extends Component {
     );
   }
 
-  render() {
-    let contents = this.state.loading
-      ? <p><em>Loading...</em></p>
-      : FetchData.renderForecastsTable(this.state.user);
-
     return (
       <div>
         <h1 id="tableLabel">Weather forecast</h1>
         <p>This component demonstrates fetching data from the server.</p>
-        {contents}
+        {loading ? <p><em>Loading...</em></p> : RenderUsersTable()}
       </div>
     );
-  }
 
-  async populateWeatherData() {
-    const response = await fetch('User/GetAllUser');
-    const data = await response.json();
-    console.log(data)
-    console.log(data[0])
-    this.setState({ user: data, loading: false });
-  }
 }
+
+export default FetchData;
