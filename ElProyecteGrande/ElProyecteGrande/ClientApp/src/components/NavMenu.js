@@ -24,7 +24,7 @@ function NavMenu(){
                 <NavLink tag={Link} className="text-dark" to="/counter">Counter</NavLink>
               </NavItem>
               <NavItem>
-                <NavLink tag={Link} className="text-dark" to="/fetch-data">Fetch data</NavLink>
+                <NavLink tag={Link} className="text-dark" to="/fetch-user-data">Fetch user data</NavLink>
               </NavItem>
             </ul>
           </Collapse>

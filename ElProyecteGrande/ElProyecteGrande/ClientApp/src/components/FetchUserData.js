@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-function FetchData(){
+function FetchUsersData(){
   
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -42,7 +42,7 @@ function FetchData(){
 
     return (
       <div>
-        <h1 id="tableLabel">Weather forecast</h1>
+        <h1 id="tableLabel">Users</h1>
         <p>This component demonstrates fetching data from the server.</p>
         {loading ? <p><em>Loading...</em></p> : RenderUsersTable()}
       </div>
@@ -50,4 +50,4 @@ function FetchData(){
 
 }
 
-export default FetchData;
+export default FetchUsersData;
