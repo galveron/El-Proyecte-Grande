@@ -1,6 +1,7 @@
 ###################
 # compiled source #
 ###################
+*.env
 *.com
 *.class
 *.dll
