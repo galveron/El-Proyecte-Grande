@@ -26,7 +26,17 @@ public class ProductRepository : IProductRepository
     public void AddProduct(Product product)
     {
         using var dbContext = new MarketPlaceContext();
-        dbContext.Products.Add(product);
+        var userFromDb = dbContext.Users.FirstOrDefault(user1 => user1.Id == product.Seller.Id);
+        
+        if (userFromDb == null)
+        {
+            throw new Exception("User not found for adding product.");
+        }
+        
+        var productFromDb = new Product
+            { Details = product.Details, Price = product.Price, Quantity = product.Quantity, Seller = userFromDb };
+        userFromDb.CompanyProducts.Add(productFromDb);
+        dbContext.Products.Add(productFromDb);
         dbContext.SaveChanges();
     }
 
