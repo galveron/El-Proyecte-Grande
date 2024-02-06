@@ -1,5 +1,8 @@
+using Microsoft.EntityFrameworkCore;
+
 namespace ElProyecteGrandeBackend.Model;
 
+[Owned]
 public class Company
 {
     public string Name { get; init; }

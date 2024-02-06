@@ -17,6 +17,7 @@ Database={Environment.GetEnvironmentVariable("DATABASE")};User Id={Environment.G
 Password={Environment.GetEnvironmentVariable("PASSWORD")};Encrypt={Environment.GetEnvironmentVariable("ENCRYPT")};");
     }
 
+    /*
     protected override void OnModelCreating(ModelBuilder builder)
     {
         builder.Entity<User>()
@@ -34,5 +35,57 @@ Password={Environment.GetEnvironmentVariable("PASSWORD")};Encrypt={Environment.G
         builder.Entity<Order>()
             .HasIndex(o => o.Id)
             .IsUnique();
+    }*/
+    
+    
+    protected override void OnModelCreating(ModelBuilder builder)
+    {
+        builder.Entity<User>()
+            .HasMany(e => e.Favourites)
+            .WithMany();
+        
+        builder.Entity<User>()
+            .HasMany(e => e.CartItems)
+            .WithMany();
+
+        /*
+        builder.Entity<User>()
+            .HasMany(e => e.CompanyProducts)
+            .WithMany();*/
+        
+        builder.Entity<User>()
+            .HasMany(e => e.CompanyProducts)
+            .WithOne(e => e.Seller)
+            //.HasForeignKey("UserId")
+            .OnDelete(DeleteBehavior.NoAction)
+            .IsRequired();
+
+        /*
+        builder.Entity<Company>()
+            .HasData(
+                new Company
+                {
+                    Name = "Bélának Jó Lesz Cég", Identifier = "01-10-666999", Verified = true
+                }
+            );*/
+        
+        builder.Entity<User>()
+            .HasData(
+                new User
+                {
+                    Id = 1, Email = "bela@gmail.com", Name = "BÉÉLA", Password = "BEEEEELAAA", PhoneNumber = "BEL-0000",
+                    Role = Role.Customer
+                },
+                new User
+                {
+                    Id = 2, Email = "forbela@gmail.com", Name = "Béla barát", Password = "lehúzzukbélátDENAGYON", PhoneNumber = "NEMBEL-666",
+                    Role = Role.Company
+                }
+            );
+
+        builder.Entity<User>().OwnsOne(p => p.Company)
+            .HasData(
+                new {UserId = 2, Name = "Bélának Jó Lesz Cég", Identifier = "01-10-666999", Verified = true}
+            );
     }
 }
