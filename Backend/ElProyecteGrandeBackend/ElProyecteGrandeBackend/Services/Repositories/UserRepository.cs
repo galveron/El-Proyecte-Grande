@@ -1,5 +1,6 @@
 using ElProyecteGrandeBackend.Data;
 using ElProyecteGrandeBackend.Model;
+using Microsoft.EntityFrameworkCore;
 
 namespace ElProyecteGrandeBackend.Services.Repositories;
 
@@ -14,7 +15,10 @@ public class UserRepository : IUserRepository
     public User? GetUser(int id)
     {
         using var dbContext = new MarketPlaceContext();
-        return dbContext.Users.FirstOrDefault(user => user.Id == id);
+        return dbContext.Users.Where(user => user.Id == id)
+            .Include(user => user.Favourites)
+            .Include(user => user.CompanyProducts)
+            .Include(user => user.CartItems).FirstOrDefault();
     }
 
     public void AddUser(User user)
@@ -62,6 +66,7 @@ public class UserRepository : IUserRepository
         }
         
         userToAddFavourite.Favourites.Add(productToAddFavourite);
+        dbContext.Update(userToAddFavourite);
         dbContext.SaveChanges();
     }
 
@@ -81,7 +86,7 @@ public class UserRepository : IUserRepository
             throw new Exception("Product was not found for adding to cart.");
         }
         
-        userToAddToCart.Cart.Add(productToAddToCart);
+        userToAddToCart.CartItems.Add(productToAddToCart);
         dbContext.SaveChanges();
     }
 }
