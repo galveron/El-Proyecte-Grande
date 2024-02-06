@@ -17,6 +17,7 @@ public class UserRepository : IUserRepository
         using var dbContext = new MarketPlaceContext();
         return dbContext.Users.Where(user => user.Id == id)
             .Include(user => user.Favourites)
+            .ThenInclude(product => product.Seller)
             .Include(user => user.CompanyProducts)
             .Include(user => user.CartItems).FirstOrDefault();
     }
