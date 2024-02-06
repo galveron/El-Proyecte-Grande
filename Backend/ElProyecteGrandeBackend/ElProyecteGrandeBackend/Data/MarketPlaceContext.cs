@@ -5,9 +5,9 @@ namespace ElProyecteGrandeBackend.Data;
 
 public class MarketPlaceContext : DbContext
 {
-    public DbSet<User> Users { get; init; }
-    public DbSet<Product> Products { get; init; }
-    public DbSet<Order> Orders { get; init; }
+    public DbSet<User> Users { get; set; }
+    public DbSet<Product> Products { get; set; }
+    public DbSet<Order> Orders { get; set; }
     
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
