@@ -8,11 +8,10 @@ public class Order
     public List<Product> Products { get; init; }
     public decimal PriceToPay { get; init; }
 
-    public Order(int userId, DateTime date, List<Product> products)
+    public Order(int userId, DateTime date)
     {
         UserId = userId;
         Date = date;
-        Products = products;
-        PriceToPay = products.Sum(p => p.Quantity * p.Price);
+        Products = new List<Product>();
     }
 }

@@ -10,13 +10,13 @@ public class ProductRepository : IProductRepository
         using var dbContext = new MarketPlaceContext();
         return dbContext.Products;
     }
-    
-    public IEnumerable<Product> GetAllProductsByUser(int userId)
+    /*
+    public IEnumerable<Product> GetAllProductsByUser(User user)
     {
         using var dbContext = new MarketPlaceContext();
-        return dbContext.Products.Where(p => p.UserId == userId);
+        return dbContext.Products.Where(p => p.User == user);
     }
-
+*/
     public Product GetProduct(int productId)
     {
         using var dbContext = new MarketPlaceContext();
