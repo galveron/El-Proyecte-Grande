@@ -1,4 +1,15 @@
+using AskMate.Service;
 using ElProyecteGrandeBackend.Services.Repositories;
+
+var root = Directory.GetCurrentDirectory();
+var dotenv = Path.Combine(root, "connectionString.env");
+Console.WriteLine(dotenv);
+DotEnv.Load(dotenv);
+
+var config =
+    new ConfigurationBuilder()
+        .AddEnvironmentVariables()
+        .Build();
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,6 +20,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddSingleton<IProductRepository, ProductRepository>();
+builder.Services.AddSingleton<IOrderRepository, OrderRepository>();
 
 builder.Services.AddCors(options =>
 {
