@@ -1,5 +1,7 @@
 using AskMate.Service;
+using ElProyecteGrandeBackend.Services;
 using ElProyecteGrandeBackend.Services.Repositories;
+using WeatherApi.Services;
 
 var root = Directory.GetCurrentDirectory();
 var dotenv = Path.Combine(root, "connectionString.env");
@@ -21,6 +23,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddSingleton<IProductRepository, ProductRepository>();
 builder.Services.AddSingleton<IOrderRepository, OrderRepository>();
+builder.Services.AddSingleton<IJsonProcessor, JsonProcessor>();
 
 builder.Services.AddCors(options =>
 {

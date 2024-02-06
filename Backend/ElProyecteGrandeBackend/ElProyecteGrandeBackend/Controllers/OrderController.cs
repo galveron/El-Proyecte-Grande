@@ -1,6 +1,7 @@
 using ElProyecteGrandeBackend.Model;
 using ElProyecteGrandeBackend.Services.Repositories;
 using Microsoft.AspNetCore.Mvc;
+using WeatherApi.Services;
 
 namespace ElProyecteGrandeBackend.Controllers;
 
@@ -10,9 +11,11 @@ namespace ElProyecteGrandeBackend.Controllers;
 public class OrderController : ControllerBase
 {
     private readonly IOrderRepository _orderRepository;
+    private readonly IJsonProcessor _jsonProcessor;
 
-    public OrderController(IOrderRepository orderRepository)
+    public OrderController(IOrderRepository orderRepository, IJsonProcessor jsonProcessor)
     {
+        _jsonProcessor = jsonProcessor;
         _orderRepository = orderRepository;
     }
 
@@ -45,11 +48,11 @@ public class OrderController : ControllerBase
     }
 
     [HttpPost]
-    public ActionResult AddOrder(Order order)
+    public ActionResult AddOrder(int userId )
     {
         try
         {
-            _orderRepository.AddOrder(order);
+            _orderRepository.AddOrder(new Order(userId, DateTime.Now));
             return Ok("Order added");
         }
         catch (Exception e)

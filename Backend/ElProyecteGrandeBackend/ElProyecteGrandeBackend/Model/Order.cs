@@ -14,4 +14,13 @@ public class Order
         Date = date;
         Products = new List<Product>();
     }
+    
+    public Order(int id,int userId, DateTime date, List<Product> products)
+    {
+        Id = id;
+        UserId = userId;
+        Date = date;
+        Products = products;
+        PriceToPay = products.Sum(p => p.Price * p.Quantity);
+    }
 }
