@@ -12,14 +12,13 @@ public class JsonProcessor : IJsonProcessor
 
         var products = new List<Product>();
         var enumerator = json.RootElement.GetProperty("products").EnumerateArray();
-    
+    /*
         var order = new Order(
-            json.RootElement.GetProperty("id").GetInt32(),
             json.RootElement.GetProperty("userId").GetInt32(),
             json.RootElement.GetProperty("date").GetDateTime(),
             products
             );
-        
-        return order;
+        */
+        return null;
     }
 }

@@ -28,10 +28,7 @@ Password={Environment.GetEnvironmentVariable("PASSWORD")};Encrypt={Environment.G
         builder.Entity<Product>()
             .HasIndex(p => p.Id)
             .IsUnique();
-        builder.Entity<Product>()
-            .HasOne<User>()
-            .WithOne()
-            .HasForeignKey("User");
+        builder.Entity<Product>();
         builder.Entity<Order>()
             .HasIndex(o => o.Id)
             .IsUnique();
@@ -47,7 +44,7 @@ Password={Environment.GetEnvironmentVariable("PASSWORD")};Encrypt={Environment.G
         builder.Entity<User>()
             .HasMany(e => e.CartItems)
             .WithMany();
-
+        
         /*
         builder.Entity<User>()
             .HasMany(e => e.CompanyProducts)
@@ -59,6 +56,22 @@ Password={Environment.GetEnvironmentVariable("PASSWORD")};Encrypt={Environment.G
             //.HasForeignKey("UserId")
             .OnDelete(DeleteBehavior.NoAction)
             .IsRequired();
+        
+        builder.Entity<User>()
+            .HasMany(u => u.Orders)
+            .WithOne(o => o.User)
+            .OnDelete(DeleteBehavior.NoAction);
+        /*
+        builder.Entity<Order>()
+            .HasIndex(o => o.Id)
+            .IsUnique();
+        
+        builder.Entity<Order>()
+            .HasOne(o => o.User)
+            .WithMany();*/
+        builder.Entity<Order>()
+            .HasMany(o => o.Products)
+            .WithMany();
 
         /*
         builder.Entity<Company>()
@@ -87,5 +100,6 @@ Password={Environment.GetEnvironmentVariable("PASSWORD")};Encrypt={Environment.G
             .HasData(
                 new {UserId = 2, Name = "Bélának Jó Lesz Cég", Identifier = "01-10-666999", Verified = true}
             );
+        
     }
 }

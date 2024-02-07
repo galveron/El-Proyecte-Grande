@@ -6,7 +6,7 @@ public interface IOrderRepository
 {
     Order GetOrder(int orderId);
     List<Order> GetUserOrders(int userId);
-    void AddOrder(Order order);
+    void AddOrder(int userId, int productId);
     void DeleteOrder(Order order);
     void UpdateOrder(Order order);
     
