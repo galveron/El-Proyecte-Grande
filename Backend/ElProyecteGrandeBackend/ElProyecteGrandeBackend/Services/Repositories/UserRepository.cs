@@ -88,6 +88,7 @@ public class UserRepository : IUserRepository
         }
         
         userToAddToCart.CartItems.Add(productToAddToCart);
+        dbContext.Update(userToAddToCart);
         dbContext.SaveChanges();
     }
 }
