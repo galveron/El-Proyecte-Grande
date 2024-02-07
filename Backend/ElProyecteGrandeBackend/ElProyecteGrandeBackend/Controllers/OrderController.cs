@@ -1,3 +1,4 @@
+using ElProyecteGrandeBackend.Data;
 using ElProyecteGrandeBackend.Model;
 using ElProyecteGrandeBackend.Services.Repositories;
 using Microsoft.AspNetCore.Mvc;
@@ -11,11 +12,9 @@ namespace ElProyecteGrandeBackend.Controllers;
 public class OrderController : ControllerBase
 {
     private readonly IOrderRepository _orderRepository;
-    private readonly IJsonProcessor _jsonProcessor;
 
-    public OrderController(IOrderRepository orderRepository, IJsonProcessor jsonProcessor)
+    public OrderController(IOrderRepository orderRepository)
     {
-        _jsonProcessor = jsonProcessor;
         _orderRepository = orderRepository;
     }
 
@@ -48,15 +47,16 @@ public class OrderController : ControllerBase
     }
 
     [HttpPost]
-    public ActionResult AddOrder(int userId )
+    public async Task<ActionResult> AddOrder(int userId, int productId)
     {
         try
         {
-            _orderRepository.AddOrder(new Order(userId, DateTime.Now));
+            _orderRepository.AddOrder(userId, productId);
             return Ok("Order added");
         }
         catch (Exception e)
         {
+            Console.WriteLine(e.Message);
             return Problem("Order failed to add");
         }
     }
