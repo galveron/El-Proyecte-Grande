@@ -15,11 +15,12 @@ public class UserRepository : IUserRepository
     public User? GetUser(int id)
     {
         using var dbContext = new MarketPlaceContext();
+        
         return dbContext.Users.Where(user => user.Id == id)
             .Include(user => user.Favourites)
-            .ThenInclude(product => product.Seller)
             .Include(user => user.CompanyProducts)
-            .Include(user => user.CartItems).FirstOrDefault();
+            .Include(user => user.CartItems)
+            .FirstOrDefault();
     }
 
     public void AddUser(User user)
