@@ -8,15 +8,15 @@ public class ProductRepository : IProductRepository
     public IEnumerable<Product> GetAllProducts()
     {
         using var dbContext = new MarketPlaceContext();
-        return dbContext.Products;
+        return dbContext.Products.ToList();
     }
-    /*
+    
     public IEnumerable<Product> GetAllProductsByUser(User user)
     {
         using var dbContext = new MarketPlaceContext();
-        return dbContext.Products.Where(p => p.User == user);
+        return dbContext.Products.Where(p => p.Seller.Id == user.Id);
     }
-*/
+
     public Product GetProduct(int productId)
     {
         using var dbContext = new MarketPlaceContext();
@@ -36,6 +36,7 @@ public class ProductRepository : IProductRepository
         var productFromDb = new Product
             { Details = product.Details, Price = product.Price, Quantity = product.Quantity, Seller = userFromDb };
         userFromDb.CompanyProducts.Add(productFromDb);
+        dbContext.Update(userFromDb);
         dbContext.Products.Add(productFromDb);
         dbContext.SaveChanges();
     }

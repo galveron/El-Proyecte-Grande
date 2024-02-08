@@ -13,7 +13,7 @@ public class OrderRepository : IOrderRepository
         return dbContext.Orders.Where(o => o.Id == orderId)
             .Include(order => order.User)
             .Include(order => order.Products)
-            .FirstOrDefault();
+            .First();
     }
 
     public List<Order> GetUserOrders(int userId)
