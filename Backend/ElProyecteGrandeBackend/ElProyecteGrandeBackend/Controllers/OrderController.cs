@@ -6,16 +6,19 @@ using WeatherApi.Services;
 
 namespace ElProyecteGrandeBackend.Controllers;
 
-
 [ApiController]
 [Route("[controller]/[action]")]
 public class OrderController : ControllerBase
 {
     private readonly IOrderRepository _orderRepository;
+    private readonly IProductRepository _productRepository;
+    private readonly IUserRepository _userRepository;
 
-    public OrderController(IOrderRepository orderRepository)
+    public OrderController(IUserRepository userRepository, IOrderRepository orderRepository, IProductRepository productRepository)
     {
         _orderRepository = orderRepository;
+        _productRepository = productRepository;
+        _userRepository = userRepository;
     }
 
     [HttpGet]
@@ -47,11 +50,20 @@ public class OrderController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult> AddOrder(int userId, int productId)
+    public async Task<ActionResult> AddOrder(int userId, ICollection<int> productIds)
     {
         try
         {
-            _orderRepository.AddOrder(userId, productId);
+            var user = _userRepository.GetUser(userId);
+            var orderToAdd = new Order {User = user, Date = DateTime.Now, PriceToPay = 0};
+            foreach (var productId in productIds)
+            {
+                var product = _productRepository.GetProduct(productId);
+                orderToAdd.Products.Add(product);
+                orderToAdd.PriceToPay += product.Price;
+            }
+            user.Orders.Add(orderToAdd);
+            _orderRepository.AddOrder(orderToAdd);
             return Ok("Order added");
         }
         catch (Exception e)
