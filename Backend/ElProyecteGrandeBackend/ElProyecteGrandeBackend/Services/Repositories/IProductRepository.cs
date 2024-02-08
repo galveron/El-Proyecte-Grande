@@ -5,7 +5,7 @@ namespace ElProyecteGrandeBackend.Services.Repositories;
 public interface IProductRepository
 {
     IEnumerable<Product> GetAllProducts();
-    /*IEnumerable<Product> GetAllProductsByUser(User user);*/
+    IEnumerable<Product> GetAllProductsByUser(User user);
     Product GetProduct(int productId);
     void AddProduct(Product product);
     void AddMultipleProducts(int userId, IEnumerable<Product> products);
