@@ -62,6 +62,28 @@ public class UserController : ControllerBase
         }
     }
     
+    [HttpGet("AddCompanyUser")]
+    public async Task<ActionResult> AddCompanyUser(string name, string password, string email, string phoneNumber, 
+        string companyName, string identifier)
+    {
+        try
+        {
+            var company = new Company { Name = companyName, Identifier = identifier, Verified = false };
+            _userRepository.AddUser(new User
+            {
+                Name = name, Password = password, Role = Role.Company, Email = email, PhoneNumber = phoneNumber,
+                Company = company
+            });
+            
+            return Ok("Successfully added company user.");
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return StatusCode(500);
+        }
+    }
+    
     [HttpGet("DeleteUser")]
     public async Task<ActionResult> DeleteUser(User user)
     {
@@ -83,6 +105,58 @@ public class UserController : ControllerBase
     {
         try
         {
+            _userRepository.UpdateUser(user);
+            
+            return Ok("Successfully added user.");
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return StatusCode(500);
+        }
+    }
+    
+    [HttpGet("UpdateCompany")]
+    public async Task<ActionResult> UpdateCompany(int id, string name, string password, string email, string phoneNumber,
+        string companyName, string identifier)
+    {
+        try
+        {
+            var userFromRepo = _userRepository.GetUser(id);
+            var company = new Company { Name = companyName, Identifier = identifier, Verified = userFromRepo.Company.Verified };
+            _userRepository.UpdateUser(new User
+            {
+                Id = id, Name = name, Password = password, Role = Role.Customer, Email = email, PhoneNumber = phoneNumber,
+                Company = company
+            });
+            
+            return Ok("Successfully added user.");
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return StatusCode(500);
+        }
+    }
+    
+    [HttpGet("VerifyCompany")]
+    public async Task<ActionResult> VerifyCompany(int id, bool verified)
+    {
+        try
+        {
+            var companyUser = _userRepository.GetUser(id);
+            
+            if (companyUser == null)
+            {
+                return NotFound("User was not found");
+            }
+            
+            var company = new Company { Name = companyUser.Company.Name, Identifier = companyUser.Company.Identifier, Verified = verified };
+            var user = new User
+            {
+                Id = companyUser.Id, Name = companyUser.Name, Password = companyUser.Password, Email = companyUser.Email,
+                PhoneNumber = companyUser.PhoneNumber, Company = company
+            };
             _userRepository.UpdateUser(user);
             
             return Ok("Successfully added user.");
