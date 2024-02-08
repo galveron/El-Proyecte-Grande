@@ -88,11 +88,11 @@ public class UserController : ControllerBase
     }
     
     [HttpGet("DeleteUser")]
-    public async Task<ActionResult> DeleteUser(User user)
+    public async Task<ActionResult> DeleteUser(int id)
     {
         try
         {
-            _userRepository.DeleteUser(user);
+            _userRepository.DeleteUser(id);
             
             return Ok("Successfully added user.");
         }
