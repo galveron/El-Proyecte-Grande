@@ -7,6 +7,7 @@ import Layout from './Pages/Layout/Layout';
 import ErrorPage from './Pages/ErrorPage';
 import Home from './Pages/Home';
 import App from './App';
+import MarketPlace from './Pages/MarketPlace';
 
 const router = createBrowserRouter([
   {
@@ -21,6 +22,10 @@ const router = createBrowserRouter([
       {
         path: '/app',
         element: <App />
+      },
+      {
+        path: '/marketplace',
+        element: <MarketPlace />
       }
     ]
   }

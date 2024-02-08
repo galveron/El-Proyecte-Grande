@@ -46,12 +46,76 @@ public class UserController : ControllerBase
         }
     }
     
+    [HttpGet("AddUser")]
+    public async Task<ActionResult> AddUser(User user)
+    {
+        try
+        {
+            _userRepository.AddUser(user);
+            
+            return Ok("Successfully added user.");
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return StatusCode(500);
+        }
+    }
+    
+    [HttpGet("DeleteUser")]
+    public async Task<ActionResult> DeleteUser(User user)
+    {
+        try
+        {
+            _userRepository.DeleteUser(user);
+            
+            return Ok("Successfully added user.");
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return StatusCode(500);
+        }
+    }
+    
+    [HttpGet("UpdateUser")]
+    public async Task<ActionResult> UpdateUser(User user)
+    {
+        try
+        {
+            _userRepository.UpdateUser(user);
+            
+            return Ok("Successfully added user.");
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return StatusCode(500);
+        }
+    }
+    
     [HttpGet("AddFavourite")]
     public async Task<ActionResult> AddFavourite(int UserId, int ProductId)
     {
         try
         {
             _userRepository.AddFavourite(_userRepository.GetUser(UserId), _productRepository.GetProduct(ProductId));
+            
+            return Ok("Done.");
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return StatusCode(500);
+        }
+    }
+    
+    [HttpGet("AddToCart")]
+    public async Task<ActionResult> AddToCart(int UserId, int ProductId)
+    {
+        try
+        {
+            _userRepository.AddToCart(_userRepository.GetUser(UserId), _productRepository.GetProduct(ProductId));
             
             return Ok("Done.");
         }

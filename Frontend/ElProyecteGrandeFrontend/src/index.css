@@ -30,3 +30,8 @@ body {
   min-width: 320px;
   min-height: 100vh;
 }
+
+.productCard{
+  background-color:mediumpurple;
+  color:lime;
+}

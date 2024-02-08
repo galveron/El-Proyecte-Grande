@@ -27,15 +27,9 @@ Password={Environment.GetEnvironmentVariable("PASSWORD")};Encrypt={Environment.G
             .HasMany(e => e.CartItems)
             .WithMany();
         
-        /*
-        builder.Entity<User>()
-            .HasMany(e => e.CompanyProducts)
-            .WithMany();*/
-        
         builder.Entity<User>()
             .HasMany(e => e.CompanyProducts)
             .WithOne(e => e.Seller)
-            //.HasForeignKey("UserId")
             .OnDelete(DeleteBehavior.NoAction)
             .IsRequired();
         
@@ -47,15 +41,6 @@ Password={Environment.GetEnvironmentVariable("PASSWORD")};Encrypt={Environment.G
         builder.Entity<Order>()
             .HasMany(o => o.Products)
             .WithMany();
-
-        /*
-        builder.Entity<Company>()
-            .HasData(
-                new Company
-                {
-                    Name = "Bélának Jó Lesz Cég", Identifier = "01-10-666999", Verified = true
-                }
-            );*/
         
         builder.Entity<User>()
             .HasData(
@@ -75,6 +60,5 @@ Password={Environment.GetEnvironmentVariable("PASSWORD")};Encrypt={Environment.G
             .HasData(
                 new {UserId = 2, Name = "Bélának Jó Lesz Cég", Identifier = "01-10-666999", Verified = true}
             );
-        
     }
 }
