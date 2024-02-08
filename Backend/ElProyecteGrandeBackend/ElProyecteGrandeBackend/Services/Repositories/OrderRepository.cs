@@ -1,5 +1,6 @@
 using ElProyecteGrandeBackend.Data;
 using ElProyecteGrandeBackend.Model;
+using Microsoft.EntityFrameworkCore;
 
 namespace ElProyecteGrandeBackend.Services.Repositories;
 
@@ -9,7 +10,10 @@ public class OrderRepository : IOrderRepository
     public Order GetOrder(int orderId)
     {
         using var dbContext = new MarketPlaceContext();
-        return dbContext.Orders.FirstOrDefault(o => o.Id == orderId);
+        return dbContext.Orders.Where(o => o.Id == orderId)
+            .Include(order => order.User)
+            .Include(order => order.Products)
+            .FirstOrDefault();
     }
 
     public List<Order> GetUserOrders(int userId)
@@ -18,17 +22,12 @@ public class OrderRepository : IOrderRepository
         return null;
     }
 
-    public void AddOrder(int userId, int productId)
+    public void AddOrder(Order order)
     {
-        var user = new UserRepository().GetUser(userId);
-        var product = new ProductRepository().GetProduct(productId);
         using var dbContext = new MarketPlaceContext();
-        var orderToAdd = new Order {User = user, Date = DateTime.Now, PriceToPay = product.Price};
-        orderToAdd.Products.Add(product);
-        dbContext.Update(orderToAdd);
-        dbContext.Orders.Add(orderToAdd);
-        user.Orders.Add(orderToAdd);
-        dbContext.Update(user);
+        dbContext.Update(order);
+        dbContext.Orders.Add(order);
+        dbContext.Update(order.User);
         dbContext.SaveChanges();
     }
 
