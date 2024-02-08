@@ -1,0 +1,32 @@
+.layout {
+    margin: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #6D2932;
+    height: 60px;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    z-index: 1;
+}
+
+.layout ul {
+    display: flex;
+    flex-direction: row;
+}
+
+.layout li {
+    margin: 20px;
+    padding: 20px;
+    list-style-type: none;
+    color: #C7B7A3;
+    font-weight: bold;
+    font-size: x-large;
+    transition: 200ms ease-in-out;
+}
+
+.layout li:hover {
+    color: rgb(255, 255, 255);
+}
