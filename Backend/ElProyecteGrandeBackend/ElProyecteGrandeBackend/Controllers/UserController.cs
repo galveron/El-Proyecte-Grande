@@ -103,12 +103,15 @@ public class UserController : ControllerBase
         }
     }
     
-    [HttpGet("UpdateUser")]
-    public async Task<ActionResult> UpdateUser(User user)
+    [HttpGet("UpdateCustomer")]
+    public async Task<ActionResult> UpdateCustomer(int id, string name, string password, string email, string phoneNumber)
     {
         try
         {
-            _userRepository.UpdateUser(user);
+            _userRepository.UpdateUser(new User
+            {
+                Id = id, Name = name, Password = password, Role = Role.Customer, Email = email, PhoneNumber = phoneNumber
+            });
             
             return Ok("Successfully added user.");
         }
