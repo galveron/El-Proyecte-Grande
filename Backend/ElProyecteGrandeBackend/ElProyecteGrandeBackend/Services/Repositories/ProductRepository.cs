@@ -36,6 +36,7 @@ public class ProductRepository : IProductRepository
         var productFromDb = new Product
             { Details = product.Details, Price = product.Price, Quantity = product.Quantity, Seller = userFromDb };
         userFromDb.CompanyProducts.Add(productFromDb);
+        dbContext.Update(userFromDb);
         dbContext.Products.Add(productFromDb);
         dbContext.SaveChanges();
     }
