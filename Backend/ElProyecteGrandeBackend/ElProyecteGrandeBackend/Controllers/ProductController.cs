@@ -47,6 +47,21 @@ public class ProductController : ControllerBase
         }
     }
     
+    [HttpGet("AddProduct")]
+    public ActionResult AddProduct(int userId, decimal price, string details, int quantity)
+    {//seller, price, details, quantity
+        try
+        {
+            var user = _userRepository.GetUser(userId);
+            var product = new Product{Seller = user, Price = price, Details = details, Quantity = quantity};
+            _productRepository.AddProduct(product);
+            return Ok(product);
+        }
+        catch (Exception e)
+        {
+            return NotFound("Product not found");
+        }
+    }
     
 
 }
