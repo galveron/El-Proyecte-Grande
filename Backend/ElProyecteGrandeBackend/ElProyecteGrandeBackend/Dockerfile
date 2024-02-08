@@ -12,6 +12,7 @@ RUN dotnet publish -c Release -o out
 # Build runtime image
 FROM mcr.microsoft.com/dotnet/aspnet:7.0
 WORKDIR /app
+ENV ASPNETCORE_ENVIRONMENT=Development
 COPY --from=build-env /app/out .
 ENTRYPOINT ["dotnet", "ElProyecteGrandeBackend.dll"]
 ENV ASPNETCORE_URLS=http://+:5073
