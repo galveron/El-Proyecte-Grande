@@ -1,5 +1,6 @@
 using ElProyecteGrandeBackend.Data;
 using ElProyecteGrandeBackend.Model;
+using Microsoft.EntityFrameworkCore;
 
 namespace ElProyecteGrandeBackend.Services.Repositories;
 
@@ -8,7 +9,7 @@ public class ProductRepository : IProductRepository
     public IEnumerable<Product> GetAllProducts()
     {
         using var dbContext = new MarketPlaceContext();
-        return dbContext.Products.ToList();
+        return dbContext.Products.Include(product => product.Seller).ToList();
     }
     
     public IEnumerable<Product> GetAllProductsByUser(User user)
