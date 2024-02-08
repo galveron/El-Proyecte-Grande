@@ -37,9 +37,10 @@ public class UserRepository : IUserRepository
         dbContext.SaveChanges();
     }
 
-    public void DeleteUser(User user)
+    public void DeleteUser(int id)
     {
         using var dbContext = new MarketPlaceContext();
+        var user = dbContext.Users.First(user1 => user1.Id == id);
         dbContext.Users.Remove(user);
         dbContext.SaveChanges();
     }
