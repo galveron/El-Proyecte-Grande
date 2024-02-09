@@ -52,11 +52,11 @@ public class UserRepository : IUserRepository
         dbContext.SaveChanges();
     }
 
-    public void AddFavourite(User user, Product product)
+    public void AddFavourite(int userId, int productId)
     {
         using var dbContext = new MarketPlaceContext();
-        var userToAddFavourite = GetUser(user.Id);
-        var productToAddFavourite = dbContext.Products.FirstOrDefault(product1 => product1.Id == product.Id);
+        var productToAddFavourite = dbContext.Products.Find(productId);
+        var userToAddFavourite = dbContext.Users.Include(user => user.Favourites).SingleOrDefault(user => user.Id == userId);
         
         if (userToAddFavourite == null)
         {

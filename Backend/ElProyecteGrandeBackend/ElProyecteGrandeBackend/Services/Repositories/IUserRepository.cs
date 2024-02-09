@@ -9,6 +9,6 @@ public interface IUserRepository
     void AddUser(User user);
     void DeleteUser(int id);
     void UpdateUser(User user);
-    void AddFavourite(User user, Product product);
+    void AddFavourite(int userId, int productId);
     void AddToCart(User user, Product product);
 }

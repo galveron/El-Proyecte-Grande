@@ -175,11 +175,11 @@ public class UserController : ControllerBase
     }
     
     [HttpPatch("AddFavourite")]
-    public async Task<ActionResult> AddFavourite(int UserId, int ProductId)
+    public async Task<ActionResult> AddFavourite(int userId, int productId)
     {
         try
         {
-            _userRepository.AddFavourite(_userRepository.GetUser(UserId), _productRepository.GetProduct(ProductId));
+            _userRepository.AddFavourite(userId, productId);
             
             return Ok("Done.");
         }
