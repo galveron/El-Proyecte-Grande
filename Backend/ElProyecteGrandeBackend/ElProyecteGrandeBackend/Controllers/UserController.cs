@@ -46,7 +46,7 @@ public class UserController : ControllerBase
         }
     }
     
-    [HttpGet("AddCustomer")]
+    [HttpPost("AddCustomer")]
     public async Task<ActionResult> AddCustomer(string name, string password, string email, string phoneNumber)
     {
         try
@@ -65,7 +65,7 @@ public class UserController : ControllerBase
         }
     }
     
-    [HttpGet("AddCompanyUser")]
+    [HttpPost("AddCompanyUser")]
     public async Task<ActionResult> AddCompanyUser(string name, string password, string email, string phoneNumber, 
         string companyName, string identifier)
     {
@@ -87,7 +87,7 @@ public class UserController : ControllerBase
         }
     }
     
-    [HttpGet("DeleteUser")]
+    [HttpDelete("DeleteUser")]
     public async Task<ActionResult> DeleteUser(int id)
     {
         try
@@ -103,7 +103,7 @@ public class UserController : ControllerBase
         }
     }
     
-    [HttpGet("UpdateCustomer")]
+    [HttpPatch("UpdateCustomer")]
     public async Task<ActionResult> UpdateCustomer(int id, string name, string password, string email, string phoneNumber)
     {
         try
@@ -122,7 +122,7 @@ public class UserController : ControllerBase
         }
     }
     
-    [HttpGet("UpdateCompany")]
+    [HttpPatch("UpdateCompany")]
     public async Task<ActionResult> UpdateCompany(int id, string name, string password, string email, string phoneNumber,
         string companyName, string identifier)
     {
@@ -145,7 +145,7 @@ public class UserController : ControllerBase
         }
     }
     
-    [HttpGet("VerifyCompany")]
+    [HttpPatch("VerifyCompany")]
     public async Task<ActionResult> VerifyCompany(int id, bool verified)
     {
         try
@@ -174,7 +174,7 @@ public class UserController : ControllerBase
         }
     }
     
-    [HttpGet("AddFavourite")]
+    [HttpPatch("AddFavourite")]
     public async Task<ActionResult> AddFavourite(int UserId, int ProductId)
     {
         try
@@ -190,7 +190,7 @@ public class UserController : ControllerBase
         }
     }
     
-    [HttpGet("AddToCart")]
+    [HttpPatch("AddToCart")]
     public async Task<ActionResult> AddToCart(int UserId, int ProductId)
     {
         try
@@ -207,7 +207,7 @@ public class UserController : ControllerBase
     }
     
     //ONLY FOR TEST
-    [HttpGet("AddProduct")]
+    [HttpPost("AddProduct")]
     public async Task<ActionResult> AddProduct()
     {
         try
