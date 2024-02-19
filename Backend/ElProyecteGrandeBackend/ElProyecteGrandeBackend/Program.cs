@@ -163,8 +163,8 @@ void AddRoles()
     var tAdmin = CreateAdminRole(roleManager);
     tAdmin.Wait();
 
-    var tUser = CreateUserRole(roleManager);
-    tUser.Wait();
+    var tCustomer = CreateCustomerRole(roleManager);
+    tCustomer.Wait();
 }
 
 async Task CreateAdminRole(RoleManager<IdentityRole> roleManager)
@@ -173,10 +173,10 @@ async Task CreateAdminRole(RoleManager<IdentityRole> roleManager)
     await roleManager.CreateAsync(new IdentityRole(adminRole)); 
 }
 
-async Task CreateUserRole(RoleManager<IdentityRole> roleManager)
+async Task CreateCustomerRole(RoleManager<IdentityRole> roleManager)
 {
-    var userRole = Environment.GetEnvironmentVariable("USERROLE");
-    await roleManager.CreateAsync(new IdentityRole(userRole));
+    var customerRole = Environment.GetEnvironmentVariable("CUSTOMERROLE");
+    await roleManager.CreateAsync(new IdentityRole(customerRole));
 }
 
 void AddAdmin()
