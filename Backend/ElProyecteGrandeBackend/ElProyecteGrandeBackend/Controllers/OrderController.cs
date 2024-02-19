@@ -54,7 +54,7 @@ public class OrderController : ControllerBase
     {
         try
         {
-            var user = _userRepository.GetUser(userId);
+            var user = _userRepository.GetUser(userId.ToString());
             var orderToAdd = new Order {User = user, Date = DateTime.Now, PriceToPay = 0};
             foreach (var productId in productIds)
             {

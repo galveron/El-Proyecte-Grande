@@ -12,7 +12,7 @@ public class UserRepository : IUserRepository
         return dbContext.Users.ToList();
     }
 
-    public User? GetUser(int id)
+    public User? GetUser(string id)
     {
         using var dbContext = new MarketPlaceContext();
         
@@ -37,7 +37,7 @@ public class UserRepository : IUserRepository
         dbContext.SaveChanges();
     }
 
-    public void DeleteUser(int id)
+    public void DeleteUser(string id)
     {
         using var dbContext = new MarketPlaceContext();
         var user = dbContext.Users.First(user1 => user1.Id == id);
@@ -52,11 +52,12 @@ public class UserRepository : IUserRepository
         dbContext.SaveChanges();
     }
 
-    public void AddFavourite(int userId, int productId)
+    public void AddFavourite(string userId, int productId)
     {
         using var dbContext = new MarketPlaceContext();
         var productToAddFavourite = dbContext.Products.Find(productId);
-        var userToAddFavourite = dbContext.Users.Include(user => user.Favourites).SingleOrDefault(user => user.Id == userId);
+        var userToAddFavourite = dbContext.Users.Include(user => user.Favourites)
+            .SingleOrDefault(user => user.Id == userId);
         
         if (userToAddFavourite == null)
         {

@@ -5,10 +5,10 @@ namespace ElProyecteGrandeBackend.Services.Repositories;
 public interface IUserRepository
 {
     IEnumerable<User> GetAllUsers();
-    User? GetUser(int id);
+    User? GetUser(string id);
     void AddUser(User user);
-    void DeleteUser(int id);
+    void DeleteUser(string id);
     void UpdateUser(User user);
-    void AddFavourite(int userId, int productId);
+    void AddFavourite(string userId, int productId);
     void AddToCart(User user, Product product);
 }

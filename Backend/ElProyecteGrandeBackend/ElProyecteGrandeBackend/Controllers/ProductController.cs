@@ -52,7 +52,7 @@ public class ProductController : ControllerBase
     {//seller, price, details, quantity
         try
         {
-            var user = _userRepository.GetUser(userId);
+            var user = _userRepository.GetUser(userId.ToString());
             var product = new Product{Seller = user, Price = price, Details = details, Quantity = quantity};
             _productRepository.AddProduct(product);
             return Ok(product);
