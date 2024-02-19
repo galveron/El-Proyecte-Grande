@@ -1,13 +1,24 @@
 using ElProyecteGrandeBackend.Model;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace ElProyecteGrandeBackend.Data;
 
-public class MarketPlaceContext : DbContext
+public class MarketPlaceContext : IdentityDbContext<IdentityUser, IdentityRole, string>
 {
     public DbSet<User> Users { get; set; }
     public DbSet<Product> Products { get; set; }
     public DbSet<Order> Orders { get; set; }
+
+    public MarketPlaceContext()
+    {
+        
+    }
+    public MarketPlaceContext (DbContextOptions<MarketPlaceContext> options)
+        : base(options)
+    {
+    }
     
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
@@ -19,6 +30,7 @@ Password={Environment.GetEnvironmentVariable("PASSWORD")};Encrypt={Environment.G
     
     protected override void OnModelCreating(ModelBuilder builder)
     {
+        base.OnModelCreating(builder);
         builder.Entity<User>()
             .HasMany(e => e.Favourites)
             .WithMany();
