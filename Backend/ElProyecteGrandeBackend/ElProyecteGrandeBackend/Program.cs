@@ -2,6 +2,7 @@ using System.Text;
 using System.Text.Json.Serialization;
 using AskMate.Service;
 using ElProyecteGrandeBackend.Data;
+using ElProyecteGrandeBackend.Model;
 using ElProyecteGrandeBackend.Services.Authentication;
 using ElProyecteGrandeBackend.Services.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -141,7 +142,7 @@ void AddAuthentication()
 void AddIdentity()
 {
     builder.Services
-        .AddIdentityCore<IdentityUser>(options =>
+        .AddIdentityCore<User>(options =>
         {
             options.SignIn.RequireConfirmedAccount = false;
             options.User.RequireUniqueEmail = true;
@@ -165,6 +166,9 @@ void AddRoles()
 
     var tCustomer = CreateCustomerRole(roleManager);
     tCustomer.Wait();
+    
+    var tCompany = CreateCompanyRole(roleManager);
+    tCompany.Wait();
 }
 
 async Task CreateAdminRole(RoleManager<IdentityRole> roleManager)
@@ -179,6 +183,12 @@ async Task CreateCustomerRole(RoleManager<IdentityRole> roleManager)
     await roleManager.CreateAsync(new IdentityRole(customerRole));
 }
 
+async Task CreateCompanyRole(RoleManager<IdentityRole> roleManager)
+{
+    var companyRole = Environment.GetEnvironmentVariable("COMPANYROLE");
+    await roleManager.CreateAsync(new IdentityRole(companyRole));
+}
+
 void AddAdmin()
 {
     var tAdmin = CreateAdminIfNotExists();
@@ -188,12 +198,12 @@ void AddAdmin()
 async Task CreateAdminIfNotExists()
 {
     using var scope = app.Services.CreateScope();
-    var userManager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
+    var userManager = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
     var adminInDb = await userManager.FindByEmailAsync("admin@admin.hu");
     var adminPassword = Environment.GetEnvironmentVariable("ADMINPASSWORD");
     if (adminInDb == null)
     {
-        var admin = new IdentityUser { UserName = "admin", Email = "admin@admin.hu" };
+        var admin = new User { UserName = "admin", Email = "admin@admin.hu" };
         var adminCreated = await userManager.CreateAsync(admin, adminPassword);
 
         if (adminCreated.Succeeded)

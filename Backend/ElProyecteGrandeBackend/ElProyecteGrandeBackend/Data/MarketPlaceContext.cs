@@ -5,12 +5,12 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace ElProyecteGrandeBackend.Data;
 
-public class MarketPlaceContext : IdentityDbContext<IdentityUser, IdentityRole, string>
+public class MarketPlaceContext : IdentityDbContext<User, IdentityRole, string>
 {
     public DbSet<User> Users { get; set; }
     public DbSet<Product> Products { get; set; }
     public DbSet<Order> Orders { get; set; }
-
+    
     public MarketPlaceContext()
     {
         
@@ -25,7 +25,7 @@ public class MarketPlaceContext : IdentityDbContext<IdentityUser, IdentityRole, 
         optionsBuilder.UseSqlServer(
             @$"Server={Environment.GetEnvironmentVariable("SERVER")},{Environment.GetEnvironmentVariable("PORT")};
 Database={Environment.GetEnvironmentVariable("DATABASE")};User Id={Environment.GetEnvironmentVariable("USERID")};
-Password={Environment.GetEnvironmentVariable("PASSWORD")};Encrypt={Environment.GetEnvironmentVariable("ENCRYPT")};");
+Password={Environment.GetEnvironmentVariable("PASSWORD")};Encrypt={Environment.GetEnvironmentVariable("ENCRYPT")};TrustServerCertificate=true;");
     }
     
     protected override void OnModelCreating(ModelBuilder builder)
@@ -49,28 +49,9 @@ Password={Environment.GetEnvironmentVariable("PASSWORD")};Encrypt={Environment.G
             .HasMany(u => u.Orders)
             .WithOne(o => o.User)
             .OnDelete(DeleteBehavior.NoAction);
-
+        
         builder.Entity<Order>()
             .HasMany(o => o.Products)
             .WithMany();
-        
-        builder.Entity<User>()
-            .HasData(
-                new User
-                {
-                    Id = 1, Email = "bela@gmail.com", Name = "BÉÉLA", Password = "BEEEEELAAA", PhoneNumber = "BEL-0000",
-                    Role = Role.Customer
-                },
-                new User
-                {
-                    Id = 2, Email = "forbela@gmail.com", Name = "Béla barát", Password = "lehúzzukbélátDENAGYON", PhoneNumber = "NEMBEL-666",
-                    Role = Role.Company
-                }
-            );
-
-        builder.Entity<User>().OwnsOne(p => p.Company)
-            .HasData(
-                new {UserId = 2, Name = "Bélának Jó Lesz Cég", Identifier = "01-10-666999", Verified = true}
-            );
     }
 }
