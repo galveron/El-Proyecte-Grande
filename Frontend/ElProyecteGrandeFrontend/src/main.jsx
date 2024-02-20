@@ -8,6 +8,8 @@ import ErrorPage from './Pages/ErrorPage';
 import Home from './Pages/Home';
 import App from './App';
 import MarketPlace from './Pages/MarketPlace';
+import CustomerRegistration from './Pages/CustomerRegistration';
+import Login from './Pages/Login';
 
 const router = createBrowserRouter([
   {
@@ -26,6 +28,14 @@ const router = createBrowserRouter([
       {
         path: '/marketplace',
         element: <MarketPlace />
+      },
+      {
+        path: '/register',
+        element: <CustomerRegistration />
+      },
+      {
+        path: '/login',
+        element: <Login />
       }
     ]
   }
