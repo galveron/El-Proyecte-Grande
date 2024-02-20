@@ -36,7 +36,7 @@ public class OrderController : ControllerBase
     }
 
     [HttpGet]
-    public ActionResult<List<Order>> GetUserOrders(int userId)
+    public ActionResult<List<Order>> GetUserOrders(string userId)
     {
         try
         {
@@ -50,11 +50,11 @@ public class OrderController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult> AddOrder(int userId, ICollection<int> productIds)
+    public async Task<ActionResult> AddOrder(string userId, ICollection<int> productIds)
     {
         try
         {
-            var user = _userRepository.GetUser(userId.ToString());
+            var user = _userRepository.GetUser(userId);
             var orderToAdd = new Order {User = user, Date = DateTime.Now, PriceToPay = 0};
             foreach (var productId in productIds)
             {
@@ -74,10 +74,11 @@ public class OrderController : ControllerBase
     }
 
     [HttpDelete]
-    public ActionResult DeleteOrder(Order order)
+    public ActionResult DeleteOrder(int orderId)
     {
         try
         {
+            var order = _orderRepository.GetOrder(orderId);
             _orderRepository.DeleteOrder(order);
             return Ok("Order successfully deleted");
         }

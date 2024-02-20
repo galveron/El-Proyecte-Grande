@@ -26,11 +26,11 @@ public class UserController : ControllerBase
     }
 
     [HttpGet("GetUser")]
-    public async Task<ActionResult<User>> GetUser(int id)
+    public async Task<ActionResult<User>> GetUser(string id)
     {
         try
         {
-            var user = _userRepository.GetUser(id.ToString());
+            var user = _userRepository.GetUser(id);
             
             if (user == null)
             {
@@ -191,11 +191,11 @@ public class UserController : ControllerBase
     // }
     
     [HttpPatch("AddToCart")]
-    public async Task<ActionResult> AddToCart(int UserId, int ProductId)
+    public async Task<ActionResult> AddToCart(string UserId, int ProductId)
     {
         try
         {
-            _userRepository.AddToCart(_userRepository.GetUser(UserId.ToString()), _productRepository.GetProduct(ProductId));
+            _userRepository.AddToCart(_userRepository.GetUser(UserId), _productRepository.GetProduct(ProductId));
             
             return Ok("Done.");
         }
@@ -208,7 +208,7 @@ public class UserController : ControllerBase
     
     //ONLY FOR TEST
     [HttpPost("AddProduct")]
-    public async Task<ActionResult> AddProduct()
+    public async Task<ActionResult> AddProduct(string userId)
     {
         try
         {
@@ -218,7 +218,7 @@ public class UserController : ControllerBase
                     Details = "Hát persze, hogy minőségi",
                     Price = 999,
                     Quantity = 666,
-                    Seller = _userRepository.GetUser(2.ToString())
+                    Seller = _userRepository.GetUser(userId)
                 }
                 );
             
