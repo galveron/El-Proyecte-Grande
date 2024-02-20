@@ -16,7 +16,7 @@ public class OrderRepository : IOrderRepository
             .First();
     }
 
-    public List<Order> GetUserOrders(int userId)
+    public List<Order> GetUserOrders(string userId)
     {
         using var dbContext = new MarketPlaceContext();
         return null;
