@@ -26,11 +26,11 @@ public class UserController : ControllerBase
     }
 
     [HttpGet("GetUser")]
-    public async Task<ActionResult<User>> GetUser(int id)
+    public async Task<ActionResult<User>> GetUser(string id)
     {
         try
         {
-            var user = _userRepository.GetUser(id.ToString());
+            var user = _userRepository.GetUser(id);
             
             if (user == null)
             {
