@@ -20,7 +20,7 @@ public class AuthController : ControllerBase
     [HttpPost("Register")]
     public async Task<ActionResult<RegistrationResponse>> Register(RegistrationRequest request)
     {
-        return await RegisterWithRole(request, "User");
+        return await RegisterWithRole(request, "Customer");
         /*
         //if admin throw error
         if (!ModelState.IsValid)
