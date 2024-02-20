@@ -6,9 +6,8 @@ public interface IUserRepository
 {
     IEnumerable<User> GetAllUsers();
     User? GetUser(string id);
-    void AddUser(User user);
     void DeleteUser(string id);
-    void UpdateUser(User user);
+    void UpdateUser(string id, string name, string email, string phoneNumber);
     void AddFavourite(string userId, int productId);
-    void AddToCart(User user, Product product);
+    void AddToCart(string userId, int productId);
 }

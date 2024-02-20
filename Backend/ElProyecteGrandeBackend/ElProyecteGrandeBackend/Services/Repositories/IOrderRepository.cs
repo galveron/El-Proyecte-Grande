@@ -5,7 +5,7 @@ namespace ElProyecteGrandeBackend.Services.Repositories;
 public interface IOrderRepository
 {
     Order GetOrder(int orderId);
-    List<Order> GetUserOrders(int userId);
+    List<Order> GetUserOrders(string userId);
     void AddOrder(Order order);
     void DeleteOrder(Order order);
     void UpdateOrder(Order order);

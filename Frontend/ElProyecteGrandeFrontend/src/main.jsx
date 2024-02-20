@@ -8,7 +8,9 @@ import ErrorPage from './Pages/ErrorPage';
 import Home from './Pages/Home';
 import App from './App';
 import MarketPlace from './Pages/MarketPlace';
-import CustomerRegistration from './Pages/CustomerRegistration';
+import CustomerRegistration from './Pages/Register/CustomerRegistration';
+import CompanyRegistration from './Pages/Register/CompanyRegistration';
+import RegisterAs from './Pages/Register/Register';
 import Login from './Pages/Login';
 
 const router = createBrowserRouter([
@@ -31,11 +33,19 @@ const router = createBrowserRouter([
       },
       {
         path: '/register',
-        element: <CustomerRegistration />
+        element: <RegisterAs />
       },
       {
         path: '/login',
         element: <Login />
+      },
+      {
+        path: '/register-customer',
+        element: <CustomerRegistration />
+      },
+      {
+        path: '/register-company',
+        element: <CompanyRegistration />
       }
     ]
   }
