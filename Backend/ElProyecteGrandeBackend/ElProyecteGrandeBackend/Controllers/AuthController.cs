@@ -18,26 +18,9 @@ public class AuthController : ControllerBase
     }
 
     [HttpPost("Register")]
-    public async Task<ActionResult<RegistrationResponse>> Register(RegistrationRequest request)
+    public async Task<ActionResult<RegistrationResponse>> RegisterCustomer(RegistrationRequest request)
     {
-        return await RegisterWithRole(request, "Customer");
-    }
-    
-    [HttpPost("RegisterCompany")]
-    public async Task<ActionResult<RegistrationResponse>> RegisterCompany(RegistrationRequest request)
-    {
-        return await RegisterWithRole(request, "Company");
-    }
-
-    private async Task<ActionResult<RegistrationResponse>> RegisterWithRole(RegistrationRequest request, string role)
-    {
-        //if admin throw error
-        if (!ModelState.IsValid)
-        {
-            return BadRequest(ModelState);
-        }
-
-        var result = await _authenticationService.RegisterAsync(request.Email, request.Username, request.Password, role);
+        var result = await _authenticationService.RegisterAsync(request.Email, request.Username, request.Password, "Customer");
         Console.WriteLine(result);
         if (!result.Success)
         {
@@ -45,10 +28,34 @@ public class AuthController : ControllerBase
             return BadRequest(ModelState);
         }
 
-        return CreatedAtAction(nameof(Register), new RegistrationResponse(result.Email, result.UserName));
+        return CreatedAtAction(nameof(RegisterCustomer), new RegistrationResponse(result.Email, result.UserName));
+
+    }
+    
+    [HttpPost("RegisterCompany")]
+    public async Task<ActionResult<RegistrationResponseCompany>> RegisterCompany(RegistrationRequestCompany request)
+    {
+        var result = await _authenticationService.RegisterAsyncCompany(request.Email, request.Username, request.Password, "Company", request.CompanyName, request.Identifier);
+        Console.WriteLine(result);
+        if (!result.Success)
+        {
+            AddErrors(result);
+            return BadRequest(ModelState);
+        }
+
+        return CreatedAtAction(nameof(RegisterCustomer), new RegistrationResponseCompany(result.Email, result.UserName, result.CompanyName));
+
     }
 
     private void AddErrors(AuthResult result)
+    {
+        foreach (var error in result.ErrorMessages)
+        {
+            ModelState.AddModelError(error.Key, error.Value);
+        }
+    }
+    
+    private void AddErrors(AuthResultCompany result)
     {
         foreach (var error in result.ErrorMessages)
         {

@@ -28,10 +28,36 @@ public class AuthService : IAuthService
         await _userManager.AddToRoleAsync(user, role);
         return new AuthResult(true, email, username, "");
     }
+    
+    public async Task<AuthResultCompany> RegisterAsyncCompany(string email, string username, string password, string role, string companyName, string identifier)
+    {
+        var user = new User { UserName = username, Email = email, Company = new Company { Name = companyName, Identifier = identifier, Verified = false}};
+        var result = await _userManager.CreateAsync(user, password);
+
+        if (!result.Succeeded)
+        {
+            return FailedRegistrationCompany(result, email, username, companyName);
+        }
+
+        await _userManager.AddToRoleAsync(user, role);
+        return new AuthResultCompany(true, email, username, companyName, "");
+    }
 
     private static AuthResult FailedRegistration(IdentityResult result, string email, string username)
     {
         var authResult = new AuthResult(false, email, username, "");
+
+        foreach (var error in result.Errors)
+        {
+            authResult.ErrorMessages.Add(error.Code, error.Description);
+        }
+
+        return authResult;
+    }
+    
+    private static AuthResultCompany FailedRegistrationCompany(IdentityResult result, string email, string username, string companyName)
+    {
+        var authResult = new AuthResultCompany(false, email, username, companyName, "");
 
         foreach (var error in result.Errors)
         {
