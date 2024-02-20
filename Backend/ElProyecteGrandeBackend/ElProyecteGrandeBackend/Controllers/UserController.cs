@@ -26,11 +26,11 @@ public class UserController : ControllerBase
     }
 
     [HttpGet("GetUser")]
-    public async Task<ActionResult<User>> GetUser(int id)
+    public async Task<ActionResult<User>> GetUser(string id)
     {
         try
         {
-            var user = _userRepository.GetUser(id.ToString());
+            var user = _userRepository.GetUser(id);
             
             if (user == null)
             {
@@ -46,46 +46,26 @@ public class UserController : ControllerBase
         }
     }
     
-    //[HttpPost("AddCustomer")]
-    // public async Task<ActionResult> AddCustomer(string name, string password, string email, string phoneNumber)
-    // {
-    //     try
-    //     {
-    //         _userRepository.AddUser(new User
-    //         {
-    //             UserName = name, Password = password, Role = Role.Customer, Email = email, PhoneNumber = phoneNumber
-    //         });
-    //         
-    //         return Ok("Successfully added user.");
-    //     }
-    //     catch (Exception e)
-    //     {
-    //         Console.WriteLine(e);
-    //         return StatusCode(500);
-    //     }
-    // }
-    
-    // [HttpPost("AddCompanyUser")]
-    // public async Task<ActionResult> AddCompanyUser(string name, string password, string email, string phoneNumber, 
-    //     string companyName, string identifier)
-    // {
-    //     try
-    //     {
-    //         var company = new Company { Name = companyName, Identifier = identifier, Verified = false };
-    //         _userRepository.AddUser(new User
-    //         {
-    //             Name = name, Password = password, Role = Role.Company, Email = email, PhoneNumber = phoneNumber,
-    //             Company = company
-    //         });
-    //         
-    //         return Ok("Successfully added company user.");
-    //     }
-    //     catch (Exception e)
-    //     {
-    //         Console.WriteLine(e);
-    //         return StatusCode(500);
-    //     }
-    // }
+    [HttpGet("GetUsers")]
+    public async Task<ActionResult<User[]>> GetUsers()
+    {
+        try
+        {
+            var user = _userRepository.GetAllUsers().ToArray();
+            
+            if (user == null)
+            {
+                return NotFound("User was not found.");
+            }
+            
+            return Ok(user);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return StatusCode(500);
+        }
+    }
     
     [HttpDelete("DeleteUser")]
     public async Task<ActionResult> DeleteUser(int id)
@@ -174,28 +154,28 @@ public class UserController : ControllerBase
     //     }
     // }
     //
-    // [HttpPatch("AddFavourite")]
-    // public async Task<ActionResult> AddFavourite(int userId, int productId)
-    // {
-    //     try
-    //     {
-    //         _userRepository.AddFavourite(userId, productId);
-    //         
-    //         return Ok("Done.");
-    //     }
-    //     catch (Exception e)
-    //     {
-    //         Console.WriteLine(e);
-    //         return StatusCode(500);
-    //     }
-    // }
-    
-    [HttpPatch("AddToCart")]
-    public async Task<ActionResult> AddToCart(int UserId, int ProductId)
+    [HttpPatch("AddFavourite")]
+    public async Task<ActionResult> AddFavourite(string userId, int productId)
     {
         try
         {
-            _userRepository.AddToCart(_userRepository.GetUser(UserId.ToString()), _productRepository.GetProduct(ProductId));
+            _userRepository.AddFavourite(userId, productId);
+            
+            return Ok("Done.");
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return StatusCode(500);
+        }
+    }
+    
+    [HttpPatch("AddToCart")]
+    public async Task<ActionResult> AddToCart(string userId, int productId)
+    {
+        try
+        {
+            _userRepository.AddToCart(userId, productId);
             
             return Ok("Done.");
         }
