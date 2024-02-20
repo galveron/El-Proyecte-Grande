@@ -1,5 +1,6 @@
 using ElProyecteGrandeBackend.Data;
 using ElProyecteGrandeBackend.Model;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace ElProyecteGrandeBackend.Services.Repositories;
@@ -31,11 +32,22 @@ public class UserRepository : IUserRepository
         dbContext.SaveChanges();
     }
 
-    public void UpdateUser(User user)
+    public void UpdateUser(string id, string name, string email, string phoneNumber)
     {
         using var dbContext = new MarketPlaceContext();
-        dbContext.Users.Update(user);
+        var userToUpdate = dbContext.Users.Single(user => user.Id == id);
+        userToUpdate.UserName = name;
+        userToUpdate.NormalizedUserName = name.ToUpper();
+        userToUpdate.Email = email;
+        userToUpdate.NormalizedEmail = email.ToUpper();
+        userToUpdate.PhoneNumber = phoneNumber;
         dbContext.SaveChanges();
+        
+        // EZT MEGKÉRDEZNI!!!
+        /*
+        using var scope = app.Services.CreateScope();
+        var userManager = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
+        */
     }
 
     public void AddFavourite(string userId, int productId)
