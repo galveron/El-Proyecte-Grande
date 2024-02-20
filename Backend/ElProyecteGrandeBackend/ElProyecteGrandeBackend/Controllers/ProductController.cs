@@ -62,6 +62,4 @@ public class ProductController : ControllerBase
             return NotFound("Product not found");
         }
     }
-    
-
 }

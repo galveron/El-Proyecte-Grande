@@ -23,20 +23,6 @@ public class UserRepository : IUserRepository
             .FirstOrDefault();
     }
 
-    public void AddUser(User user)
-    {
-        using var dbContext = new MarketPlaceContext();
-        var userFromDb = GetUser(user.Id);
-        
-        if (userFromDb != null)
-        {
-            throw new Exception("User already in database.");
-        }
-
-        dbContext.Users.Add(user);
-        dbContext.SaveChanges();
-    }
-
     public void DeleteUser(string id)
     {
         using var dbContext = new MarketPlaceContext();
@@ -74,11 +60,11 @@ public class UserRepository : IUserRepository
         dbContext.SaveChanges();
     }
 
-    public void AddToCart(User user, Product product)
+    public void AddToCart(string userId, int productId)
     {
         using var dbContext = new MarketPlaceContext();
-        var userToAddToCart = GetUser(user.Id);
-        var productToAddToCart = dbContext.Products.FirstOrDefault(product1 => product1.Id == product.Id);
+        var userToAddToCart = GetUser(userId);
+        var productToAddToCart = dbContext.Products.FirstOrDefault(product1 => product1.Id == productId);
         
         if (userToAddToCart == null)
         {
