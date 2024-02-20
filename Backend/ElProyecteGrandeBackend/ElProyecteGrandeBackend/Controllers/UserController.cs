@@ -168,11 +168,11 @@ public class UserController : ControllerBase
     }
     
     [HttpPatch("AddToCart")]
-    public async Task<ActionResult> AddToCart(string userId, int productId)
+    public async Task<ActionResult> AddToCart(string userId, int productId, int quantity)
     {
         try
         {
-            _userRepository.AddToCart(userId, productId);
+            _userRepository.AddToCart(userId, productId, quantity);
             
             return Ok("Done.");
         }
