@@ -83,24 +83,21 @@ public class UserController : ControllerBase
         }
     }
     
-    // [HttpPatch("UpdateCustomer")]
-    // public async Task<ActionResult> UpdateCustomer(int id, string name, string password, string email, string phoneNumber)
-    // {
-    //     try
-    //     {
-    //         _userRepository.UpdateUser(new User
-    //         {
-    //             Id = id, Name = name, Password = password, Role = Role.Customer, Email = email, PhoneNumber = phoneNumber
-    //         });
-    //         
-    //         return Ok("Successfully added user.");
-    //     }
-    //     catch (Exception e)
-    //     {
-    //         Console.WriteLine(e);
-    //         return StatusCode(500);
-    //     }
-    // }
+    [HttpPatch("UpdateCustomer")]
+    public async Task<ActionResult> UpdateCustomer(string id, string name, string email, string phoneNumber)
+    {
+        try
+        {
+            _userRepository.UpdateUser(id, name, email, phoneNumber);
+            
+            return Ok("Successfully updated user.");
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return StatusCode(500);
+        }
+    }
     
     // [HttpPatch("UpdateCompany")]
     // public async Task<ActionResult> UpdateCompany(int id, string name, string password, string email, string phoneNumber,
@@ -198,7 +195,7 @@ public class UserController : ControllerBase
                     Details = "Hát persze, hogy minőségi",
                     Price = 999,
                     Quantity = 666,
-                    Seller = _userRepository.GetUser(2.ToString())
+                    Seller = _userRepository.GetUser("a652f1b5-9ea5-4e89-9eaa-b411f3ddfc6b")
                 }
                 );
             
