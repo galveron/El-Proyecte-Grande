@@ -46,46 +46,26 @@ public class UserController : ControllerBase
         }
     }
     
-    //[HttpPost("AddCustomer")]
-    // public async Task<ActionResult> AddCustomer(string name, string password, string email, string phoneNumber)
-    // {
-    //     try
-    //     {
-    //         _userRepository.AddUser(new User
-    //         {
-    //             UserName = name, Password = password, Role = Role.Customer, Email = email, PhoneNumber = phoneNumber
-    //         });
-    //         
-    //         return Ok("Successfully added user.");
-    //     }
-    //     catch (Exception e)
-    //     {
-    //         Console.WriteLine(e);
-    //         return StatusCode(500);
-    //     }
-    // }
-    
-    // [HttpPost("AddCompanyUser")]
-    // public async Task<ActionResult> AddCompanyUser(string name, string password, string email, string phoneNumber, 
-    //     string companyName, string identifier)
-    // {
-    //     try
-    //     {
-    //         var company = new Company { Name = companyName, Identifier = identifier, Verified = false };
-    //         _userRepository.AddUser(new User
-    //         {
-    //             Name = name, Password = password, Role = Role.Company, Email = email, PhoneNumber = phoneNumber,
-    //             Company = company
-    //         });
-    //         
-    //         return Ok("Successfully added company user.");
-    //     }
-    //     catch (Exception e)
-    //     {
-    //         Console.WriteLine(e);
-    //         return StatusCode(500);
-    //     }
-    // }
+    [HttpGet("GetUsers")]
+    public async Task<ActionResult<User[]>> GetUsers()
+    {
+        try
+        {
+            var user = _userRepository.GetAllUsers().ToArray();
+            
+            if (user == null)
+            {
+                return NotFound("User was not found.");
+            }
+            
+            return Ok(user);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return StatusCode(500);
+        }
+    }
     
     [HttpDelete("DeleteUser")]
     public async Task<ActionResult> DeleteUser(int id)
