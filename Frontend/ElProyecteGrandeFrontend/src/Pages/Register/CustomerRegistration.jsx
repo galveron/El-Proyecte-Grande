@@ -1,6 +1,11 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import 'react-toastify/dist/ReactToastify.css';
+import { notification } from 'antd';
+
+notification.config({
+  duration: 3,
+  closeIcon: null
+})
 
 function CustomerRegistration() {
     const [userEmail, setUserEmail] = useState('');
@@ -16,13 +21,14 @@ function CustomerRegistration() {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ Email: userEmail, Username: userName, Password: userPassword })
             });
+            const data = await res.json();
             if (!res.ok) {
-                throw new Error(`HTTP error! status: ${res.status}`);
+                throw new Error(`${data[Object.keys(data)[0]][0]}`);
             }
             navigate('/');
         }
         catch (error) {
-            throw error;
+            notification.error({ message: `Couldn't register. ${error.message}` });
         }
     }
 
