@@ -21,23 +21,6 @@ public class AuthController : ControllerBase
     public async Task<ActionResult<RegistrationResponse>> Register(RegistrationRequest request)
     {
         return await RegisterWithRole(request, "Customer");
-        /*
-        //if admin throw error
-        if (!ModelState.IsValid)
-        {
-            return BadRequest(ModelState);
-        }
-
-        var result = await _authenticationService.RegisterAsync(request.Email, request.Username, request.Password,request.Role);
-        Console.WriteLine(result);
-        if (!result.Success)
-        {
-            AddErrors(result);
-            return BadRequest(ModelState);
-        }
-
-        return CreatedAtAction(nameof(Register), new RegistrationResponse(result.Email, result.UserName));
-        */
     }
     
     [HttpPost("RegisterCompany")]
