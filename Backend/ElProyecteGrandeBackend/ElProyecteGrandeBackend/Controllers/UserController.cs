@@ -46,7 +46,7 @@ public class UserController : ControllerBase
         }
     }
     
-    [HttpPost("AddCustomer")]
+    //[HttpPost("AddCustomer")]
     // public async Task<ActionResult> AddCustomer(string name, string password, string email, string phoneNumber)
     // {
     //     try
