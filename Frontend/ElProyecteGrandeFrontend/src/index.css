@@ -1,11 +1,11 @@
 :root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: "Josefin Sans", sans-serif;
+  font-weight: 100;
   line-height: 1.5;
-  font-weight: 400;
 
   color-scheme: light dark;
-  color: #6D2932;
-  background-color: #C7B7A3;
+  color: #0E523D;
+  background-color: #D0DFDC;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -15,8 +15,14 @@
 
 
 a {
-  color: #C7B7A3;
+  color: #0E523D;
+  font-family: Montserrat;
+  font-weight: 300;
   text-decoration: inherit;
+}
+
+a:hover {
+  color: #C58E3C;
 }
 
 body {
@@ -54,81 +60,4 @@ body {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-around;
-}
-
-.comp-register {
-  width: 200px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  margin-right: auto;
-  margin-left: auto;
-  font-weight: 600;
-}
-
-.comp-register > button {
-  margin-top: 10px;
-  width: 100px;
-  height: 30px;
-  font-size: medium;
-  cursor: pointer;
-  font-weight: 500;
-}
-
-.cust-register {
-  width: 200px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  margin-right: auto;
-  margin-left: auto;
-  font-weight: 600;
-}
-
-.cust-register > button {
-  margin-top: 10px;
-  width: 100px;
-  height: 30px;
-  font-size: medium;
-  cursor: pointer;
-  font-weight: 500;
-}
-
-.register-button-container > button {
-  margin: 20px;
-  width: 400px;
-  height: 120px;
-  font-size: 30px;
-  font-weight: bold;
-  font-family: Verdana, Geneva, Tahoma, sans-serif;
-  text-align: center;
-  background-color: #6D2932;
-  cursor: pointer;
-  border-radius: 10px;
-}
-
-.register-button-container > button:hover {
-  background-color: #6d2932a6;
-}
-
-.login {
-  width: 200px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  margin-right: auto;
-  margin-left: auto;
-  font-weight: 600;
-}
-
-.login > button {
-  margin-top: 10px;
-  width: 100px;
-  height: 30px;
-  font-size: medium;
-  cursor: pointer;
-  font-weight: 500;
 }

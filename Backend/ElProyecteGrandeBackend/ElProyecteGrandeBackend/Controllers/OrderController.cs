@@ -50,18 +50,12 @@ public class OrderController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult> AddOrder(string userId, ICollection<int> productIds)
+    public async Task<ActionResult> AddOrder(string userId)
     {
         try
         {
             var user = _userRepository.GetUser(userId);
             var orderToAdd = new Order {User = user, Date = DateTime.Now, PriceToPay = 0};
-            foreach (var productId in productIds)
-            {
-                var product = _productRepository.GetProduct(productId);
-                orderToAdd.Products.Add(product);
-                orderToAdd.PriceToPay += product.Price;
-            }
             user.Orders.Add(orderToAdd);
             _orderRepository.AddOrder(orderToAdd);
             return Ok("Order added");
@@ -70,6 +64,22 @@ public class OrderController : ControllerBase
         {
             Console.WriteLine(e.Message);
             return Problem("Order failed to add");
+        }
+    }
+
+    [HttpPost]
+    public async Task<ActionResult> AddProductToOrder(int orderId,int productId)
+    {
+        try
+        {
+            var order = _orderRepository.GetOrder(orderId);
+            order.Products.Add(_productRepository.GetProduct(productId));
+            _orderRepository.UpdateOrder(order);
+            return Ok("Product added to the order");
+        }
+        catch (Exception e)
+        { 
+            return Problem("Product failed to add");
         }
     }
 
