@@ -4,7 +4,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #6D2932;
+    background-color: #FFFFFF;
     height: 60px;
     width: 100%;
     position: fixed;
@@ -21,8 +21,7 @@
     margin: 20px;
     padding: 20px;
     list-style-type: none;
-    color: #C7B7A3;
-    font-weight: bold;
+    color: #0E523D;
     font-size: x-large;
     transition: 200ms ease-in-out;
 }
