@@ -1,11 +1,11 @@
 :root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: "Josefin Sans", sans-serif;
+  font-weight: 100;
   line-height: 1.5;
-  font-weight: 400;
 
   color-scheme: light dark;
-  color: #6D2932;
-  background-color: #C7B7A3;
+  color: #0E523D;
+  background-color: #D0DFDC;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -15,12 +15,14 @@
 
 
 a {
-  font-weight: 500;
-  color: #C7B7A3;
+  color: #0E523D;
+  font-family: Montserrat;
+  font-weight: 300;
   text-decoration: inherit;
 }
+
 a:hover {
-  color: #E8D8C4;
+  color: #C58E3C;
 }
 
 body {

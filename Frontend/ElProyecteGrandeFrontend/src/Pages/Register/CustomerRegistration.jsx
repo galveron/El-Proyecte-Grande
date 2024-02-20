@@ -27,8 +27,8 @@ function CustomerRegistration() {
     }
 
     return (
-        <div className="register-container">
-            <form className='register' onSubmit={handleSubmit}>
+        <div className="cust-register-container">
+            <form className='cust-register' onSubmit={handleSubmit}>
                 <label>E-mail</label>
                 <input type='email' onChange={e => setUserEmail(e.target.value)} value={userEmail} required />
                 <label>Username</label>
