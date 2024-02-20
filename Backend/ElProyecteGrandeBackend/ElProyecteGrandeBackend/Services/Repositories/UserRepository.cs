@@ -21,6 +21,7 @@ public class UserRepository : IUserRepository
             .Include(user => user.Favourites)
             .Include(user => user.CompanyProducts)
             .Include(user => user.CartItems)
+            .Include(user => user.Orders)
             .FirstOrDefault();
     }
 
