@@ -154,28 +154,28 @@ public class UserController : ControllerBase
     //     }
     // }
     //
-    // [HttpPatch("AddFavourite")]
-    // public async Task<ActionResult> AddFavourite(int userId, int productId)
-    // {
-    //     try
-    //     {
-    //         _userRepository.AddFavourite(userId, productId);
-    //         
-    //         return Ok("Done.");
-    //     }
-    //     catch (Exception e)
-    //     {
-    //         Console.WriteLine(e);
-    //         return StatusCode(500);
-    //     }
-    // }
-    
-    [HttpPatch("AddToCart")]
-    public async Task<ActionResult> AddToCart(int UserId, int ProductId)
+    [HttpPatch("AddFavourite")]
+    public async Task<ActionResult> AddFavourite(string userId, int productId)
     {
         try
         {
-            _userRepository.AddToCart(_userRepository.GetUser(UserId.ToString()), _productRepository.GetProduct(ProductId));
+            _userRepository.AddFavourite(userId, productId);
+            
+            return Ok("Done.");
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return StatusCode(500);
+        }
+    }
+    
+    [HttpPatch("AddToCart")]
+    public async Task<ActionResult> AddToCart(string userId, int productId)
+    {
+        try
+        {
+            _userRepository.AddToCart(userId, productId);
             
             return Ok("Done.");
         }
