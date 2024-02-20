@@ -1,6 +1,12 @@
 import { Outlet, Link } from "react-router-dom";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
+import { notification } from 'antd';
+
+notification.config({
+  duration: 2,
+  closeIcon: null
+})
 
 import './Layout.css';
 
@@ -11,6 +17,7 @@ function Layout() {
     function handleLogout() {
         Cookies.remove('token');
         navigate('/');
+        notification.success({ message: 'Logged out.' })
     }
 
     return (

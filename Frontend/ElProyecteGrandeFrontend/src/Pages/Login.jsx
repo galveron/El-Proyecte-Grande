@@ -1,6 +1,12 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Cookies from 'js-cookie';
+import { notification } from 'antd';
+
+notification.config({
+  duration: 2,
+  closeIcon: null
+})
 
 function Login() {
     const [email, setEmail] = useState('');
@@ -16,15 +22,16 @@ function Login() {
                 body: JSON.stringify({ Email: email, Password: password })
             });
             if (!res.ok) {
+                notification.error({ message: 'Email or password incorrect!' });
                 throw new Error(`HTTP error! status: ${res.status}`);
             }
             const data = await res.json();
             const token = JSON.stringify(data.token);
             Cookies.set('token', token, { expires: 7, secure: true });
             navigate('/');
+            notification.success({ message: 'Successful login. Welcome!' })
         }
         catch (error) {
-            throw error;
         }
     }
 
