@@ -72,11 +72,19 @@ public class UserRepository : IUserRepository
         dbContext.Update(userToAddFavourite);
         dbContext.SaveChanges();
     }
-
-    public void AddToCart(string userId, int productId)
+    
+    public void AddToCart(string userId, int productId, int quantity)
     {
+        if (quantity == 0)
+        {
+            throw new Exception("You cannot add zero product.");
+        }
+        
         using var dbContext = new MarketPlaceContext();
-        var userToAddToCart = GetUser(userId);
+        var userToAddToCart = dbContext.Users
+            .Include(user => user.CartItems)
+            .ThenInclude(cartItem => cartItem.Product)
+            .SingleOrDefault(user => user.Id == userId);
         var productToAddToCart = dbContext.Products.FirstOrDefault(product1 => product1.Id == productId);
         
         if (userToAddToCart == null)
@@ -88,10 +96,38 @@ public class UserRepository : IUserRepository
         {
             throw new Exception("Product was not found for adding to cart.");
         }
+
+        var cartItem = userToAddToCart.CartItems.SingleOrDefault(cartItem => cartItem.Product.Id == productToAddToCart.Id);
         
-        userToAddToCart.CartItems.Add(productToAddToCart);
+        if (cartItem == null)
+        {
+            if (quantity < 0)
+            {
+                throw new Exception("The quantity of products cannot be negative.");
+            }
+            
+            userToAddToCart.CartItems.Add(new CartItem
+            {
+                CustomerId = userToAddToCart.Id,
+                Customer = userToAddToCart,
+                ProductId = productToAddToCart.Id,
+                Product = productToAddToCart,
+                Quantity = quantity
+            });
+        }
+        else
+        {
+            if (cartItem.Quantity + quantity < 0)
+            {
+                userToAddToCart.CartItems.Remove(cartItem);
+            }
+            else
+            {
+                cartItem.Quantity += quantity;
+            }
+        }
+        
         dbContext.Update(userToAddToCart);
         dbContext.SaveChanges();
     }
-    
 }

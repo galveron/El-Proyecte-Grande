@@ -35,8 +35,8 @@ Password={Environment.GetEnvironmentVariable("PASSWORD")};Encrypt={Environment.G
             .HasMany(e => e.Favourites)
             .WithMany();
         
-        builder.Entity<User>()
-            .HasMany(e => e.CartItems)
+        builder.Entity<CartItem>()
+            .HasOne(e => e.Product)
             .WithMany();
         
         builder.Entity<User>()

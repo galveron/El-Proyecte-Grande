@@ -8,7 +8,7 @@ public class User : IdentityUser
 {
     public Company? Company { get; init; }
     public ICollection<Product> Favourites { get; } = new List<Product>();
-    public ICollection<Product> CartItems { get; } = new List<Product>();
+    public ICollection<CartItem> CartItems { get; } = new List<CartItem>();
     public ICollection<Product> CompanyProducts { get; } = new List<Product>();
     public ICollection<Order> Orders { get; } = new List<Order>();
 }
