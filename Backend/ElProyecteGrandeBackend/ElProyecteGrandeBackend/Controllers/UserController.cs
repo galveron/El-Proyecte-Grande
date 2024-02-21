@@ -167,6 +167,22 @@ public class UserController : ControllerBase
         }
     }
     
+    [HttpPatch("RemoveFavourite")]
+    public async Task<ActionResult> RemoveFavourite(string userId, int productId)
+    {
+        try
+        {
+            _userRepository.DeleteFavourite(userId, productId);
+            
+            return Ok("Done.");
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return StatusCode(500);
+        }
+    }
+    
     [HttpPatch("AddToCart")]
     public async Task<ActionResult> AddToCart(string userId, int productId, int quantity)
     {
