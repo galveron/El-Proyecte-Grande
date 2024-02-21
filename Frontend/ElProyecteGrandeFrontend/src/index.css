@@ -33,34 +33,6 @@ body {
   min-height: 100vh;
 }
 
-.productCard {
-  border: 3px solid #ccc;
-  border-radius: 8px;
-  padding: 10px;
-  margin: 10px;
-  width: 200px;
-  height: 200px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  display: inline-block;
-  background-color: #c7a3a3;
-}
-
-.productCard:hover {
-  background-color: #ca898d;
-  cursor: pointer;
-}
-
-.productCard p {
-  margin: 5px 0;
-  font-size: large;
-  font-weight: bold;
-}
-
-.productcard-container {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-around;
-}
 
 .comp-register {
   width: 200px;
@@ -73,7 +45,7 @@ body {
   font-weight: 600;
 }
 
-.comp-register > button {
+.comp-register>button {
   margin-top: 10px;
   width: 100px;
   height: 30px;
@@ -93,7 +65,7 @@ body {
   font-weight: 600;
 }
 
-.cust-register > button {
+.cust-register>button {
   margin-top: 10px;
   width: 100px;
   height: 30px;
@@ -102,7 +74,7 @@ body {
   font-weight: 500;
 }
 
-.register-button-container > button {
+.register-button-container>button {
   margin: 20px;
   width: 400px;
   height: 120px;
@@ -115,12 +87,12 @@ body {
   border-radius: 10px;
 }
 
-.register-button-container > button > a {
+.register-button-container>button>a {
   color: #D0DFDC;
   font-weight: 500;
 }
 
-.register-button-container > button:hover {
+.register-button-container>button:hover {
   background-color: #0e523da4;
 }
 
@@ -135,7 +107,7 @@ body {
   font-weight: 600;
 }
 
-.login > button {
+.login>button {
   margin-top: 10px;
   width: 100px;
   height: 30px;
