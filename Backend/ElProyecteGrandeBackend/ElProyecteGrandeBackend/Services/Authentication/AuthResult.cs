@@ -4,6 +4,7 @@ public record AuthResult(
     bool Success,
     string Email,
     string UserName,
+    string UserId,
     string Token)
 {
     //Error code - error message

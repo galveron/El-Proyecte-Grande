@@ -1,5 +1,6 @@
-import ProductCard from "./ProductCard";
+import ProductCard from "../ProductCard/ProductCard";
 import React from "react";
+import './Products.css'
 
 function Products(props) {
     const { products } = props
