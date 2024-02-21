@@ -47,7 +47,7 @@ public class ProductController : ControllerBase
         }
     }
     
-    [HttpGet("AddProduct")]
+    [HttpPost("AddProduct")]
     public ActionResult AddProduct(string userId, decimal price, string details, int quantity)
     {//seller, price, details, quantity
         try
