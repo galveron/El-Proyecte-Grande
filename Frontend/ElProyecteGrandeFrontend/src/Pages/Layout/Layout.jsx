@@ -1,14 +1,13 @@
 import { Outlet, Link } from "react-router-dom";
-import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
 import { notification } from 'antd';
+import Cookies from "js-cookie";
+import './Layout.css';
 
 notification.config({
-  duration: 2,
-  closeIcon: null
+    duration: 2,
+    closeIcon: null
 })
-
-import './Layout.css';
 
 function Layout() {
     const token = Cookies.get('token');
@@ -16,6 +15,7 @@ function Layout() {
 
     function handleLogout() {
         Cookies.remove('token');
+        Cookies.remove('user_id');
         navigate('/');
         notification.success({ message: 'Logged out.' })
     }
@@ -33,9 +33,14 @@ function Layout() {
                                 <Link to="/marketplace">MarketPlace</Link>
                             </li>
                             {token ?
-                                <li className="logout-layout" onClick={handleLogout}>
-                                    <Link to="/">Logout</Link>
-                                </li> :
+                                <>
+                                    <li className="profile-layout">
+                                        <Link to="/profile">Profile</Link>
+                                    </li>
+                                    <li className="logout-layout" onClick={handleLogout}>
+                                        <Link to="/">Logout</Link>
+                                    </li>
+                                </> :
                                 <>
                                     <li className="registration-layout">
                                         <Link to="/register">Registration</Link>

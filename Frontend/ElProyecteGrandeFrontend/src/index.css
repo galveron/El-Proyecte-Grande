@@ -13,6 +13,13 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
 
 a {
   color: #0E523D;
@@ -114,4 +121,82 @@ body {
   font-size: medium;
   cursor: pointer;
   font-weight: 500;
+}
+
+.customer-profile {
+  display: block;
+  background-color: #28896a6d;
+  border: solid 4px;
+  border-radius: 10px;
+  width: 300px;
+  height: 350px;
+}
+
+.customer-profile>label {
+  font-size: medium;
+  font-weight: bold;
+  background-color: #D0DFDC;
+  width: 200px;
+  display: inline-block;
+}
+
+.customer-profile>p {
+  font-size: medium;
+  font-weight: bold;
+  background-color: whitesmoke;
+  display: inline-block;
+  width: 200px;
+  text-align: center;
+  border: solid 2px;
+  border-radius: 10px;
+  border-color: #0E523D;
+}
+
+.company-profile-container {
+  display: inline-block;
+  background-color: #28896a6d;
+  border: solid 4px;
+  border-radius: 10px;
+  width: 300px;
+  height: 550px;
+}
+
+.company-profile>label {
+  font-size: medium;
+  font-weight: bold;
+  background-color: #D0DFDC;
+  width: 200px;
+  display: inline-block;
+}
+
+.company-profile>p {
+  font-size: medium;
+  font-weight: bold;
+  background-color: whitesmoke;
+  display: inline-block;
+  width: 200px;
+  text-align: center;
+  border: solid 2px;
+  border-radius: 10px;
+  border-color: #0E523D;
+}
+
+.company-details>label {
+  font-size: medium;
+  font-weight: bold;
+  background-color: #D0DFDC;
+  width: 200px;
+  display: inline-block;
+}
+
+.company-details>p {
+  font-size: medium;
+  font-weight: bold;
+  background-color: whitesmoke;
+  display: inline-block;
+  width: 200px;
+  text-align: center;
+  border: solid 2px;
+  border-radius: 10px;
+  border-color: #0E523D;
 }
