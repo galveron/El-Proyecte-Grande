@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react'
+import Products from '../Components/Products';
 
 function MarketPlace() {
 
-    const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [products, setProducts] = useState([]);
+
 
     async function FetchProducts() {
         const response = await fetch("http://localhost:5036/Product/GetAllProducts");
@@ -18,20 +20,7 @@ function MarketPlace() {
 
     return (<>
         {loading ? <h1>Loading...</h1> :
-            <div className='productcard-container'>
-                {products.map(product => {
-                    return (
-                        <div className='productCard' key={product.id}>
-                            <div className='card-overlay'></div>
-                            <p>{product.id}</p>
-                            <p>Seller: {product.seller.name}</p>
-                            <p>Price: {product.price}$</p>
-                            <p>Description: {product.details}</p>
-                            <p>In stock: {product.quantity}</p>
-                        </div>
-                    )
-                })}
-            </div>
+            <Products products={products} />
         }</>
     )
 
