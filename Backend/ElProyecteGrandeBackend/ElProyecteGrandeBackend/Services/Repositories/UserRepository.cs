@@ -156,4 +156,16 @@ public class UserRepository : IUserRepository
         dbContext.Update(userToAddToCart);
         dbContext.SaveChanges();
     }
+
+    public void EmptyCart(string userId)
+    {
+        using var dbContext = new MarketPlaceContext();
+        var userForCartEmptying = dbContext.Users
+            .Include(user => user.CartItems)
+            .Single(user => user.Id == userId);
+        
+        userForCartEmptying.CartItems.Clear();
+        
+        dbContext.SaveChanges();
+    }
 }

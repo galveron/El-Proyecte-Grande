@@ -198,4 +198,20 @@ public class UserController : ControllerBase
             return StatusCode(500);
         }
     }
+    
+    [HttpPatch("EmptyCart")]
+    public async Task<ActionResult> EmptyCart(string userId)
+    {
+        try
+        {
+            _userRepository.EmptyCart(userId);
+            
+            return Ok("Done.");
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return StatusCode(500);
+        }
+    }
 }

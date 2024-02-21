@@ -11,4 +11,5 @@ public interface IUserRepository
     void AddFavourite(string userId, int productId);
     public void DeleteFavourite(string userId, int productId);
     void AddToCart(string userId, int productId, int quantity);
+    void EmptyCart(string userId);
 }
