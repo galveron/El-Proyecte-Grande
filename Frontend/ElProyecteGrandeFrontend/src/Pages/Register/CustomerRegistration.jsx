@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { notification } from 'antd';
 
 notification.config({
-  duration: 3,
+  duration: 2,
   closeIcon: null
 })
 
