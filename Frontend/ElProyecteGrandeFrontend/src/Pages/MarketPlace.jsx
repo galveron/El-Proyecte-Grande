@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import Products from '../Components/Products';
+import Products from '../Components/Products/Products';
 
 function MarketPlace() {
 
