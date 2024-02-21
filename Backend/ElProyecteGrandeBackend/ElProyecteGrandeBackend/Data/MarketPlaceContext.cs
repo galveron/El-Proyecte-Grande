@@ -39,6 +39,10 @@ Password={Environment.GetEnvironmentVariable("PASSWORD")};Encrypt={Environment.G
             .HasOne(e => e.Product)
             .WithMany();
         
+        builder.Entity<OrderItem>()
+            .HasOne(e => e.Product)
+            .WithMany();
+        
         builder.Entity<User>()
             .HasMany(e => e.CompanyProducts)
             .WithOne(e => e.Seller)
@@ -49,9 +53,5 @@ Password={Environment.GetEnvironmentVariable("PASSWORD")};Encrypt={Environment.G
             .HasMany(u => u.Orders)
             .WithOne(o => o.User)
             .OnDelete(DeleteBehavior.NoAction);
-        
-        builder.Entity<Order>()
-            .HasMany(o => o.Products)
-            .WithMany();
     }
 }

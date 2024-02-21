@@ -68,20 +68,33 @@ public class OrderController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult> AddProductToOrder(int orderId,int productId)
+    public async Task<ActionResult> AddOrRemoveProductFromOrder(int orderId, int productId, int quantity)
     {
         try
         {
-            var order = _orderRepository.GetOrder(orderId);
-            var product = _productRepository.GetProduct(productId);
-            order.Products.Add(product);
-            order.PriceToPay += product.Price;
-            _orderRepository.UpdateOrder(order);
+            _orderRepository.AddOrRemoveOrderItems(orderId, productId, quantity);
+            
             return Ok("Product added to the order");
         }
         catch (Exception e)
-        { 
+        {
             return Problem("Product failed to add");
+        }
+    }
+    
+    [HttpPatch]
+    public async Task<ActionResult> EmptyOrderItems(int orderId)
+    {
+        try
+        {
+            _orderRepository.EmptyOrderItems(orderId);
+            
+            return Ok("Done.");
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return StatusCode(500);
         }
     }
 
