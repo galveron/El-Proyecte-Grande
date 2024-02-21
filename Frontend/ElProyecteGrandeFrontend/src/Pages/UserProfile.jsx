@@ -28,9 +28,7 @@ function UserProfile() {
     return (
         <div className="user-profile-container">
             {user.company ? (
-                <div className="company-profile">
-                    <CompanyProfile user={user} />
-                </div>
+                <CompanyProfile user={user} />
             ) : (
                 <div className="customer-profile">
                     <CustomerProfile user={user} />
