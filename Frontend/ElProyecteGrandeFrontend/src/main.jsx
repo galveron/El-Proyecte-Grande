@@ -6,12 +6,12 @@ import './index.css';
 import Layout from './Pages/Layout/Layout';
 import ErrorPage from './Pages/ErrorPage';
 import Home from './Pages/Home';
-import App from './App';
 import MarketPlace from './Pages/MarketPlace';
 import CustomerRegistration from './Pages/Register/CustomerRegistration';
 import CompanyRegistration from './Pages/Register/CompanyRegistration';
 import RegisterAs from './Pages/Register/Register';
 import Login from './Pages/Login';
+import UserProfile from './Pages/UserProfile';
 
 const router = createBrowserRouter([
   {
@@ -22,10 +22,6 @@ const router = createBrowserRouter([
       {
         path: '/',
         element: <Home />
-      },
-      {
-        path: '/app',
-        element: <App />
       },
       {
         path: '/marketplace',
@@ -46,6 +42,10 @@ const router = createBrowserRouter([
       {
         path: '/register-company',
         element: <CompanyRegistration />
+      },
+      {
+        path: '/profile',
+        element: <UserProfile />
       }
     ]
   }
