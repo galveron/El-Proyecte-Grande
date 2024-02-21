@@ -198,29 +198,4 @@ public class UserController : ControllerBase
             return StatusCode(500);
         }
     }
-    
-    //ONLY FOR TEST
-    [HttpPost("AddProduct")]
-    public async Task<ActionResult> AddProduct()
-    {
-        try
-        {
-            _productRepository.AddProduct(
-                new Product
-                {
-                    Details = "Hát persze, hogy minőségi",
-                    Price = 999,
-                    Quantity = 666,
-                    Seller = _userRepository.GetUser("a652f1b5-9ea5-4e89-9eaa-b411f3ddfc6b")
-                }
-                );
-            
-            return Ok("Done.");
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-            return StatusCode(500);
-        }
-    }
 }
