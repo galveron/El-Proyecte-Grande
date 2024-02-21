@@ -12,6 +12,7 @@ import CompanyRegistration from './Pages/Register/CompanyRegistration';
 import RegisterAs from './Pages/Register/Register';
 import Login from './Pages/Login';
 import UserProfile from './Pages/UserProfile';
+import TestPage from './Pages/TestPage';
 
 const router = createBrowserRouter([
   {
@@ -42,10 +43,6 @@ const router = createBrowserRouter([
       {
         path: '/register-company',
         element: <CompanyRegistration />
-      },
-      {
-        path: '/profile',
-        element: <UserProfile />
       }
     ]
   }
