@@ -4,8 +4,8 @@ import Cookies from 'js-cookie';
 import { notification } from 'antd';
 
 notification.config({
-  duration: 2,
-  closeIcon: null
+    duration: 2,
+    closeIcon: null
 })
 
 function Login() {
@@ -27,11 +27,14 @@ function Login() {
             }
             const data = await res.json();
             const token = JSON.stringify(data.token);
+            const id = JSON.stringify(data.userId);
             Cookies.set('token', token, { expires: 7, secure: true });
+            Cookies.set('user_id', id, { expires: 7, secure: true });
             navigate('/');
-            notification.success({ message: 'Successful login. Welcome!' })
+            notification.success({ message: 'Successful login. Welcome!' });
         }
         catch (error) {
+            throw error;
         }
     }
 
