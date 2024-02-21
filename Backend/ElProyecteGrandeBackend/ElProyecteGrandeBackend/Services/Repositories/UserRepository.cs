@@ -68,8 +68,34 @@ public class UserRepository : IUserRepository
             throw new Exception("Product was not found for adding favourite");
         }
         
+        //should we test whether the product is already a favourite or would be wasteful since it works anyway??
+        
         userToAddFavourite.Favourites.Add(productToAddFavourite);
         dbContext.Update(userToAddFavourite);
+        dbContext.SaveChanges();
+    }
+    
+    public void DeleteFavourite(string userId, int productId)
+    {
+        using var dbContext = new MarketPlaceContext();
+        var productToRemoveFromFavourite = dbContext.Products.Find(productId);
+        var userToRemoveFavouriteFrom = dbContext.Users.Include(user => user.Favourites)
+            .SingleOrDefault(user => user.Id == userId);
+        
+        if (userToRemoveFavouriteFrom == null)
+        {
+            throw new Exception("User was not found for removing favourite.");
+        }
+
+        if (productToRemoveFromFavourite == null)
+        {
+            throw new Exception("Product was not found for removing favourite");
+        }
+        
+        //should we test whether the product is already a favourite or would be wasteful since it works anyway??
+        
+        userToRemoveFavouriteFrom.Favourites.Remove(productToRemoveFromFavourite);
+        dbContext.Update(userToRemoveFavouriteFrom);
         dbContext.SaveChanges();
     }
     
