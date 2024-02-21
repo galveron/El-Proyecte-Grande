@@ -27,10 +27,10 @@ function Login() {
             }
             const data = await res.json();
             const token = JSON.stringify(data.token);
-            const id = JSON.stringify(data.id);
+            const id = JSON.stringify(data.userId);
             Cookies.set('token', token, { expires: 7, secure: true });
             Cookies.set('user_id', id, { expires: 7, secure: true });
-            navigate('/customer-profile');
+            navigate('/');
             notification.success({ message: 'Successful login. Welcome!' });
         }
         catch (error) {
