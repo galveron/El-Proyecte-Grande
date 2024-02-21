@@ -80,8 +80,8 @@ public class AuthController : ControllerBase
         }
         
         Response.Cookies.Append("User", result.Token, new CookieOptions() { HttpOnly = true, SameSite = SameSiteMode.Strict });
-        Response.Cookies.Append("UserEmail", request.Email, new CookieOptions() { HttpOnly = true, SameSite = SameSiteMode.Strict });
+        Response.Cookies.Append("UserId", result.UserId, new CookieOptions() { HttpOnly = true, SameSite = SameSiteMode.Strict });
 
-        return Ok(new AuthResponse(result.Email, result.UserName, result.Token));
+        return Ok(new AuthResponse(result.Email, result.UserName, result.UserId,result.Token));
     }
 }

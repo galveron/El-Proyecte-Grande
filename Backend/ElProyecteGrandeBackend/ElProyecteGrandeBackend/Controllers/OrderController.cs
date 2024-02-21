@@ -73,7 +73,9 @@ public class OrderController : ControllerBase
         try
         {
             var order = _orderRepository.GetOrder(orderId);
-            order.Products.Add(_productRepository.GetProduct(productId));
+            var product = _productRepository.GetProduct(productId);
+            order.Products.Add(product);
+            order.PriceToPay += product.Price;
             _orderRepository.UpdateOrder(order);
             return Ok("Product added to the order");
         }
