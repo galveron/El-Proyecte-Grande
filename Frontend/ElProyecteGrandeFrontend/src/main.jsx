@@ -12,6 +12,7 @@ import CustomerRegistration from './Pages/Register/CustomerRegistration';
 import CompanyRegistration from './Pages/Register/CompanyRegistration';
 import RegisterAs from './Pages/Register/Register';
 import Login from './Pages/Login';
+import TestPage from './Pages/TestPage';
 
 const router = createBrowserRouter([
   {
@@ -46,6 +47,10 @@ const router = createBrowserRouter([
       {
         path: '/register-company',
         element: <CompanyRegistration />
+      },
+      {
+        path: '/test-page',
+        element: <TestPage/>
       }
     ]
   }
