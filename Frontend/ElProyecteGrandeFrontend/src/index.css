@@ -210,10 +210,15 @@ body {
 
 .register,
 .register-cust,
-.register-comp {
+.register-comp,
+.imageuploader {
   min-height: 70vh;
   display: inline-block;
   align-content: center;
+}
+
+.upload-container {
+  margin-top: 20vh;
 }
 
 .marketplace {

@@ -13,6 +13,7 @@ import RegisterAs from './Pages/Register/Register';
 import Login from './Pages/Login';
 import TestPage from './Pages/TestPage';
 import UserProfile from './Pages/UserProfile';
+import ImageUploader from './Pages/ImageUploader';
 
 const router = createBrowserRouter([
   {
@@ -50,6 +51,10 @@ const router = createBrowserRouter([
       {
         path: '/test-page',
         element: <TestPage />
+      },
+      {
+        path: '/upload-image',
+        element: <ImageUploader />
       }
     ]
   }
