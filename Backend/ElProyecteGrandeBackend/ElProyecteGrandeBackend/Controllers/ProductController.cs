@@ -56,14 +56,14 @@ public class ProductController : ControllerBase
     }
     
     [HttpPost("AddProduct")]
-    public async Task<ActionResult> AddProduct(string userId, decimal price, string details, int quantity)
+    public async Task<ActionResult> AddProduct(string userId, string name, decimal price, string details, int quantity)
     {//seller, price, details, quantity
         try
         {
             var user = await _userManager.Users
                 .Include(user1 => user1.CompanyProducts)
                 .SingleAsync(user1 => user1.Id == userId);
-            var product = new Product{Seller = user, Price = price, Details = details, Quantity = quantity};
+            var product = new Product{Name = name, Seller = user, Price = price, Details = details, Quantity = quantity};
             _productRepository.AddProduct(product);
             
             return Ok(product);
