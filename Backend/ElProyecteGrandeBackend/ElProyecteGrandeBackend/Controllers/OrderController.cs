@@ -1,7 +1,9 @@
 using ElProyecteGrandeBackend.Data;
 using ElProyecteGrandeBackend.Model;
 using ElProyecteGrandeBackend.Services.Repositories;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using WeatherApi.Services;
 
 namespace ElProyecteGrandeBackend.Controllers;
@@ -13,12 +15,18 @@ public class OrderController : ControllerBase
     private readonly IOrderRepository _orderRepository;
     private readonly IProductRepository _productRepository;
     private readonly IUserRepository _userRepository;
+    private readonly UserManager<User> _userManager;
 
-    public OrderController(IUserRepository userRepository, IOrderRepository orderRepository, IProductRepository productRepository)
+    public OrderController(
+        IUserRepository userRepository, 
+        IOrderRepository orderRepository, 
+        IProductRepository productRepository,
+        UserManager<User> userManager)
     {
         _orderRepository = orderRepository;
         _productRepository = productRepository;
         _userRepository = userRepository;
+        _userManager = userManager;
     }
 
     [HttpGet]
@@ -36,11 +44,15 @@ public class OrderController : ControllerBase
     }
 
     [HttpGet]
-    public ActionResult<List<Order>> GetUserOrders(string userId)
+    public async Task<ActionResult<List<Order>>> GetUserOrders(string userId)
     {
         try
         {
-            var orders = _orderRepository.GetUserOrders(userId);
+            var user = await _userManager.Users
+                .Include(user => user.Orders)
+                .SingleOrDefaultAsync(user => user.Id == userId);
+            var orders = user.Orders;
+            
             return Ok(orders);
         }
         catch (Exception e)
@@ -54,9 +66,20 @@ public class OrderController : ControllerBase
     {
         try
         {
-            var user = _userRepository.GetUser(userId);
+            //var user = _userRepository.GetUser(userId);
+            var user = await _userManager.Users
+                .Include(user1 => user1.Orders)
+                .SingleAsync(user1 => user1.Id == userId);;
             var orderToAdd = new Order {User = user, Date = DateTime.Now, PriceToPay = 0};
-            user.Orders.Add(orderToAdd);
+            /*user.Orders.Add(orderToAdd);
+            
+            var identityResult = await _userManager.UpdateAsync(user);
+            
+            if (!identityResult.Succeeded)
+            {
+                return BadRequest(identityResult.Errors);
+            }*/
+            
             _orderRepository.AddOrder(orderToAdd);
             return Ok("Order added");
         }

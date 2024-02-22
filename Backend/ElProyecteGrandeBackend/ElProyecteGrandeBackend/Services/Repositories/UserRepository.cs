@@ -33,8 +33,9 @@ public class UserRepository : IUserRepository
         dbContext.SaveChanges();
     }
 
-    public void UpdateUser(string id, string name, string email, string phoneNumber)
+    public void UpdateUser(User user)
     {
+        /*
         using var dbContext = new MarketPlaceContext();
         var userToUpdate = dbContext.Users.Single(user => user.Id == id);
         userToUpdate.UserName = name;
@@ -42,6 +43,9 @@ public class UserRepository : IUserRepository
         userToUpdate.Email = email;
         userToUpdate.NormalizedEmail = email.ToUpper();
         userToUpdate.PhoneNumber = phoneNumber;
+        */
+        using var dbContext = new MarketPlaceContext();
+        dbContext.Update(user);
         dbContext.SaveChanges();
         
         // EZT MEGKÉRDEZNI!!!

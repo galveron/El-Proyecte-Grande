@@ -31,9 +31,21 @@ public class OrderRepository : IOrderRepository
     public void AddOrder(Order order)
     {
         using var dbContext = new MarketPlaceContext();
-        dbContext.Update(order);
-        dbContext.Orders.Add(order);
-        dbContext.Update(order.User);
+        
+        var userFromDb = dbContext.Users.FirstOrDefault(user1 => user1.Id == order.User.Id);
+        
+        if (userFromDb == null)
+        {
+            throw new Exception("User not found for adding product.");
+        }
+        
+        var orderForDb = new Order {User = userFromDb, Date = DateTime.Now, PriceToPay = 0};;
+        userFromDb.Orders.Add(orderForDb);
+        dbContext.Update(userFromDb);
+        dbContext.Orders.Add(orderForDb);
+        //dbContext.Update(order);
+        //dbContext.Orders.Add(order);
+        //dbContext.Update(order.User);
         dbContext.SaveChanges();
     }
 
