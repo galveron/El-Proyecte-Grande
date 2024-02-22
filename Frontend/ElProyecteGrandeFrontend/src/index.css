@@ -239,4 +239,12 @@ a:hover {
   min-height: 70vh;
   display: inline-block;
   align-content: center;
+  justify-content: center;
+}
+
+.user-profile-container {
+  min-height: 70vh;
+  display: inline-block;
+  align-content: center;
+  justify-content: center;
 }

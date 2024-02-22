@@ -9,7 +9,7 @@ function Products(props) {
             <article className="products">
                 <div className="category">
                     {products.length > 0 ?
-                        products.map((product) => <ProductCard product={product} />)
+                        products.map((product) => <ProductCard product={product} key={product.id} />)
                         : <h2>Loading...</h2>}
                 </div>
             </article>
