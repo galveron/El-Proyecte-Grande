@@ -26,8 +26,9 @@ function TestPage() {
     useEffect(() => {
         FetchProducts()
             .then(products => setProducts(products), setLoading(false));
-        if(Cookies.get("userId")){
-            setUserId(Cookies.get("userId").replace(/^"|"$/g, ''))    
+        console.log(Cookies.get("user_id"))
+        if(Cookies.get("user_id")){
+            setUserId(Cookies.get("user_id").replace(/^"|"$/g, ''))    
             setLoggedIn(true);
         }
     }, [])
@@ -40,7 +41,7 @@ function TestPage() {
     }, [loggedIn])
 
     async function AddToCart(productId){
-        await fetch(`http://localhost:5036/User/AddToCart?userId=${userId}&productId=${productId}&quantity=1`, {
+        await fetch(`http://localhost:5036/User/AddOrRemoveCartItems?userId=${userId}&productId=${productId}&quantity=1`, {
             method: "PATCH",
             headers: { 'Content-Type': 'application/json' }
         })

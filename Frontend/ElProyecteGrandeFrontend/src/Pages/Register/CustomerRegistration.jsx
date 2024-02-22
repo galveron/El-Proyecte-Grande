@@ -3,8 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { notification } from 'antd';
 
 notification.config({
-  duration: 2,
-  closeIcon: null
+    duration: 2,
+    closeIcon: null
 })
 
 function CustomerRegistration() {
@@ -33,16 +33,18 @@ function CustomerRegistration() {
     }
 
     return (
-        <div className="cust-register-container">
-            <form className='cust-register' onSubmit={handleSubmit}>
-                <label>E-mail</label>
-                <input type='email' onChange={e => setUserEmail(e.target.value)} value={userEmail} required />
-                <label>Username</label>
-                <input type='text' onChange={e => setUserName(e.target.value)} value={userName} required />
-                <label>Password</label>
-                <input type='password' onChange={e => setUserPassword(e.target.value)} value={userPassword} required />
-                <button type='submit'>Register</button>
-            </form>
+        <div className="register-cust">
+            <div className="cust-register-container">
+                <form className='cust-register' onSubmit={handleSubmit}>
+                    <label>E-mail</label>
+                    <input type='email' onChange={e => setUserEmail(e.target.value)} value={userEmail} required />
+                    <label>Username</label>
+                    <input type='text' onChange={e => setUserName(e.target.value)} value={userName} required />
+                    <label>Password</label>
+                    <input type='password' onChange={e => setUserPassword(e.target.value)} value={userPassword} required />
+                    <button type='submit'>Register</button>
+                </form>
+            </div>
         </div>
     );
 }

@@ -40,21 +40,23 @@ function CompanyRegistration() {
     }
 
     return (
-        <div className="comp-register-container">
-            <h3>Register as a company to sell your products</h3>
-            <form className='comp-register' onSubmit={handleSubmit}>
-                <label>E-mail</label>
-                <input type='email' onChange={e => setUserEmail(e.target.value)} value={userEmail} required />
-                <label>Username</label>
-                <input type='text' onChange={e => setUserName(e.target.value)} value={userName} required />
-                <label>Password</label>
-                <input type='password' onChange={e => setUserPassword(e.target.value)} value={userPassword} required />
-                <label>Company's name</label>
-                <input type='text' onChange={e => setCompanyName(e.target.value)} value={companyName} required />
-                <label>Identifier</label>
-                <input type='text' onChange={e => setIdentifier(e.target.value)} value={identifier} required />
-                <button type='submit'>Register</button>
-            </form>
+        <div className="register-comp">
+            <div className="comp-register-container">
+                <h3>Register as a company to sell your products</h3>
+                <form className='comp-register' onSubmit={handleSubmit}>
+                    <label>E-mail</label>
+                    <input type='email' onChange={e => setUserEmail(e.target.value)} value={userEmail} required />
+                    <label>Username</label>
+                    <input type='text' onChange={e => setUserName(e.target.value)} value={userName} required />
+                    <label>Password</label>
+                    <input type='password' onChange={e => setUserPassword(e.target.value)} value={userPassword} required />
+                    <label>Company's name</label>
+                    <input type='text' onChange={e => setCompanyName(e.target.value)} value={companyName} required />
+                    <label>Identifier</label>
+                    <input type='text' onChange={e => setIdentifier(e.target.value)} value={identifier} required />
+                    <button type='submit'>Register</button>
+                </form>
+            </div>
         </div>
     );
 }
