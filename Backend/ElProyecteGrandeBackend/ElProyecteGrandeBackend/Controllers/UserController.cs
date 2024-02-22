@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using ElProyecteGrandeBackend.Model;
 using ElProyecteGrandeBackend.Services.Repositories;
 using Microsoft.AspNetCore.Authorization;
@@ -42,6 +43,33 @@ public class UserController : ControllerBase
                 .Include(user1 => user1.CompanyProducts)
                 .Include(user1 => user1.Orders)
                 .SingleOrDefaultAsync(user1 => user1.Id == id);
+            
+            if (user == null)
+            {
+                return NotFound("User was not found.");
+            }
+            
+            return Ok(user);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return StatusCode(500, e.Message);
+        }
+    }
+    
+    [HttpGet("GetUserFromClaim")]
+    public async Task<ActionResult<User>> GetUser()
+    {
+        try
+        {
+            var userId = GetIdFromUserClaims();
+            var user = await _userManager.Users
+                .Include(user1 => user1.Favourites)
+                .Include(user1 => user1.CartItems)
+                .Include(user1 => user1.CompanyProducts)
+                .Include(user1 => user1.Orders)
+                .SingleOrDefaultAsync(user1 => user1.Id == userId);
             
             if (user == null)
             {
@@ -375,6 +403,33 @@ public class UserController : ControllerBase
         {
             Console.WriteLine(e);
             return StatusCode(500, e.Message);
+        }
+    }
+
+    private string GetIdFromUserClaims()
+    {
+        try
+        {
+            var userId = User.Claims
+                .SkipWhile(claim => claim.Type != ClaimTypes.NameIdentifier)
+                .Skip(1)
+                .First(claim => claim.Type == ClaimTypes.NameIdentifier).Value;
+
+            return userId;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw new Exception("Couldn't get user id from User.Claims");
+        }
+    }
+    
+    //only for testing
+    private void PrintClaims()
+    {
+        foreach (var userClaim in User.Claims)
+        {
+            Console.WriteLine($"claim type: {userClaim.Type} claim value: {userClaim.Value}");
         }
     }
 }
