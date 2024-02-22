@@ -15,7 +15,7 @@ function TestPage() {
         return await response.json();
     }
 
-    async function FetchUserData(){
+    async function FetchUserData() {
         const response = await fetch(`http://localhost:5036/User/GetUser?id=${userId}`);
         const customer = await response.json();
         console.log(customer);
@@ -27,8 +27,8 @@ function TestPage() {
         FetchProducts()
             .then(products => setProducts(products), setLoading(false));
         console.log(Cookies.get("user_id"))
-        if(Cookies.get("user_id")){
-            setUserId(Cookies.get("user_id").replace(/^"|"$/g, ''))    
+        if (Cookies.get("user_id")) {
+            setUserId(Cookies.get("user_id").replace(/^"|"$/g, ''))
             setLoggedIn(true);
         }
     }, [])
@@ -40,10 +40,13 @@ function TestPage() {
         }
     }, [loggedIn])
 
-    async function AddToCart(productId){
+    async function AddToCart(productId) {
         await fetch(`http://localhost:5036/User/AddOrRemoveCartItems?userId=${userId}&productId=${productId}&quantity=1`, {
             method: "PATCH",
-            headers: { 'Content-Type': 'application/json' }
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${Cookies.get('token').replace(/^"|"$/g, '')}`
+            }
         })
         FetchUserData();
     }
@@ -60,25 +63,24 @@ function TestPage() {
                             <p>Price: {product.price}$</p>
                             <p>Description: {product.details}</p>
                             <p>In stock: {product.quantity}</p>
-                            {loggedIn? <button onClick={() => AddToCart(product.id)}>Add to Cart</button> : <></>}
+                            {loggedIn ? <button onClick={() => AddToCart(product.id)}>Add to Cart</button> : <></>}
                         </div>
                     )
                 })}
-            <div>
-                <h2>Cart: </h2>
-                {user && user.cartItems ? user.cartItems.map(item => {
-                    return (
-                        <div className='productCard' key={item.product.id}>
-                            <div className='card-overlay'></div>
-                            <p>{item.product.id}</p>
-                            <p>Price: {item.product.price}$</p>
-                            <p>Description: {item.product.details}</p>
-                            <p>Quantity: {item.quantity}</p>
-                            </div>)})
-                : <></>}
-            </div>  
+                <div>
+                    <h2>Cart: </h2>
+                    {user && user.cartItems ? user.cartItems.map(item => {
+                        return (
+                            <div className='productCard' key={item.productId}>
+                                <div className='card-overlay'></div>
+                                <p>{item.productId}</p>
+                                <p>Quantity: {item.quantity}</p>
+                            </div>)
+                    })
+                        : <></>}
+                </div>
             </div>
-            
+
         }</>
     )
 
