@@ -11,8 +11,8 @@ import CustomerRegistration from './Pages/Register/CustomerRegistration';
 import CompanyRegistration from './Pages/Register/CompanyRegistration';
 import RegisterAs from './Pages/Register/Register';
 import Login from './Pages/Login';
-import UserProfile from './Pages/UserProfile';
 import TestPage from './Pages/TestPage';
+import UserProfile from './Pages/UserProfile';
 
 const router = createBrowserRouter([
   {
@@ -43,6 +43,13 @@ const router = createBrowserRouter([
       {
         path: '/register-company',
         element: <CompanyRegistration />
+      },{
+        path: '/profile',
+        element: <UserProfile />
+      },
+      {
+        path: '/test-page',
+        element: <TestPage/>
       }
     ]
   }
@@ -53,3 +60,4 @@ ReactDOM.createRoot(document.getElementById('root')).render(
     <RouterProvider router={router} />
   </React.StrictMode>,
 )
+
