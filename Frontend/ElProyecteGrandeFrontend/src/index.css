@@ -15,11 +15,17 @@
 
 #root {
   max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
   text-align: center;
+  display: inline-block;
+  height: 90vh;
+  margin-top: 10vh;
 }
 
+#root img+.welcome {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
 
 a {
   color: #0E523D;
@@ -93,6 +99,7 @@ body {
   cursor: pointer;
   border-radius: 10px;
 }
+
 
 .register-button-container>button>a {
   color: #D0DFDC;
@@ -199,4 +206,22 @@ body {
   border: solid 2px;
   border-radius: 10px;
   border-color: #0E523D;
+}
+
+.register {
+  min-height: 70vh;
+}
+
+.marketplace {
+  min-height: 70vh;
+}
+
+.login {
+  min-height: 70vh;
+}
+
+.profile {
+  min-height: 70vh;
+  display: inline-block;
+  align-content: center;
 }

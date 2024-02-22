@@ -5,7 +5,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import './index.css';
 import Layout from './Pages/Layout/Layout';
 import ErrorPage from './Pages/ErrorPage';
-import Home from './Pages/Home';
+import Home from './Pages/Home/Home';
 import MarketPlace from './Pages/MarketPlace';
 import CustomerRegistration from './Pages/Register/CustomerRegistration';
 import CompanyRegistration from './Pages/Register/CompanyRegistration';
@@ -43,13 +43,13 @@ const router = createBrowserRouter([
       {
         path: '/register-company',
         element: <CompanyRegistration />
-      },{
+      }, {
         path: '/profile',
         element: <UserProfile />
       },
       {
         path: '/test-page',
-        element: <TestPage/>
+        element: <TestPage />
       }
     ]
   }

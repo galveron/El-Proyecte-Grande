@@ -20,10 +20,12 @@ function Layout() {
         notification.success({ message: 'Logged out.' })
     }
 
+
+
     return (
         <>
             <header>
-                <div className="layout">
+                <div className="header">
                     <nav>
                         <ul>
                             <li className="home-layout">
@@ -55,6 +57,21 @@ function Layout() {
                 </div>
             </header >
             <Outlet />
+            <footer>
+                <div className="footer">
+                    <nav className="row">
+                        <ul className="column">
+                            <li>Phone: +56/2345677</li>
+                            <li>Email: jungle@jungle.com</li>
+                            <li>Address: 2345, Jungle str. 345.</li>
+                        </ul>
+                        <ul className="column">
+                            <li><Link to="/faq">FAQ</Link></li>
+                            <li><Link to="/termsandpolicy">Terms & Policy</Link></li>
+                        </ul>
+                    </nav>
+                </div>
+            </footer>
         </>
     )
 }
