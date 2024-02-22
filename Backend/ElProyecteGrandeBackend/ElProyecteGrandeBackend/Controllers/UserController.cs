@@ -151,7 +151,7 @@ public class UserController : ControllerBase
                 return BadRequest(identityResult.Errors);
             }
             
-            return Ok("Successfully added user.");
+            return Ok("Successfully updated user.");
         }
         catch (Exception e)
         {
