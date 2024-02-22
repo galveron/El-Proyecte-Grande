@@ -26,14 +26,16 @@ function UserProfile() {
     if (loading) return <h2>Loading...</h2>;
 
     return (
-        <div className="user-profile-container">
-            {user.company ? (
-                <CompanyProfile user={user} />
-            ) : (
-                <div className="customer-profile">
-                    <CustomerProfile user={user} />
-                </div>
-            )}
+        <div className="profile">
+            <div className="user-profile-container">
+                {user.company ? (
+                    <CompanyProfile user={user} />
+                ) : (
+                    <div className="customer-profile">
+                        <CustomerProfile user={user} />
+                    </div>
+                )}
+            </div>
         </div>
     )
 }

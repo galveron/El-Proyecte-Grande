@@ -16,9 +16,12 @@ function MarketPlace() {
     }, [])
 
     return (<>
-        {loading ? <h1>Loading...</h1> :
-            <Products products={products} />
-        }</>
+        <div className='marketplace'>
+            {loading ? <h1>Loading...</h1> :
+                <Products products={products} />
+            }
+        </div>
+    </>
     )
 }
 

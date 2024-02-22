@@ -39,14 +39,16 @@ function Login() {
     }
 
     return (
-        <div className="login-container">
-            <form className='login' onSubmit={e => handleLogin(e)}>
-                <label>E-mail</label>
-                <input type='text' onChange={e => setEmail(e.target.value)} value={email} required />
-                <label>Password</label>
-                <input type='password' onChange={e => setPassword(e.target.value)} value={password} required />
-                <button type='submit'>Login</button>
-            </form>
+        <div className="login">
+            <div className="login-container">
+                <form className='login' onSubmit={e => handleLogin(e)}>
+                    <label>E-mail</label>
+                    <input type='text' onChange={e => setEmail(e.target.value)} value={email} required />
+                    <label>Password</label>
+                    <input type='password' onChange={e => setPassword(e.target.value)} value={password} required />
+                    <button type='submit'>Login</button>
+                </form>
+            </div>
         </div>
     );
 }
