@@ -1,11 +1,15 @@
 .home-page {
     position: relative;
     display: flex;
-    align-items: center;
+    justify-content: center;
+    bottom: 0;
 }
 
 img {
-    width: 99vw;
+    display: flex;
+    position: relative;
+    width: 90vw;
+    bottom: 0;
 }
 
 .welcome {

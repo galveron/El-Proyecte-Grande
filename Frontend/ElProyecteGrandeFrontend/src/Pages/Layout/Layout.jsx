@@ -24,7 +24,7 @@ function Layout() {
 
     return (
         <>
-            <header>
+            <header className="header-container">
                 <div className="header">
                     <nav>
                         <ul>
