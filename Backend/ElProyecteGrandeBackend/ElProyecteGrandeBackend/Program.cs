@@ -139,14 +139,14 @@ void AddAuthentication()
             };
             options.Events = new JwtBearerEvents();
             options.Events.OnMessageReceived = context =>
-            {
-                if (context.Request.Cookies.ContainsKey("User"))
-                {
-                    context.Token = context.Request.Cookies["User"];
-                }
-
-                return Task.CompletedTask;
-            };
+             {
+                 if (context.Request.Cookies.ContainsKey("User"))
+                 {
+                     context.Token = context.Request.Cookies["User"];
+                 }
+            
+                 return Task.CompletedTask;
+             };
         });
     builder.Services.AddScoped<IAuthService, AuthService>();
     builder.Services.AddScoped<ITokenService, TokenService>();

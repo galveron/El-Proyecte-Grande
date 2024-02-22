@@ -274,7 +274,7 @@ public class UserController : ControllerBase
         }
     }
     
-    [HttpPatch("AddOrRemoveCartItems")]
+    [HttpPatch("AddOrRemoveCartItems"), Authorize(Roles="Customer, Admin")]
     public async Task<ActionResult> AddOrRemoveCartItems(string userId, int productId, int quantity)
     {
         try
