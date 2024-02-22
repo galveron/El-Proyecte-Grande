@@ -208,8 +208,12 @@ body {
   border-color: #0E523D;
 }
 
-.register {
+.register,
+.register-cust,
+.register-comp {
   min-height: 70vh;
+  display: inline-block;
+  align-content: center;
 }
 
 .marketplace {
