@@ -216,7 +216,8 @@ a:hover {
 .register,
 .register-cust,
 .register-comp,
-.imageuploader {
+.imageuploader,
+.productcard-container {
   min-height: 70vh;
   display: inline-block;
   align-content: center;
