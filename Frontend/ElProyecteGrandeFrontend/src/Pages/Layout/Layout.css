@@ -1,3 +1,7 @@
+.header-container {
+    display: flex;
+}
+
 .header {
     margin: 0;
     left: 0;
@@ -34,12 +38,12 @@
     margin: 0;
     left: 0;
     display: flex;
+    position: relative;
     flex-direction: row;
     justify-content: center;
     align-items: center;
     background-color: #0E523D;
     height: 200px;
-    width: 100vw;
     bottom: 0;
     z-index: 1;
 }
@@ -59,4 +63,8 @@
 
 .footer a {
     color: #FFFFFF;
+}
+
+.footer a:hover {
+    color: #C58E3C;
 }
