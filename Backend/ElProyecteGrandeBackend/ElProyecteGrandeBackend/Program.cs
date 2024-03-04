@@ -7,7 +7,7 @@ using ElProyecteGrandeBackend.Services.Authentication;
 using ElProyecteGrandeBackend.Services.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.IdentityModel.Logging;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
@@ -38,7 +38,8 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddSingleton<IProductRepository, ProductRepository>();
 builder.Services.AddSingleton<IOrderRepository, OrderRepository>();
 builder.Services.AddSingleton<IUserRepository, UserRepository>();
-builder.Services.AddDbContext<MarketPlaceContext>();
+builder.Services.AddDbContext<MarketPlaceContext>((container, options) =>
+    options.UseSqlServer(Environment.GetEnvironmentVariable("CONNECTIONSTRING")));
 
 AddCors();
 AddAuthentication();

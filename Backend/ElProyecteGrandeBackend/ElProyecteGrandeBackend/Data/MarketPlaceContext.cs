@@ -20,13 +20,6 @@ public class MarketPlaceContext : IdentityDbContext<User, IdentityRole, string>
     {
     }
     
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-        optionsBuilder.UseSqlServer(
-            @$"Server={Environment.GetEnvironmentVariable("SERVER")},{Environment.GetEnvironmentVariable("PORT")};
-Database={Environment.GetEnvironmentVariable("DATABASE")};User Id={Environment.GetEnvironmentVariable("USERID")};
-Password={Environment.GetEnvironmentVariable("PASSWORD")};Encrypt={Environment.GetEnvironmentVariable("ENCRYPT")};TrustServerCertificate=true;");
-    }
     
     protected override void OnModelCreating(ModelBuilder builder)
     {
