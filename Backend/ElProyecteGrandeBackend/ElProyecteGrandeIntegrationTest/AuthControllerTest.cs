@@ -17,8 +17,9 @@ public class AuthControllerTest
         var response = await client.PostAsJsonAsync("/Auth/Register", request);
 
         response.EnsureSuccessStatusCode();
-
+        
         var authResponse = await response.Content.ReadFromJsonAsync<AuthResponse>();
-        Console.WriteLine(authResponse?.UserId);
+        
+        Assert.Equal("valaki", authResponse.UserName);
     }
 }
