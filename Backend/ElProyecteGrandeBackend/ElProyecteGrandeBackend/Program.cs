@@ -139,10 +139,10 @@ void AddAuthentication()
                 ValidateAudience = true,
                 ValidateLifetime = true,
                 ValidateIssuerSigningKey = true,
-                ValidIssuer = validIssuer,
-                ValidAudience = validAudience,
+                ValidIssuer = "apiWithAuthBackend",
+                ValidAudience = "apiWithAuthBackend",
                 IssuerSigningKey = new SymmetricSecurityKey(
-                    Encoding.UTF8.GetBytes(issuerSignInKey)
+                    Encoding.UTF8.GetBytes("SuperSecretKey123")
                 ),
             };
             options.Events = new JwtBearerEvents();
