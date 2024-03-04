@@ -63,8 +63,12 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-AddRoles();
-AddAdmin();
+using var scope = app.Services.CreateScope();
+var authenticationSeeder = scope.ServiceProvider.GetRequiredService<AuthenticationSeeder>();
+
+authenticationSeeder.AddRoles();
+
+authenticationSeeder.AddAdmin();
 
 app.Run();
 
@@ -168,61 +172,4 @@ void AddIdentity()
         })
         .AddRoles<IdentityRole>()
         .AddEntityFrameworkStores<MarketPlaceContext>();
-}
-
-void AddRoles()
-{
-    using var scope = app.Services.CreateScope(); // RoleManager is a scoped service, therefore we need a scope instance to access it
-    var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-
-    var tAdmin = CreateAdminRole(roleManager);
-    tAdmin.Wait();
-
-    var tCustomer = CreateCustomerRole(roleManager);
-    tCustomer.Wait();
-    
-    var tCompany = CreateCompanyRole(roleManager);
-    tCompany.Wait();
-}
-
-async Task CreateAdminRole(RoleManager<IdentityRole> roleManager)
-{
-    var adminRole = Environment.GetEnvironmentVariable("ADMINROLE");
-    await roleManager.CreateAsync(new IdentityRole(adminRole)); 
-}
-
-async Task CreateCustomerRole(RoleManager<IdentityRole> roleManager)
-{
-    var customerRole = Environment.GetEnvironmentVariable("CUSTOMERROLE");
-    await roleManager.CreateAsync(new IdentityRole(customerRole));
-}
-
-async Task CreateCompanyRole(RoleManager<IdentityRole> roleManager)
-{
-    var companyRole = Environment.GetEnvironmentVariable("COMPANYROLE");
-    await roleManager.CreateAsync(new IdentityRole(companyRole));
-}
-
-void AddAdmin()
-{
-    var tAdmin = CreateAdminIfNotExists();
-    tAdmin.Wait();
-}
-
-async Task CreateAdminIfNotExists()
-{
-    using var scope = app.Services.CreateScope();
-    var userManager = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
-    var adminInDb = await userManager.FindByEmailAsync("admin@admin.hu");
-    var adminPassword = Environment.GetEnvironmentVariable("ADMINPASSWORD");
-    if (adminInDb == null)
-    {
-        var admin = new User { UserName = "admin", Email = "admin@admin.hu" };
-        var adminCreated = await userManager.CreateAsync(admin, adminPassword);
-
-        if (adminCreated.Succeeded)
-        {
-            await userManager.AddToRoleAsync(admin, "Admin");
-        }
-    }
 }
