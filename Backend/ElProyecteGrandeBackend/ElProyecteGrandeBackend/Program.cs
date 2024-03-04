@@ -38,8 +38,10 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddSingleton<IProductRepository, ProductRepository>();
 builder.Services.AddSingleton<IOrderRepository, OrderRepository>();
 builder.Services.AddSingleton<IUserRepository, UserRepository>();
+builder.Services.AddScoped<AuthenticationSeeder>();
 builder.Services.AddDbContext<MarketPlaceContext>((container, options) =>
     options.UseSqlServer(Environment.GetEnvironmentVariable("CONNECTIONSTRING")));
+
 
 AddCors();
 AddAuthentication();
@@ -71,6 +73,7 @@ authenticationSeeder.AddRoles();
 authenticationSeeder.AddAdmin();
 
 app.Run();
+
 
 void ConfigureSwagger()
 {
@@ -172,4 +175,7 @@ void AddIdentity()
         })
         .AddRoles<IdentityRole>()
         .AddEntityFrameworkStores<MarketPlaceContext>();
+    
 }
+
+public partial class Program{}

@@ -20,11 +20,10 @@ public class MarketPlaceWebApplicationFactory : WebApplicationFactory<Program>
                      typeof(DbContextOptions<MarketPlaceContext>));
 
             services.Remove(dbContextDescriptor);
-
             services.AddDbContext<MarketPlaceContext>((container, options) =>
             {
                 options.UseSqlServer(
-                    "Server=localhost,1433;Database=SolarWatchTest;User Id=sa;Password=CluelessRick2002!;TrustServerCertificate=true;");
+                    "Server=localhost,1433;Database=MarketplaceTest;User Id=sa;Password=passWORD123;Encrypt=false;TrustServerCertificate=true;");
             });
 
             var serviceProvider = services.BuildServiceProvider();
