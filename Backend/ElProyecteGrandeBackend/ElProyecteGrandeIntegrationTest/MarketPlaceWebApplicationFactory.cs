@@ -15,22 +15,25 @@ public class MarketPlaceWebApplicationFactory : WebApplicationFactory<Program>
     {
         builder.ConfigureTestServices(services =>
         {
-            services.RemoveAll<DbContextOptions<MarketPlaceContext>>();
-            
-            const string connectionString = "";
-            services.AddSqlServer<MarketPlaceContext>(connectionString);
+            var dbContextDescriptor = services.SingleOrDefault(
+                d => d.ServiceType ==
+                     typeof(DbContextOptions<MarketPlaceContext>));
 
-            var dbContext = CreateDbContext(services);
-            
-            //dbContext.Database.EnsureDeleted();
+            services.Remove(dbContextDescriptor);
+
+            services.AddDbContext<MarketPlaceContext>((container, options) =>
+            {
+                options.UseSqlServer(
+                    "Server=localhost,1433;Database=SolarWatchTest;User Id=sa;Password=CluelessRick2002!;TrustServerCertificate=true;");
+            });
+
+            var serviceProvider = services.BuildServiceProvider();
+            var scope = serviceProvider.CreateScope();
+            var dbContext = scope.ServiceProvider.GetRequiredService<MarketPlaceContext>();
+            var authSeeder = scope.ServiceProvider.GetRequiredService<AuthenticationSeeder>();
+            dbContext.Database.EnsureCreated();
+            authSeeder.AddRoles();
+            authSeeder.AddAdmin();
         });
-    }
-
-    private static MarketPlaceContext CreateDbContext(IServiceCollection services)
-    {
-        var serviceProvider = services.BuildServiceProvider();
-        var scope = serviceProvider.CreateScope();
-        var dbContext = scope.ServiceProvider.GetRequiredService<MarketPlaceContext>();
-        return dbContext;
     }
 }
