@@ -1,3 +1,4 @@
+using System.Net;
 using System.Net.Http.Json;
 using ElProyecteGrandeBackend.Contracts;
 using ElProyecteGrandeBackend.Services;
@@ -8,7 +9,7 @@ namespace ElProyecteGrandeIntegrationTest;
 public class AuthControllerTest
 {
     [Fact]
-    public async Task UserRegistrationTest()
+    public async Task UserRegistrationSuccessfullyTest()
     {
         var application = new MarketPlaceWebApplicationFactory();
         var request = new RegistrationRequest("valaki@g.com", "valaki", "Valaki123456");
@@ -22,5 +23,18 @@ public class AuthControllerTest
         var authResponse = await response.Content.ReadFromJsonAsync<RegistrationResponse>();
         
         Assert.Equal("valaki", authResponse.UserName);
+    }
+
+    [Fact]
+    public async Task UserRegistrationWrongPasswordTest()
+    {
+        var application = new MarketPlaceWebApplicationFactory();
+        var request = new RegistrationRequest("valaki@g.com", "valaki", "Va");
+
+        var client = application.CreateClient();
+
+        var response = await client.PostAsJsonAsync("/Auth/Register", request);
+        
+        Assert.Equal(response.StatusCode, HttpStatusCode.BadRequest);
     }
 }
