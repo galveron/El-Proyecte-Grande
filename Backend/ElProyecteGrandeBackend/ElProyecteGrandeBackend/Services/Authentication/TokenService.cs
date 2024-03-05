@@ -10,6 +10,14 @@ namespace ElProyecteGrandeBackend.Services.Authentication;
 public class TokenService : ITokenService
 {
     private const int ExpirationMinutes = 30;
+    private readonly IConfigurationRoot _config;
+
+    public TokenService()
+    {
+        _config = new ConfigurationBuilder()
+                    .AddUserSecrets<Program>()
+                    .Build();
+    }
     
     public string CreateToken(IdentityUser user, string role)
     {
@@ -26,8 +34,8 @@ public class TokenService : ITokenService
     private JwtSecurityToken CreateJwtToken(List<Claim> claims, SigningCredentials credentials,
         DateTime expiration) =>
         new(
-            Environment.GetEnvironmentVariable("VALIDISSUER"),
-            Environment.GetEnvironmentVariable("VALIDAUDIENCE"),
+            _config["ValidIssuer"],
+            _config["ValidAudience"],
             claims,
             expires: expiration,
             signingCredentials: credentials
@@ -63,7 +71,7 @@ public class TokenService : ITokenService
     {
         return new SigningCredentials(
             new SymmetricSecurityKey(
-                Encoding.UTF8.GetBytes(Environment.GetEnvironmentVariable("ISSUERSIGNINKEY"))
+                Encoding.UTF8.GetBytes(_config["IssuerSigningKey"])
             ),
             SecurityAlgorithms.HmacSha256
         );
