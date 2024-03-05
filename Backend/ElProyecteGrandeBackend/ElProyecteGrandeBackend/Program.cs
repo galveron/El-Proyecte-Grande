@@ -12,13 +12,10 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
 var root = Directory.GetCurrentDirectory();
-var dotenv = Path.Combine(root, "connectionString.env");
-Console.WriteLine(dotenv);
-DotEnv.Load(dotenv);
 
 var config =
     new ConfigurationBuilder()
-        .AddEnvironmentVariables()
+        .AddUserSecrets<Program>()
         .Build();
 
 var builder = WebApplication.CreateBuilder(args);
@@ -40,7 +37,7 @@ builder.Services.AddSingleton<IOrderRepository, OrderRepository>();
 builder.Services.AddSingleton<IUserRepository, UserRepository>();
 builder.Services.AddScoped<AuthenticationSeeder>();
 builder.Services.AddDbContext<MarketPlaceContext>((container, options) =>
-    options.UseSqlServer(Environment.GetEnvironmentVariable("CONNECTIONSTRING")));
+    options.UseSqlServer(config["ConnectionString"]));
 
 
 AddCors();
@@ -127,10 +124,9 @@ void AddAuthentication()
         .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         .AddJwtBearer(options =>
         {
-            var jwtSettings = config.GetSection("jwtSettings");
-            var issuerSignInKey = Environment.GetEnvironmentVariable("ISSUERSIGNINKEY");
-            var validIssuer = Environment.GetEnvironmentVariable("VALIDISSUER");
-            var validAudience = Environment.GetEnvironmentVariable("VALIDAUDIENCE");
+            var issuerSignInKey = config["IssuerSigningKey"];
+            var validIssuer = config["ValidIssuer"];
+            var validAudience = config["ValidAudience"];
         
             options.TokenValidationParameters = new TokenValidationParameters()
             {
@@ -139,10 +135,10 @@ void AddAuthentication()
                 ValidateAudience = true,
                 ValidateLifetime = true,
                 ValidateIssuerSigningKey = true,
-                ValidIssuer = "apiWithAuthBackend",
-                ValidAudience = "apiWithAuthBackend",
+                ValidIssuer = validIssuer,
+                ValidAudience = validAudience,
                 IssuerSigningKey = new SymmetricSecurityKey(
-                    Encoding.UTF8.GetBytes("SuperSecretKey123")
+                    Encoding.UTF8.GetBytes(issuerSignInKey)
                 ),
             };
             options.Events = new JwtBearerEvents();

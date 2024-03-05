@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.VisualStudio.TestPlatform.TestHost;
@@ -20,10 +21,14 @@ public class MarketPlaceWebApplicationFactory : WebApplicationFactory<Program>
                      typeof(DbContextOptions<MarketPlaceContext>));
 
             services.Remove(dbContextDescriptor);
+            
+            var config = new ConfigurationBuilder()
+                .AddUserSecrets<MarketPlaceWebApplicationFactory>()
+                .Build();
+            
             services.AddDbContext<MarketPlaceContext>((container, options) =>
             {
-                options.UseSqlServer(
-                    "Server=localhost,1433;Database=MarketplaceTest;User Id=sa;Password=passWORD123;Encrypt=false;TrustServerCertificate=true;");
+                options.UseSqlServer(config["TestConnectionString"]);
             });
 
             var serviceProvider = services.BuildServiceProvider();

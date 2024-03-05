@@ -7,11 +7,15 @@ public class AuthenticationSeeder
 {
     private readonly RoleManager<IdentityRole> _roleManager;
     private readonly UserManager<User> _userManager;
-
+    private readonly IConfigurationRoot _config;
+    
     public AuthenticationSeeder(RoleManager<IdentityRole> roleManager, UserManager<User> userManager)
     {
         _roleManager = roleManager;
         _userManager = userManager;
+        _config = new ConfigurationBuilder()
+            .AddUserSecrets<AuthenticationSeeder>()
+            .Build();
     }
     
     public void AddRoles()
@@ -28,18 +32,17 @@ public class AuthenticationSeeder
 
     async Task CreateAdminRole()
     {
-        await _roleManager.CreateAsync(new IdentityRole("Admin"));
+        await _roleManager.CreateAsync(new IdentityRole(_config["AdminRole"]));
     }
 
     async Task CreateUserRole()
     {
-        await _roleManager.CreateAsync(new IdentityRole("Customer"));
+        await _roleManager.CreateAsync(new IdentityRole(_config["CustomerRole"]));
     }
     
     async Task CreateCompanyRole()
     {
-        var companyRole = Environment.GetEnvironmentVariable("COMPANYROLE");
-        await _roleManager.CreateAsync(new IdentityRole("Company"));
+        await _roleManager.CreateAsync(new IdentityRole(_config["CompanyRole"]));
     }
 
     public void AddAdmin()
@@ -54,11 +57,11 @@ public class AuthenticationSeeder
         if (adminInDb == null)
         {
             var admin = new User { UserName = "admin", Email = "admin@admin.hu" };
-            var adminCreated = await _userManager.CreateAsync(admin, "admin123");
+            var adminCreated = await _userManager.CreateAsync(admin, _config["AdminPassword"]);
 
             if (adminCreated.Succeeded)
             {
-                await _userManager.AddToRoleAsync(admin, "Admin");
+                await _userManager.AddToRoleAsync(admin, _config["AdminRole"]);
             }
         }
     }
