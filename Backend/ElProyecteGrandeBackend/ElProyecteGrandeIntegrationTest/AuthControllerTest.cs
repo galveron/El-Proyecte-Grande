@@ -35,6 +35,6 @@ public class AuthControllerTest
 
         var response = await client.PostAsJsonAsync("/Auth/Register", request);
         
-        Assert.Equal(response.StatusCode, HttpStatusCode.BadRequest);
+        Assert.Equal(HttpStatusCode.BadRequest,response.StatusCode );
     }
 }
