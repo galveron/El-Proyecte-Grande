@@ -7,15 +7,27 @@ namespace ElProyecteGrandeBackend.Services.Repositories;
 
 public class UserRepository : IUserRepository
 {
+    private readonly IConfigurationRoot _config;
+    private readonly DbContextOptionsBuilder<MarketPlaceContext> _optionsBuilder;
+
+    public UserRepository()
+    {
+        _config =
+            new ConfigurationBuilder()
+                .AddUserSecrets<Program>()
+                .Build();
+        _optionsBuilder = new DbContextOptionsBuilder<MarketPlaceContext>();
+        _optionsBuilder.UseSqlServer(_config["ConnectionString"]);
+    }
     public IEnumerable<User> GetAllUsers()
     {
-        using var dbContext = new MarketPlaceContext();
+        using var dbContext = new MarketPlaceContext(_optionsBuilder.Options);
         return dbContext.Users.ToList();
     }
 
     public User? GetUser(string id)
     {
-        using var dbContext = new MarketPlaceContext();
+        using var dbContext = new MarketPlaceContext(_optionsBuilder.Options);
         
         return dbContext.Users.Where(user => user.Id == id)
             .Include(user => user.Favourites)
@@ -27,7 +39,7 @@ public class UserRepository : IUserRepository
 
     public void DeleteUser(string id)
     {
-        using var dbContext = new MarketPlaceContext();
+        using var dbContext = new MarketPlaceContext(_optionsBuilder.Options);
         var user = dbContext.Users.First(user1 => user1.Id == id);
         dbContext.Users.Remove(user);
         dbContext.SaveChanges();
@@ -44,7 +56,7 @@ public class UserRepository : IUserRepository
         userToUpdate.NormalizedEmail = email.ToUpper();
         userToUpdate.PhoneNumber = phoneNumber;
         */
-        using var dbContext = new MarketPlaceContext();
+        using var dbContext = new MarketPlaceContext(_optionsBuilder.Options);
         dbContext.Update(user);
         dbContext.SaveChanges();
         
@@ -57,7 +69,7 @@ public class UserRepository : IUserRepository
 
     public void AddFavourite(string userId, int productId)
     {
-        using var dbContext = new MarketPlaceContext();
+        using var dbContext = new MarketPlaceContext(_optionsBuilder.Options);
         var productToAddFavourite = dbContext.Products.Find(productId);
         var userToAddFavourite = dbContext.Users.Include(user => user.Favourites)
             .SingleOrDefault(user => user.Id == userId);
@@ -81,7 +93,7 @@ public class UserRepository : IUserRepository
     
     public void DeleteFavourite(string userId, int productId)
     {
-        using var dbContext = new MarketPlaceContext();
+        using var dbContext = new MarketPlaceContext(_optionsBuilder.Options);
         var productToRemoveFromFavourite = dbContext.Products.Find(productId);
         var userToRemoveFavouriteFrom = dbContext.Users.Include(user => user.Favourites)
             .SingleOrDefault(user => user.Id == userId);
@@ -110,7 +122,7 @@ public class UserRepository : IUserRepository
             throw new Exception("You cannot add zero product.");
         }
         
-        using var dbContext = new MarketPlaceContext();
+        using var dbContext = new MarketPlaceContext(_optionsBuilder.Options);
         var userToAddToCart = dbContext.Users
             .Include(user => user.CartItems)
             .ThenInclude(cartItem => cartItem.Product)
@@ -163,7 +175,7 @@ public class UserRepository : IUserRepository
 
     public void EmptyCart(string userId)
     {
-        using var dbContext = new MarketPlaceContext();
+        using var dbContext = new MarketPlaceContext(_optionsBuilder.Options);
         var userForCartEmptying = dbContext.Users
             .Include(user => user.CartItems)
             .Single(user => user.Id == userId);

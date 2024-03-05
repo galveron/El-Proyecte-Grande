@@ -13,7 +13,6 @@ public class MarketPlaceContext : IdentityDbContext<User, IdentityRole, string>
     
     public MarketPlaceContext()
     {
-        
     }
     public MarketPlaceContext (DbContextOptions<MarketPlaceContext> options)
         : base(options)

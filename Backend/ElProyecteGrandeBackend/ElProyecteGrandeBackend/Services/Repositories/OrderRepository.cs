@@ -7,14 +7,22 @@ namespace ElProyecteGrandeBackend.Services.Repositories;
 public class OrderRepository : IOrderRepository
 {
     private readonly IUserRepository _userRepository;
+    private readonly IConfigurationRoot _config;
+    private readonly DbContextOptionsBuilder<MarketPlaceContext> _optionsBuilder;
 
     public OrderRepository(IUserRepository userRepository)
     {
         _userRepository = userRepository;
+        _config =
+            new ConfigurationBuilder()
+                .AddUserSecrets<Program>()
+                .Build();
+        _optionsBuilder = new DbContextOptionsBuilder<MarketPlaceContext>();
+        _optionsBuilder.UseSqlServer(_config["ConnectionString"]);
     }
     public Order GetOrder(int orderId)
     {
-        using var dbContext = new MarketPlaceContext();
+        using var dbContext = new MarketPlaceContext(_optionsBuilder.Options);
         return dbContext.Orders.Where(o => o.Id == orderId)
             .Include(order => order.User)
             .Include(order => order.OrderItems)
@@ -23,14 +31,14 @@ public class OrderRepository : IOrderRepository
 
     public List<Order> GetUserOrders(string userId)
     {
-        using var dbContext = new MarketPlaceContext();
+        using var dbContext = new MarketPlaceContext(_optionsBuilder.Options);
         var user = _userRepository.GetUser(userId);
         return user.Orders.ToList();
     }
 
     public void AddOrder(Order order)
     {
-        using var dbContext = new MarketPlaceContext();
+        using var dbContext = new MarketPlaceContext(_optionsBuilder.Options);
         
         var userFromDb = dbContext.Users.FirstOrDefault(user1 => user1.Id == order.User.Id);
         
@@ -51,14 +59,14 @@ public class OrderRepository : IOrderRepository
 
     public void DeleteOrder(Order order)
     {
-        using var dbContext = new MarketPlaceContext();
+        using var dbContext = new MarketPlaceContext(_optionsBuilder.Options);
         dbContext.Orders.Remove(order);
         dbContext.SaveChanges();
     }
 
     public void UpdateOrder(Order order)
     {
-        using var dbContext = new MarketPlaceContext();
+        using var dbContext = new MarketPlaceContext(_optionsBuilder.Options);
         dbContext.Orders.Update(order);
         dbContext.SaveChanges();
     }
@@ -70,7 +78,7 @@ public class OrderRepository : IOrderRepository
             throw new Exception("You cannot add zero product.");
         }
         
-        using var dbContext = new MarketPlaceContext();
+        using var dbContext = new MarketPlaceContext(_optionsBuilder.Options);
         var orderForAddToOrderItems = dbContext.Orders
             .Include(order => order.OrderItems)
             .ThenInclude(orderItem => orderItem.Product)
@@ -126,7 +134,7 @@ public class OrderRepository : IOrderRepository
     
     public void EmptyOrderItems(int orderId)
     {
-        using var dbContext = new MarketPlaceContext();
+        using var dbContext = new MarketPlaceContext(_optionsBuilder.Options);
         var orderForCartEmptying = dbContext.Orders
             .Include(order => order.OrderItems)
             .Single(order => order.Id == orderId);
