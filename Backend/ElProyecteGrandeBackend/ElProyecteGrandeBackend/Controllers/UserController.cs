@@ -13,20 +13,17 @@ namespace ElProyecteGrandeBackend.Controllers;
 public class UserController : ControllerBase
 {
     private readonly ILogger<UserController> _logger;
-    private readonly IUserRepository _userRepository;
     private readonly IOrderRepository _orderRepository;
     private readonly IProductRepository _productRepository;
     private readonly UserManager<User> _userManager;
 
     public UserController(
         ILogger<UserController> logger, 
-        IUserRepository userRepository, 
         IOrderRepository orderRepository,
         IProductRepository productRepository,
         UserManager<User> userManager)
     {
         _logger = logger;
-        _userRepository = userRepository;
         _orderRepository = orderRepository;
         _productRepository = productRepository;
         _userManager = userManager;

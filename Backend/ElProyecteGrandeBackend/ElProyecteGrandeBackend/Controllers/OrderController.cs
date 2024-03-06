@@ -15,18 +15,15 @@ public class OrderController : ControllerBase
 {
     private readonly IOrderRepository _orderRepository;
     private readonly IProductRepository _productRepository;
-    private readonly IUserRepository _userRepository;
     private readonly UserManager<User> _userManager;
 
     public OrderController(
-        IUserRepository userRepository, 
         IOrderRepository orderRepository, 
         IProductRepository productRepository,
         UserManager<User> userManager)
     {
         _orderRepository = orderRepository;
         _productRepository = productRepository;
-        _userRepository = userRepository;
         _userManager = userManager;
     }
 
