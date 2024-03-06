@@ -30,9 +30,6 @@ public class OrderRepository : IOrderRepository
         userFromDb.Orders.Add(orderForDb);
         dbContext.Update(userFromDb);
         dbContext.Orders.Add(orderForDb);
-        //dbContext.Update(order);
-        //dbContext.Orders.Add(order);
-        //dbContext.Update(order.User);
         dbContext.SaveChanges();
     }
 
