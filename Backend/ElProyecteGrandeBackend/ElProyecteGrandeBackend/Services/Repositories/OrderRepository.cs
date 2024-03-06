@@ -6,20 +6,39 @@ namespace ElProyecteGrandeBackend.Services.Repositories;
 
 public class OrderRepository : IOrderRepository
 {
+    private readonly IUserRepository _userRepository;
+    private readonly IConfigurationRoot _config;
+    private readonly DbContextOptionsBuilder<MarketPlaceContext> _optionsBuilder;
+    private readonly MarketPlaceContext _dbContext;
+
+    public OrderRepository(IUserRepository userRepository, MarketPlaceContext marketPlaceContext)
+    {
+        _userRepository = userRepository;
+        _config =
+            new ConfigurationBuilder()
+                .AddUserSecrets<Program>()
+                .Build();
+        _optionsBuilder = new DbContextOptionsBuilder<MarketPlaceContext>();
+        _optionsBuilder.UseSqlServer(_config["ConnectionString"]);
+        _dbContext = marketPlaceContext;
+    }
     public Order GetOrder(int orderId)
     {
-        using var dbContext = new MarketPlaceContext();
-        return dbContext.Orders.Where(o => o.Id == orderId)
+        return _dbContext.Orders.Where(o => o.Id == orderId)
             .Include(order => order.User)
             .Include(order => order.OrderItems)
             .First();
     }
 
+    public List<Order> GetUserOrders(string userId)
+    {
+        var user = _userRepository.GetUser(userId);
+        return user.Orders.ToList();
+    }
+
     public void AddOrder(Order order)
     {
-        using var dbContext = new MarketPlaceContext();
-        
-        var userFromDb = dbContext.Users.FirstOrDefault(user1 => user1.Id == order.User.Id);
+        var userFromDb = _dbContext.Users.FirstOrDefault(user1 => user1.Id == order.User.Id);
         
         if (userFromDb == null)
         {
@@ -28,23 +47,24 @@ public class OrderRepository : IOrderRepository
         
         var orderForDb = new Order {User = userFromDb, Date = DateTime.Now, PriceToPay = 0};;
         userFromDb.Orders.Add(orderForDb);
-        dbContext.Update(userFromDb);
-        dbContext.Orders.Add(orderForDb);
-        dbContext.SaveChanges();
+        _dbContext.Update(userFromDb);
+        _dbContext.Orders.Add(orderForDb);
+        //dbContext.Update(order);
+        //dbContext.Orders.Add(order);
+        //dbContext.Update(order.User);
+        _dbContext.SaveChanges();
     }
 
     public void DeleteOrder(Order order)
     {
-        using var dbContext = new MarketPlaceContext();
-        dbContext.Orders.Remove(order);
-        dbContext.SaveChanges();
+        _dbContext.Orders.Remove(order);
+        _dbContext.SaveChanges();
     }
 
     public void UpdateOrder(Order order)
     {
-        using var dbContext = new MarketPlaceContext();
-        dbContext.Orders.Update(order);
-        dbContext.SaveChanges();
+        _dbContext.Orders.Update(order);
+        _dbContext.SaveChanges();
     }
     
     public void AddOrRemoveOrderItems(int orderId, int productId, int quantity)
@@ -53,13 +73,12 @@ public class OrderRepository : IOrderRepository
         {
             throw new Exception("You cannot add zero product.");
         }
-        
-        using var dbContext = new MarketPlaceContext();
-        var orderForAddToOrderItems = dbContext.Orders
+
+        var orderForAddToOrderItems = _dbContext.Orders
             .Include(order => order.OrderItems)
             .ThenInclude(orderItem => orderItem.Product)
             .SingleOrDefault(order => order.Id == orderId);
-        var productToAddToOrderItems = dbContext.Products.FirstOrDefault(product1 => product1.Id == productId);
+        var productToAddToOrderItems = _dbContext.Products.FirstOrDefault(product1 => product1.Id == productId);
         
         if (orderForAddToOrderItems == null)
         {
@@ -104,20 +123,19 @@ public class OrderRepository : IOrderRepository
             }
         }
         
-        dbContext.Update(orderForAddToOrderItems);
-        dbContext.SaveChanges();
+        _dbContext.Update(orderForAddToOrderItems);
+        _dbContext.SaveChanges();
     }
     
     public void EmptyOrderItems(int orderId)
     {
-        using var dbContext = new MarketPlaceContext();
-        var orderForCartEmptying = dbContext.Orders
+        var orderForCartEmptying = _dbContext.Orders
             .Include(order => order.OrderItems)
             .Single(order => order.Id == orderId);
         
         orderForCartEmptying.OrderItems.Clear();
         orderForCartEmptying.PriceToPay = 0;
         
-        dbContext.SaveChanges();
+        _dbContext.SaveChanges();
     }
 }

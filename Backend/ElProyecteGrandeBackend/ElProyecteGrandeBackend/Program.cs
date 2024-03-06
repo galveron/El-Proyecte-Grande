@@ -7,18 +7,15 @@ using ElProyecteGrandeBackend.Services.Authentication;
 using ElProyecteGrandeBackend.Services.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.IdentityModel.Logging;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
 var root = Directory.GetCurrentDirectory();
-var dotenv = Path.Combine(root, "connectionString.env");
-Console.WriteLine(dotenv);
-DotEnv.Load(dotenv);
 
 var config =
     new ConfigurationBuilder()
-        .AddEnvironmentVariables()
+        .AddUserSecrets<Program>()
         .Build();
 
 var builder = WebApplication.CreateBuilder(args);
@@ -35,9 +32,13 @@ builder.Services.AddControllers().AddJsonOptions(options =>
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddSingleton<IProductRepository, ProductRepository>();
-builder.Services.AddSingleton<IOrderRepository, OrderRepository>();
-builder.Services.AddDbContext<MarketPlaceContext>();
+builder.Services.AddTransient<IProductRepository, ProductRepository>();
+builder.Services.AddTransient<IOrderRepository, OrderRepository>();
+builder.Services.AddTransient<IUserRepository, UserRepository>();
+builder.Services.AddScoped<AuthenticationSeeder>();
+builder.Services.AddDbContext<MarketPlaceContext>((container, options) =>
+    options.UseSqlServer(config["ConnectionString"]));
+
 
 AddCors();
 AddAuthentication();
@@ -61,10 +62,15 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-AddRoles();
-AddAdmin();
+using var scope = app.Services.CreateScope();
+var authenticationSeeder = scope.ServiceProvider.GetRequiredService<AuthenticationSeeder>();
+
+authenticationSeeder.AddRoles();
+
+authenticationSeeder.AddAdmin();
 
 app.Run();
+
 
 void ConfigureSwagger()
 {
@@ -128,10 +134,9 @@ void AddAuthentication()
         .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         .AddJwtBearer(options =>
         {
-            var jwtSettings = config.GetSection("jwtSettings");
-            var issuerSignInKey = Environment.GetEnvironmentVariable("ISSUERSIGNINKEY");
-            var validIssuer = Environment.GetEnvironmentVariable("VALIDISSUER");
-            var validAudience = Environment.GetEnvironmentVariable("VALIDAUDIENCE");
+            var issuerSignInKey = config["IssuerSigningKey"];
+            var validIssuer = config["ValidIssuer"];
+            var validAudience = config["ValidAudience"];
         
             options.TokenValidationParameters = new TokenValidationParameters()
             {
@@ -176,61 +181,7 @@ void AddIdentity()
         })
         .AddRoles<IdentityRole>()
         .AddEntityFrameworkStores<MarketPlaceContext>();
-}
-
-void AddRoles()
-{
-    using var scope = app.Services.CreateScope(); // RoleManager is a scoped service, therefore we need a scope instance to access it
-    var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-
-    var tAdmin = CreateAdminRole(roleManager);
-    tAdmin.Wait();
-
-    var tCustomer = CreateCustomerRole(roleManager);
-    tCustomer.Wait();
     
-    var tCompany = CreateCompanyRole(roleManager);
-    tCompany.Wait();
 }
 
-async Task CreateAdminRole(RoleManager<IdentityRole> roleManager)
-{
-    var adminRole = Environment.GetEnvironmentVariable("ADMINROLE");
-    await roleManager.CreateAsync(new IdentityRole(adminRole)); 
-}
-
-async Task CreateCustomerRole(RoleManager<IdentityRole> roleManager)
-{
-    var customerRole = Environment.GetEnvironmentVariable("CUSTOMERROLE");
-    await roleManager.CreateAsync(new IdentityRole(customerRole));
-}
-
-async Task CreateCompanyRole(RoleManager<IdentityRole> roleManager)
-{
-    var companyRole = Environment.GetEnvironmentVariable("COMPANYROLE");
-    await roleManager.CreateAsync(new IdentityRole(companyRole));
-}
-
-void AddAdmin()
-{
-    var tAdmin = CreateAdminIfNotExists();
-    tAdmin.Wait();
-}
-
-async Task CreateAdminIfNotExists()
-{
-    using var scope = app.Services.CreateScope();
-    var userManager = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
-    var adminInDb = await userManager.FindByEmailAsync("admin@admin.hu");
-    var adminPassword = Environment.GetEnvironmentVariable("ADMINPASSWORD");
-    if (adminInDb == null)
-    {
-        var admin = new User { UserName = "admin", Email = "admin@admin.hu" };
-        var adminCreated = await userManager.CreateAsync(admin, adminPassword);
-
-        if (adminCreated.Succeeded)
-        {
-            await userManager.AddToRoleAsync(admin, "Admin");
-        }
-    }
-}
+public partial class Program{}

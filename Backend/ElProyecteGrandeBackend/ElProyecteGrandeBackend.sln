@@ -2,6 +2,8 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ElProyecteGrandeBackend", "ElProyecteGrandeBackend\ElProyecteGrandeBackend.csproj", "{CB11F632-66C5-4199-822A-9198F52CC7CC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ElProyecteGrandeIntegrationTest", "ElProyecteGrandeIntegrationTest\ElProyecteGrandeIntegrationTest.csproj", "{99959E2A-DE8B-40E6-867E-344042E730A3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +14,9 @@ Global
 		{CB11F632-66C5-4199-822A-9198F52CC7CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CB11F632-66C5-4199-822A-9198F52CC7CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CB11F632-66C5-4199-822A-9198F52CC7CC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{99959E2A-DE8B-40E6-867E-344042E730A3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{99959E2A-DE8B-40E6-867E-344042E730A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{99959E2A-DE8B-40E6-867E-344042E730A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{99959E2A-DE8B-40E6-867E-344042E730A3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

@@ -133,8 +133,8 @@ public class OrderController : ControllerBase
             return Problem("Order failed to delete");
         }
     }
-
-    [HttpPatch, Authorize(Roles = "Customer, Admin")]
+/*
+    [HttpPatch]
     public ActionResult UpdateOrder(Order order)
     {
         try
@@ -147,4 +147,5 @@ public class OrderController : ControllerBase
             return Problem("Order failed to update");
         }
     }
+    */
 }

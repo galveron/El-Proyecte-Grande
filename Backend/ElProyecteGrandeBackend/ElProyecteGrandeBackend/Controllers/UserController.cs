@@ -62,13 +62,14 @@ public class UserController : ControllerBase
         {
             var user = await _userManager.FindByIdAsync(id);
             
-            if (user == null)
+            if (user.Length == 0)
             {
                 return NotFound("User was not found.");
             }
             
             var identityResult = await _userManager.DeleteAsync(user);
             
+
             if (!identityResult.Succeeded)
             {
                 return BadRequest(identityResult.Errors);
@@ -86,6 +87,7 @@ public class UserController : ControllerBase
     [HttpDelete("DeleteUser"), Authorize(Roles = "Customer, Company")]
     public async Task<ActionResult> DeleteUser()
     {
+        //TODO: companies can't be deleted yet (server error)
         try
         {
             var user = await _userManager.FindByNameAsync(User.Identity.Name);
@@ -176,8 +178,8 @@ public class UserController : ControllerBase
         }
     }
     
-    [HttpPatch("VerifyCompany"), Authorize(Roles="Admin")]
-    public async Task<ActionResult> VerifyCompany(string id, bool verified)
+    [HttpPatch("VerifyCompany")]//,Authorize(Roles="Admin")]
+    public async Task<ActionResult> VerifyCompany(string userName, bool verified)
     {
         try
         {
