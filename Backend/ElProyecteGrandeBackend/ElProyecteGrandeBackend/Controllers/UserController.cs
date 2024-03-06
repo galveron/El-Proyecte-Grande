@@ -58,35 +58,6 @@ public class UserController : ControllerBase
         }
     }
     
-    /*
-    [HttpGet("GetUserFromClaim")]
-    public async Task<ActionResult<User>> GetUser()
-    {
-        try
-        {
-            var userId = GetIdFromUserClaims();
-            var user = await _userManager.Users
-                .Include(user1 => user1.Favourites)
-                .Include(user1 => user1.CartItems)
-                .Include(user1 => user1.CompanyProducts)
-                .Include(user1 => user1.Orders)
-                .SingleOrDefaultAsync(user1 => user1.Id == userId);
-            
-            if (user == null)
-            {
-                return NotFound("User was not found.");
-            }
-            
-            return Ok(user);
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-            return StatusCode(500, e.Message);
-        }
-    }
-    */
-    
     //for testing
     [HttpGet("GetUsers")]
     public async Task<ActionResult<User[]>> GetUsers()
@@ -128,7 +99,7 @@ public class UserController : ControllerBase
                 return BadRequest(identityResult.Errors);
             }
             
-            return Ok("Successfully added user.");
+            return Ok("Successfully deleted user.");
         }
         catch (Exception e)
         {
