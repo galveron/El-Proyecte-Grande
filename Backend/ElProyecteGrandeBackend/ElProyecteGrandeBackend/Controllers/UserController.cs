@@ -29,7 +29,7 @@ public class UserController : ControllerBase
         _userManager = userManager;
     }
 
-    [HttpGet("GetUser"), Authorize(Roles = "Customer, Admin")]
+    [HttpGet("GetUser"), Authorize(Roles = "Customer, Company, Admin")]
     public async Task<ActionResult<User>> GetUser()
     {
         try
