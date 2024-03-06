@@ -2,6 +2,7 @@ using Azure.Core;
 using ElProyecteGrandeBackend.Contracts;
 using ElProyecteGrandeBackend.Services;
 using ElProyecteGrandeBackend.Services.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace SolarWatch;
@@ -64,7 +65,7 @@ public class AuthController : ControllerBase
     }
     
     [HttpPost("Login")]
-    public async Task<ActionResult<AuthResponse>> Authenticate([FromBody] AuthRequest request)
+    public async Task<ActionResult> Authenticate([FromBody] AuthRequest request)
     {
         if (!ModelState.IsValid)
         {
@@ -80,8 +81,15 @@ public class AuthController : ControllerBase
         }
         
         Response.Cookies.Append("User", result.Token, new CookieOptions() { HttpOnly = false, SameSite = SameSiteMode.Strict });
-        Response.Cookies.Append("UserId", result.UserId, new CookieOptions() { HttpOnly = false, SameSite = SameSiteMode.Strict });
 
-        return Ok(new AuthResponse(result.Email, result.UserName, result.UserId,result.Token));
+        return Ok();
+    }
+    
+    [Authorize(Roles = "Customer, Company, Admin")]
+    [HttpPost("Logout")]
+    public IActionResult Logout()
+    {
+        HttpContext.Response.Cookies.Delete("User");
+        return Ok();
     }
 }

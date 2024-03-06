@@ -6,12 +6,6 @@ namespace ElProyecteGrandeBackend.Services.Repositories;
 
 public class OrderRepository : IOrderRepository
 {
-    private readonly IUserRepository _userRepository;
-
-    public OrderRepository(IUserRepository userRepository)
-    {
-        _userRepository = userRepository;
-    }
     public Order GetOrder(int orderId)
     {
         using var dbContext = new MarketPlaceContext();
@@ -19,13 +13,6 @@ public class OrderRepository : IOrderRepository
             .Include(order => order.User)
             .Include(order => order.OrderItems)
             .First();
-    }
-
-    public List<Order> GetUserOrders(string userId)
-    {
-        using var dbContext = new MarketPlaceContext();
-        var user = _userRepository.GetUser(userId);
-        return user.Orders.ToList();
     }
 
     public void AddOrder(Order order)
@@ -43,9 +30,6 @@ public class OrderRepository : IOrderRepository
         userFromDb.Orders.Add(orderForDb);
         dbContext.Update(userFromDb);
         dbContext.Orders.Add(orderForDb);
-        //dbContext.Update(order);
-        //dbContext.Orders.Add(order);
-        //dbContext.Update(order.User);
         dbContext.SaveChanges();
     }
 

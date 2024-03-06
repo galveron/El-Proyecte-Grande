@@ -37,7 +37,6 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddSingleton<IProductRepository, ProductRepository>();
 builder.Services.AddSingleton<IOrderRepository, OrderRepository>();
-builder.Services.AddSingleton<IUserRepository, UserRepository>();
 builder.Services.AddDbContext<MarketPlaceContext>();
 
 AddCors();
@@ -103,12 +102,22 @@ void AddCors()
     builder.Services.AddCors(options =>
     {
         options.AddPolicy(name: "MyAllowSpecificOrigins",
-            builder  =>
+            policy  =>
             {
-                // Allow any header and method for simplicity
-                builder.AllowAnyOrigin()
+                policy
+                    //.WithOrigins("*") //doesn't work with credentials included
                     .AllowAnyHeader()
-                    .AllowAnyMethod();
+                    .AllowAnyMethod()
+                    .AllowCredentials()
+                    .SetIsOriginAllowed(origin =>
+                    {
+                        if (string.IsNullOrWhiteSpace(origin)) return false;
+                        // Only add this to allow testing with localhost, remove this line in production!
+                        if (origin.ToLower().StartsWith("http://localhost")) return true;
+                        // Insert your production domain here.
+                        if (origin.ToLower().StartsWith("https://dev.mydomain.com")) return true;
+                        return false;
+                    });
             });
     });
 }
