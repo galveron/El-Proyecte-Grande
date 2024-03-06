@@ -1,5 +1,6 @@
 using ElProyecteGrandeBackend.Model;
 using ElProyecteGrandeBackend.Services.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -55,7 +56,7 @@ public class ProductController : ControllerBase
         }
     }
     
-    [HttpPost("AddProduct")]
+    [HttpPost("AddProduct"), Authorize(Roles="Company, Admin")]
     public async Task<ActionResult> AddProduct(string userId, string name, decimal price, string details, int quantity)
     {//seller, price, details, quantity
         try
