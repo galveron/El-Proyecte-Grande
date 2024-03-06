@@ -1,5 +1,6 @@
 using System.Net.Http.Json;
 using System.Text.Json;
+using ElProyecteGrandeBackend.Contracts;
 using ElProyecteGrandeBackend.Controllers;
 using ElProyecteGrandeBackend.Data;
 using ElProyecteGrandeBackend.Model;
@@ -38,32 +39,26 @@ public class ProductControllerTest
         
         var client = application.CreateClient();
 
-        var regResponse = await client.PostAsJsonAsync("/Auth/RegisterCompany", request);
+        var regRequest = await client.PostAsJsonAsync("/Auth/RegisterCompany", request);
+        regRequest.EnsureSuccessStatusCode();
+        var authResponse = await regRequest.Content.ReadFromJsonAsync<RegistrationResponseCompany>();
 
-        regResponse.EnsureSuccessStatusCode();
-        
-        var authResponse = await regResponse.Content.ReadFromJsonAsync<RegistrationResponseCompany>();
-
-        await client.PostAsJsonAsync("/Auth/Login", new { });
+        var loginReq = new AuthRequest("valaki@g.com", "Valaki123456");
+        var login = await client.PostAsJsonAsync("/Auth/Login", loginReq);
+        login.EnsureSuccessStatusCode();
 
         var getUserRes = await client.GetAsync($"/User/GetUser?userName={authResponse.UserName}");
-
         getUserRes.EnsureSuccessStatusCode();
-
         var user = await getUserRes.Content.ReadFromJsonAsync<User>();
         
         var product = new Product { Name = "term", Seller = user, Price = 123, Details = "rrr", Quantity = 2 };
-
         var addProductRes = await client.PostAsJsonAsync(
             $"/Product/AddProduct?userId={user.Id}&name={product.Name}&price={product.Price}&details={product.Details}&quantity={product.Quantity}",
             new { });
-
         addProductRes.EnsureSuccessStatusCode();
 
         var productRes = await client.GetAsync("/Product/GetProduct?id=1");
-
         productRes.EnsureSuccessStatusCode();
-
         var response = await productRes.Content.ReadFromJsonAsync<Product>();
         
         Assert.Equal("term", response.Name);
@@ -77,28 +72,23 @@ public class ProductControllerTest
         
         var client = application.CreateClient();
 
-        var regResponse = await client.PostAsJsonAsync("/Auth/RegisterCompany", request);
+        var regRequest = await client.PostAsJsonAsync("/Auth/RegisterCompany", request);
+        regRequest.EnsureSuccessStatusCode();
+        var authResponse = await regRequest.Content.ReadFromJsonAsync<RegistrationResponseCompany>();
 
-        regResponse.EnsureSuccessStatusCode();
-        
-        var authResponse = await regResponse.Content.ReadFromJsonAsync<RegistrationResponseCompany>();
-
-        await client.PostAsJsonAsync("/Auth/Login", new { });
+        var loginReq = new AuthRequest("valaki@g.com", "Valaki123456");
+        var login = await client.PostAsJsonAsync("/Auth/Login", loginReq);
+        login.EnsureSuccessStatusCode();
 
         var getUserRes = await client.GetAsync($"/User/GetUser?userName={authResponse.UserName}");
-
         getUserRes.EnsureSuccessStatusCode();
-
         var user = await getUserRes.Content.ReadFromJsonAsync<User>();
         
         var product = new Product { Name = "term", Seller = user, Price = 123, Details = "rrr", Quantity = 2 };
-
         var addProductRes = await client.PostAsJsonAsync(
             $"/Product/AddProduct?userId={user.Id}&name={product.Name}&price={product.Price}&details={product.Details}&quantity={product.Quantity}",
             new { });
-
         addProductRes.EnsureSuccessStatusCode();
-
         var addedProduct = await addProductRes.Content.ReadFromJsonAsync<Product>();
         
         Assert.Equal("term", addedProduct.Name);
