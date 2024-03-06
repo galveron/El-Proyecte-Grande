@@ -181,7 +181,11 @@ public class UserControllerTest
         var request = new RegistrationRequestCompany("body@body.com", "body", "Bodybody123", "bodyshop", "123");
         await client.PostAsJsonAsync("/Auth/RegisterCompany", request);
         
-        var response = await client.PatchAsJsonAsync("/User/VerifyCompany?UserName=body&verified=true", new { });
+        //Login admin
+        var loginReq = new AuthRequest("admin@admin.hu", "Adminadmin123");
+        await client.PostAsJsonAsync("/Auth/Login", loginReq); 
+        
+        var response = await client.PatchAsJsonAsync("/User/VerifyCompany?userName=body&verified=true", new { });
         
         response.EnsureSuccessStatusCode();
     }
@@ -201,9 +205,9 @@ public class UserControllerTest
         var loginReq = new AuthRequest("admin@admin.hu", "Adminadmin123");
         await client.PostAsJsonAsync("/Auth/Login", loginReq);
 
-        var response = await client.PatchAsJsonAsync("/User/VerifyCompany?userName=body&verified=true", new { });
+        var response = await client.PatchAsJsonAsync("/User/VerifyCompany?userName=nobody&verified=true", new { });
         
-        response.EnsureSuccessStatusCode();
+        Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
     }
     
     [Fact]
@@ -212,6 +216,10 @@ public class UserControllerTest
         var application = new MarketPlaceWebApplicationFactory();
         
         var client = application.CreateClient();
+        
+        //Login admin
+        var loginReq = new AuthRequest("admin@admin.hu", "Adminadmin123");
+        await client.PostAsJsonAsync("/Auth/Login", loginReq);
 
         var response = await client.PatchAsJsonAsync("", new { });
         
