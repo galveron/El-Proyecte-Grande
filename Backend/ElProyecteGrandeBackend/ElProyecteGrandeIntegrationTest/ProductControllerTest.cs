@@ -8,7 +8,6 @@ using ElProyecteGrandeBackend.Services;
 using ElProyecteGrandeBackend.Services.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using Moq;
 
 namespace ElProyecteGrandeIntegrationTest;
 
@@ -47,7 +46,7 @@ public class ProductControllerTest
         var login = await client.PostAsJsonAsync("/Auth/Login", loginReq);
         login.EnsureSuccessStatusCode();
 
-        var getUserRes = await client.GetAsync($"/User/GetUser?userName={authResponse.UserName}");
+        var getUserRes = await client.GetAsync($"/User/GetUser");
         getUserRes.EnsureSuccessStatusCode();
         var user = await getUserRes.Content.ReadFromJsonAsync<User>();
         
@@ -80,7 +79,7 @@ public class ProductControllerTest
         var login = await client.PostAsJsonAsync("/Auth/Login", loginReq);
         login.EnsureSuccessStatusCode();
 
-        var getUserRes = await client.GetAsync($"/User/GetUser?userName={authResponse.UserName}");
+        var getUserRes = await client.GetAsync($"/User/GetUser");
         getUserRes.EnsureSuccessStatusCode();
         var user = await getUserRes.Content.ReadFromJsonAsync<User>();
         
