@@ -1,5 +1,6 @@
 using ElProyecteGrandeBackend.Model;
 using ElProyecteGrandeBackend.Services.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -55,14 +56,14 @@ public class ProductController : ControllerBase
         }
     }
     
-    [HttpPost("AddProduct")]
-    public async Task<ActionResult> AddProduct(string userId, string name, decimal price, string details, int quantity)
+    [HttpPost("AddProduct"), Authorize(Roles = "Company, Admin")]
+    public async Task<ActionResult> AddProduct(string name, decimal price, string details, int quantity)
     {//seller, price, details, quantity
         try
         {
             var user = await _userManager.Users
                 .Include(user1 => user1.CompanyProducts)
-                .SingleAsync(user1 => user1.Id == userId);
+                .SingleAsync(user1 => user1.UserName == User.Identity.Name);
             var product = new Product{Name = name, Seller = user, Price = price, Details = details, Quantity = quantity};
             _productRepository.AddProduct(product);
             
