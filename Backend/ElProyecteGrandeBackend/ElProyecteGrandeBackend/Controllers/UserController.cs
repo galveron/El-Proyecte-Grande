@@ -127,7 +127,7 @@ public class UserController : ControllerBase
                 return BadRequest(identityResult.Errors);
             }
             
-            return Ok("Successfully added user.");
+            return Ok("Successfully deleted user.");
         }
         catch (Exception e)
         {
