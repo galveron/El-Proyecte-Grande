@@ -62,7 +62,7 @@ public class UserController : ControllerBase
         {
             var user = await _userManager.FindByIdAsync(id);
             
-            if (user.Length == 0)
+            if (user == null)
             {
                 return NotFound("User was not found.");
             }
@@ -183,7 +183,7 @@ public class UserController : ControllerBase
     {
         try
         {
-            var user = await _userManager.FindByIdAsync(id);
+            var user = await _userManager.FindByNameAsync(userName);
             
             if (user == null)
             {
