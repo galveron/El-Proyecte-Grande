@@ -53,6 +53,8 @@ public class ProductControllerTest
         var productRes = await client.GetAsync("/Product/GetProduct?id=1");
         productRes.EnsureSuccessStatusCode();
         var response = await productRes.Content.ReadFromJsonAsync<Product>();
+
+        await client.PostAsJsonAsync("/Auth/Logout", "");
         
         Assert.Equal("term", response.Name);
     }
@@ -83,6 +85,8 @@ public class ProductControllerTest
             new { });
         addProductRes.EnsureSuccessStatusCode();
         var addedProduct = await addProductRes.Content.ReadFromJsonAsync<Product>();
+        
+        await client.PostAsJsonAsync("/Auth/Logout", "");
         
         Assert.Equal("term", addedProduct.Name);
     }
