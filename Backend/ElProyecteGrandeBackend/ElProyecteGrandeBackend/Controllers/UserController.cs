@@ -220,11 +220,13 @@ public class UserController : ControllerBase
             var userToAddFavouriteTo = await _userManager.Users
                 .Include(user => user.Favourites)
                 .SingleOrDefaultAsync(user => user.Id == userId);
-        
+
+            //TODO check it and return Ok maybe with message about it
+
             //should we test whether the product is already a favourite or would be wasteful since it works anyway??
             //This probably throws an exception
             //because we try to track the Product as productToAddAsFavourite and as part of userToAddFavouriteTo.Favourites.
-            
+
             if (userToAddFavouriteTo == null)
             {
                 return NotFound("User was not found for adding favourite.");
@@ -234,15 +236,15 @@ public class UserController : ControllerBase
             {
                 return NotFound("Product was not found for adding favourite");
             }
-        
+
             userToAddFavouriteTo.Favourites.Add(productToAddAsFavourite);
             var identityResult = await _userManager.UpdateAsync(userToAddFavouriteTo);
-            
+
             if (!identityResult.Succeeded)
             {
                 return BadRequest(identityResult.Errors);
             }
-            
+
             return Ok("Done.");
         }
         catch (Exception e)
@@ -414,7 +416,7 @@ public class UserController : ControllerBase
                 .SkipWhile(claim => claim.Type != ClaimTypes.NameIdentifier)
                 .Skip(1)
                 .First(claim => claim.Type == ClaimTypes.NameIdentifier).Value;
-
+            
             return userId;
         }
         catch (Exception e)
