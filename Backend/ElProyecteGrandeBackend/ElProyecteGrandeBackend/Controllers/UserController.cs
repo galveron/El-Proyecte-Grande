@@ -416,31 +416,4 @@ public class UserController : ControllerBase
             return StatusCode(500, e.Message);
         }
     }
-
-    private string GetIdFromUserClaims()
-    {
-        try
-        {
-            var userId = User.Claims
-                .SkipWhile(claim => claim.Type != ClaimTypes.NameIdentifier)
-                .Skip(1)
-                .First(claim => claim.Type == ClaimTypes.NameIdentifier).Value;
-            
-            return userId;
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-            throw new Exception("Couldn't get user id from User.Claims");
-        }
-    }
-    
-    //only for testing
-    private void PrintClaims()
-    {
-        foreach (var userClaim in User.Claims)
-        {
-            Console.WriteLine($"claim type: {userClaim.Type} claim value: {userClaim.Value}");
-        }
-    }
 }
