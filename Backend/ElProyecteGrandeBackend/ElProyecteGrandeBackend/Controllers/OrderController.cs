@@ -135,7 +135,7 @@ public class OrderController : ControllerBase
             return Problem("Order failed to delete");
         }
     }
-
+/*
     [HttpPatch]
     public ActionResult UpdateOrder(Order order)
     {
@@ -149,4 +149,5 @@ public class OrderController : ControllerBase
             return Problem("Order failed to update");
         }
     }
+    */
 }
