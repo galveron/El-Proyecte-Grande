@@ -9,8 +9,9 @@ public class OrderRepository : IOrderRepository
     private readonly IUserRepository _userRepository;
     private readonly IConfigurationRoot _config;
     private readonly DbContextOptionsBuilder<MarketPlaceContext> _optionsBuilder;
+    private readonly MarketPlaceContext _dbContext;
 
-    public OrderRepository(IUserRepository userRepository)
+    public OrderRepository(IUserRepository userRepository, MarketPlaceContext marketPlaceContext)
     {
         _userRepository = userRepository;
         _config =
@@ -19,6 +20,7 @@ public class OrderRepository : IOrderRepository
                 .Build();
         _optionsBuilder = new DbContextOptionsBuilder<MarketPlaceContext>();
         _optionsBuilder.UseSqlServer(_config["ConnectionString"]);
+        _dbContext = marketPlaceContext;
     }
     public Order GetOrder(int orderId)
     {
@@ -38,9 +40,9 @@ public class OrderRepository : IOrderRepository
 
     public void AddOrder(Order order)
     {
-        using var dbContext = new MarketPlaceContext(_optionsBuilder.Options);
+        //using var dbContext = new MarketPlaceContext(_optionsBuilder.Options);
         
-        var userFromDb = dbContext.Users.FirstOrDefault(user1 => user1.Id == order.User.Id);
+        var userFromDb = _dbContext.Users.FirstOrDefault(user1 => user1.Id == order.User.Id);
         
         if (userFromDb == null)
         {
@@ -49,12 +51,12 @@ public class OrderRepository : IOrderRepository
         
         var orderForDb = new Order {User = userFromDb, Date = DateTime.Now, PriceToPay = 0};;
         userFromDb.Orders.Add(orderForDb);
-        dbContext.Update(userFromDb);
-        dbContext.Orders.Add(orderForDb);
+        _dbContext.Update(userFromDb);
+        _dbContext.Orders.Add(orderForDb);
         //dbContext.Update(order);
         //dbContext.Orders.Add(order);
         //dbContext.Update(order.User);
-        dbContext.SaveChanges();
+        _dbContext.SaveChanges();
     }
 
     public void DeleteOrder(Order order)

@@ -10,7 +10,8 @@ public class ProductRepository : IProductRepository
 {
     private readonly IConfigurationRoot _config;
     private readonly DbContextOptionsBuilder<MarketPlaceContext> _optionsBuilder;
-    public ProductRepository()
+    private readonly MarketPlaceContext _dbContext;
+    public ProductRepository(MarketPlaceContext marketPlaceContext)
     {
         _config =
             new ConfigurationBuilder()
@@ -18,6 +19,7 @@ public class ProductRepository : IProductRepository
                 .Build();
         _optionsBuilder = new DbContextOptionsBuilder<MarketPlaceContext>();
         _optionsBuilder.UseSqlServer(_config["ConnectionString"]);
+        _dbContext = marketPlaceContext;
     }
     public IEnumerable<Product> GetAllProducts()
     {
@@ -39,8 +41,8 @@ public class ProductRepository : IProductRepository
 
     public void AddProduct(Product product)
     {
-        using var dbContext = new MarketPlaceContext(_optionsBuilder.Options);
-        var userFromDb = dbContext.Users.FirstOrDefault(user1 => user1.Id == product.Seller.Id);
+        //using var dbContext = new MarketPlaceContext(_optionsBuilder.Options);
+        var userFromDb = _dbContext.Users.FirstOrDefault(user1 => user1.Id == product.Seller.Id);
         
         if (userFromDb == null)
         {
@@ -50,9 +52,9 @@ public class ProductRepository : IProductRepository
         var productFromDb = new Product
             { Name = product.Name, Details = product.Details, Price = product.Price, Quantity = product.Quantity, Seller = userFromDb };
         userFromDb.CompanyProducts.Add(productFromDb);
-        dbContext.Update(userFromDb);
-        dbContext.Products.Add(productFromDb);
-        dbContext.SaveChanges();
+        _dbContext.Update(userFromDb);
+        _dbContext.Products.Add(productFromDb);
+        _dbContext.SaveChanges();
     }
 
     public void AddMultipleProducts(int userId, IEnumerable<Product> products)
