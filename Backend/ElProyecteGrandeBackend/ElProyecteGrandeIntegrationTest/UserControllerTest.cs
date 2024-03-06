@@ -12,13 +12,15 @@ namespace ElProyecteGrandeIntegrationTest;
 public class UserControllerTest
 {
     [Fact]
-    public async Task GetUserByIdValidUserName()
+    public async Task GetUserByUserNameValidUserName()
     {
         var application = new MarketPlaceWebApplicationFactory();
         
         var client = application.CreateClient();
-
-        var response = await client.GetAsync("/User/GetUser?userName=admin");
+        var loginReq = new AuthRequest("admin@admin.hu", "Adminadmin123");
+        await client.PostAsJsonAsync("/Auth/Login", loginReq);
+        
+        var response = await client.GetAsync("/User/GetUser");
         
         response.EnsureSuccessStatusCode();
         
@@ -28,55 +30,27 @@ public class UserControllerTest
     }
     
     [Fact]
-    public async Task GetUserByIdInvalidUserName()
-    {
-        var application = new MarketPlaceWebApplicationFactory();
-        
-        var client = application.CreateClient();
-
-        var response = await client.GetAsync("/User/GetUser?userName=nobody");
-        
-        Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
-    }
-    
-    [Fact]
-    public async Task GetUsers()
-    {
-        var application = new MarketPlaceWebApplicationFactory();
-        
-        var client = application.CreateClient();
-
-        var response = await client.GetAsync("/User/GetUsers");
-        
-        response.EnsureSuccessStatusCode();
-        
-        var authResponse = await response.Content.ReadFromJsonAsync<IEnumerable<User>>();
-        
-        Assert.Equal(1, authResponse.Count());
-    }
-    
-    [Fact]
-    public async Task GetUsersNoUser()
-    {
-        var application = new MarketPlaceWebApplicationFactory();
-        
-        var client = application.CreateClient();
-        await client.DeleteAsync("/User/DeleteUser?userName=admin");
-        var response = await client.GetAsync("/User/GetUsers");
-        
-        Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
-    }
-    
-    [Fact]
     public async Task DeleteUserValidUserName()
     {
         var application = new MarketPlaceWebApplicationFactory();
         
         var client = application.CreateClient();
+        
         var request = new RegistrationRequest("body@body.com", "body", "Bodybody123");
         await client.PostAsJsonAsync("/Auth/Register", request);
+        
+        var loginBodyReq = new AuthRequest("body@body.com", "Bodybody123");
+        await client.PostAsJsonAsync("/Auth/Login", loginBodyReq);
 
-        var response = await client.DeleteAsync("/User/DeleteUser?userName=body");
+        var requestUser = await client.GetAsync("/User/GetUser");
+        var user = await requestUser.Content.ReadFromJsonAsync<User>();
+
+        await client.PostAsJsonAsync("/Auth/Logout", new {});
+        
+        var loginReq = new AuthRequest("admin@admin.hu", "Adminadmin123");
+        await client.PostAsJsonAsync("/Auth/Login", loginReq);
+
+        var response = await client.DeleteAsync($"/User/DeleteUserForAdmin?id={user.Id}");
         
         response.EnsureSuccessStatusCode();
     }
@@ -88,10 +62,10 @@ public class UserControllerTest
         
         var client = application.CreateClient();
         
-        var request = new RegistrationRequest("body@body.com", "body", "Bodybody123");
-        await client.PostAsJsonAsync("/Auth/Register", request);
+        var loginReq = new AuthRequest("admin@admin.hu", "Adminadmin123");
+        await client.PostAsJsonAsync("/Auth/Login", loginReq);
 
-        var response = await client.DeleteAsync("/User/DeleteUser?userName=nobody");
+        var response = await client.DeleteAsync($"/User/DeleteUserForAdmin?id=0");
         
         Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
     }
@@ -106,40 +80,12 @@ public class UserControllerTest
         var request = new RegistrationRequest("body@body.com", "body", "Bodybody123");
         await client.PostAsJsonAsync("/Auth/Register", request);
         
-        var response = await client.PatchAsJsonAsync("/User/UpdateCustomer?oldUserName=body&newUserName=bodybody&email=body%40body.hu&phoneNumber=123", new { });
+        var loginBodyReq = new AuthRequest("body@body.com", "Bodybody123");
+        await client.PostAsJsonAsync("/Auth/Login", loginBodyReq);
+        
+        var response = await client.PatchAsJsonAsync("/User/UpdateCustomer?userName=bodybody&email=body%40body.hu&phoneNumber=123", new { });
         
         response.EnsureSuccessStatusCode();
-    }
-    
-    [Fact]
-    public async Task UpdateCustomerInvalidUserName()
-    {
-        var application = new MarketPlaceWebApplicationFactory();
-        
-        var client = application.CreateClient();
-
-        var request = new RegistrationRequest("body@body.com", "body", "Bodybody123");
-        await client.PostAsJsonAsync("/Auth/Register", request);
-        
-        var response = await client.PatchAsJsonAsync("/User/UpdateCustomer?oldUserName=nobody&newUserName=bodybody&email=body%40body.hu&phoneNumber=123", new {  });
-        
-        Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
-    }
-    
-    
-    [Fact]
-    public async Task UpdateCustomerSameUserName()
-    {
-        var application = new MarketPlaceWebApplicationFactory();
-        
-        var client = application.CreateClient();
-
-        var request = new RegistrationRequest("body@body.com", "body", "Bodybody123");
-        await client.PostAsJsonAsync("/Auth/Register", request);
-        
-        var response = await client.PatchAsJsonAsync("/User/UpdateCustomer?oldUserName=body&newUserName=body&email=body%40body.hu&phoneNumber=123", new {  });
-        
-        Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
     }
     
     [Fact]
@@ -152,24 +98,12 @@ public class UserControllerTest
         var request = new RegistrationRequestCompany("body@body.com", "body", "Bodybody123", "bodyshop", "123");
         await client.PostAsJsonAsync("/Auth/RegisterCompany", request);
         
-        var response = await client.PatchAsJsonAsync("/User/UpdateCompany?oldUserName=body&newUserName=bodybody&email=body%40body.hu&phoneNumber=123&companyName=bodyshop&identifier=123", new { });
+        var loginBodyReq = new AuthRequest("body@body.com", "Bodybody123");
+        await client.PostAsJsonAsync("/Auth/Login", loginBodyReq);
+
+        var response = await client.PatchAsJsonAsync("/User/UpdateCompany?userName=bodybody&email=body%40body.hu&phoneNumber=123&companyName=bodyshop&identifier=123", new { });
         
         response.EnsureSuccessStatusCode();
-    }
-    
-    [Fact]
-    public async Task UpdateCompanyInvalidUserName()
-    {
-        var application = new MarketPlaceWebApplicationFactory();
-        
-        var client = application.CreateClient();
-
-        var request = new RegistrationRequestCompany("body@body.com", "body", "Bodybody123", "bodyshop", "123");
-        await client.PostAsJsonAsync("/Auth/Register", request);
-        
-        var response = await client.PatchAsJsonAsync("/User/UpdateCompany?oldUserName=nobody&newUserName=bodybody&email=body%40body.hu&phoneNumber=123&companyName=bodyshop&identifier=123", new {  });
-        
-        Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
     }
     
     [Fact]
