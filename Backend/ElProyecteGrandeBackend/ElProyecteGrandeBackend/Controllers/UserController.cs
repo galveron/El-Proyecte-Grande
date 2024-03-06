@@ -170,7 +170,10 @@ public class UserController : ControllerBase
         try
         {
             var user = await _userManager.FindByNameAsync(userName);
-            
+            if (user == null)
+            {
+                return BadRequest("No user found");
+            }
             user.Company.Verified = verified;
             var identityResult = await _userManager.UpdateAsync(user);
             
