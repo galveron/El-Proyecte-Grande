@@ -37,7 +37,6 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddSingleton<IProductRepository, ProductRepository>();
 builder.Services.AddSingleton<IOrderRepository, OrderRepository>();
-builder.Services.AddSingleton<IUserRepository, UserRepository>();
 builder.Services.AddDbContext<MarketPlaceContext>();
 
 AddCors();
