@@ -59,7 +59,7 @@ public class UserController : ControllerBase
         {
             var users = _userManager.Users.ToArray();
             
-            if (users == null)
+            if (users.Length == 0)
             {
                 return NotFound("Users were not found.");
             }
@@ -172,12 +172,17 @@ public class UserController : ControllerBase
         }
     }
     
-    [HttpPatch("VerifyCompany"), Authorize(Roles="Admin")]
+    [HttpPatch("VerifyCompany")]//,Authorize(Roles="Admin")]
     public async Task<ActionResult> VerifyCompany(string userName, bool verified)
     {
         try
         {
             var user = await _userManager.Users.SingleOrDefaultAsync(user => user.UserName == userName);
+
+            if (user == null)
+            {
+                return BadRequest("User was not found");
+            }
             user.Company.Verified = verified;
             var identityResult = await _userManager.UpdateAsync(user);
             
@@ -286,7 +291,7 @@ public class UserController : ControllerBase
         }
     }
     
-    [HttpPatch("AddOrRemoveCartItems"), Authorize(Roles="Customer, Admin")]
+    [HttpPatch("AddOrRemoveCartItems")]//, Authorize(Roles="Customer, Admin")]
     public async Task<ActionResult> AddOrRemoveCartItems(string userName, int productId, int quantity)
     {
         try
