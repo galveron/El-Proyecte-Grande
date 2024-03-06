@@ -1,0 +1,26 @@
+.home-page {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    bottom: 0;
+    text-align: center;
+}
+
+img {
+    display: flex;
+    position: relative;
+    width: 90vw;
+    bottom: 0;
+}
+
+.welcome {
+    font-family: "Josefin Sans", sans-serif;
+    font-weight: 600;
+    line-height: 3;
+    font-size: xx-large;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 200px;
+    text-align: center;
+}

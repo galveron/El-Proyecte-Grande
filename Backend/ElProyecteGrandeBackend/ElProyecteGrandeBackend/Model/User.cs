@@ -1,14 +1,14 @@
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.AspNetCore.Identity;
+
 namespace ElProyecteGrandeBackend.Model;
 
-public class User
+[Table("users")]
+public class User : IdentityUser
 {
-    public int Id { get; init; }
-    public string Name { get; init; }
-    public string Password { get; init; }
-    public Role Role { get; init; }
-    public string Email { get; init; }
-    public string PhoneNumber { get; init; }
     public Company? Company { get; init; }
-    public List<Product> Favourites { get; init; }
-    public List<Product> Cart { get; init; }
+    public ICollection<Product> Favourites { get; } = new List<Product>();
+    public ICollection<CartItem> CartItems { get; } = new List<CartItem>();
+    public ICollection<Product> CompanyProducts { get; } = new List<Product>();
+    public ICollection<Order> Orders { get; } = new List<Order>();
 }
