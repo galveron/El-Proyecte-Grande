@@ -55,28 +55,6 @@ public class UserController : ControllerBase
         }
     }
     
-    //for testing
-    [HttpGet("GetUsers")]
-    public async Task<ActionResult<User[]>> GetUsers()
-    {
-        try
-        {
-            var users = _userManager.Users.ToArray();
-            
-            if (users == null)
-            {
-                return NotFound("Users were not found.");
-            }
-            
-            return Ok(users);
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-            return StatusCode(500, e.Message);
-        }
-    }
-    
     [HttpDelete("DeleteUserForAdmin"), Authorize(Roles = "Admin")]
     public async Task<ActionResult> DeleteUser(string id)
     {
