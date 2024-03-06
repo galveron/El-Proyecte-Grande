@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using System.Net;
 using System.Net.Http.Json;
+using ElProyecteGrandeBackend.Contracts;
 using ElProyecteGrandeBackend.Model;
 using ElProyecteGrandeBackend.Services;
 using Microsoft.AspNetCore.TestHost;
@@ -334,18 +335,28 @@ public class UserControllerTest
         var requestRegister = new RegistrationRequest("body@body.com", "body", "Bodybody123");
         await client.PostAsJsonAsync("/Auth/Register", requestRegister);
         
-        var responseUser =  await client.GetAsync(
-            $"/User/GetUser?userName=body");
+        var requestRegComp = new RegistrationRequestCompany("valaki@g.com", "valaki", "Valaki123456", "ceg", "123");
         
-        var user = await responseUser.Content.ReadFromJsonAsync<User>();
-        var id = user.Id;
+        var regRequest = await client.PostAsJsonAsync("/Auth/RegisterCompany", requestRegComp);
+        regRequest.EnsureSuccessStatusCode();
+        
+        var loginReqComp = new AuthRequest("valaki@g.com", "Valaki123456");
+        var login = await client.PostAsJsonAsync("/Auth/Login", loginReqComp);
+        login.EnsureSuccessStatusCode();
         
         await client.PostAsJsonAsync(
-            $"/Product/AddProduct?userId={id}&name=product&price=2&details=nothing&quantity=3",
+            $"/Product/AddProduct?name=product&price=2&details=nothing&quantity=3",
             new { });
         
-        var response = await client.PatchAsJsonAsync($"/User/AddOrRemoveCartItems?userName=body&productId=1&quantity=1", new { });
+        await client.PostAsJsonAsync("/Auth/Logout", "");
         
+        var loginReq = new AuthRequest("body@body.com", "Bodybody123");
+        await client.PostAsJsonAsync("/Auth/Login", loginReq);
+        
+        var response = await client.PatchAsJsonAsync($"/User/AddOrRemoveCartItems?productId=1&quantity=1", new { });
+        
+        await client.PostAsJsonAsync("/Auth/Logout", "");
+
         response.EnsureSuccessStatusCode();
     }
     [Fact]
@@ -358,19 +369,30 @@ public class UserControllerTest
         var requestRegister = new RegistrationRequest("body@body.com", "body", "Bodybody123");
         await client.PostAsJsonAsync("/Auth/Register", requestRegister);
         
-        var responseUser =  await client.GetAsync(
-            $"/User/GetUser?userName=body");
+        var requestRegComp = new RegistrationRequestCompany("valaki@g.com", "valaki", "Valaki123456", "ceg", "123");
         
-        var user = await responseUser.Content.ReadFromJsonAsync<User>();
-        var id = user.Id;
+        var regRequest = await client.PostAsJsonAsync("/Auth/RegisterCompany", requestRegComp);
+        regRequest.EnsureSuccessStatusCode();
+        
+        var loginReqComp = new AuthRequest("valaki@g.com", "Valaki123456");
+        var login = await client.PostAsJsonAsync("/Auth/Login", loginReqComp);
+        login.EnsureSuccessStatusCode();
         
         await client.PostAsJsonAsync(
-            $"/Product/AddProduct?userId={id}&name=product&price=2&details=nothing&quantity=3",
+            $"/Product/AddProduct?name=product&price=2&details=nothing&quantity=3",
             new { });
         
-        var response = await client.PatchAsJsonAsync($"/User/AddOrRemoveCartItems?userName=body&productId=1&quantity=1", new { });
-        var response2 = await client.PatchAsJsonAsync($"/User/AddOrRemoveCartItems?userName=body&productId=1&quantity=1", new { });
+        await client.PostAsJsonAsync("/Auth/Logout", "");
         
+        var loginReq = new AuthRequest("body@body.com", "Bodybody123");
+        await client.PostAsJsonAsync("/Auth/Login", loginReq);
+        
+        var response = await client.PatchAsJsonAsync($"/User/AddOrRemoveCartItems?productId=1&quantity=1", new { });
+        var response2 = await client.PatchAsJsonAsync($"/User/AddOrRemoveCartItems?productId=1&quantity=-1", new { });
+        
+        await client.PostAsJsonAsync("/Auth/Logout", "");
+
+        response.EnsureSuccessStatusCode();
         response2.EnsureSuccessStatusCode();
     }
     
@@ -409,7 +431,7 @@ public class UserControllerTest
     }
     
     [Fact]
-    public async Task EmptyCartValidUserName()
+    public async Task EmptyCartWithLoggedInUser_EmptiesCart()
     {
         var application = new MarketPlaceWebApplicationFactory();
         
@@ -417,9 +439,11 @@ public class UserControllerTest
 
         var requestRegister = new RegistrationRequest("body@body.com", "body", "Bodybody123");
         await client.PostAsJsonAsync("/Auth/Register", requestRegister);
+
+        var loginReq = new AuthRequest("body@body.com", "Bodybody123");
+        await client.PostAsJsonAsync("/Auth/Login", loginReq);
         
-        var responseUser =  await client.GetAsync(
-            $"/User/GetUser?userName=body");
+        var responseUser =  await client.GetAsync($"/User/GetUser");
         
         var user = await responseUser.Content.ReadFromJsonAsync<User>();
         var id = user.Id;
@@ -430,6 +454,8 @@ public class UserControllerTest
         
         await client.PatchAsJsonAsync($"/User/AddOrRemoveCartItems?userName=body&productId=1&quantity=1", new { });
         var response = await client.PatchAsJsonAsync($"/User/EmptyCart?userName=body", new { });
+
+        await client.PostAsJsonAsync("Auth/Logout", "");
         
         response.EnsureSuccessStatusCode();
     }

@@ -46,7 +46,7 @@ public class ProductControllerTest
         
         var product = new Product { Name = "term", Seller = user, Price = 123, Details = "rrr", Quantity = 2 };
         var addProductRes = await client.PostAsJsonAsync(
-            $"/Product/AddProduct?userId={user.Id}&name={product.Name}&price={product.Price}&details={product.Details}&quantity={product.Quantity}",
+            $"/Product/AddProduct?name={product.Name}&price={product.Price}&details={product.Details}&quantity={product.Quantity}",
             new { });
         addProductRes.EnsureSuccessStatusCode();
 
