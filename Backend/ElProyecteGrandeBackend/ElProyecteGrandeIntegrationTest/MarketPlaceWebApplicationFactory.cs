@@ -1,4 +1,5 @@
 using ElProyecteGrandeBackend.Data;
+using ElProyecteGrandeBackend.Services.Repositories;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
@@ -35,6 +36,7 @@ public class MarketPlaceWebApplicationFactory : WebApplicationFactory<Program>
             var scope = serviceProvider.CreateScope();
             var dbContext = scope.ServiceProvider.GetRequiredService<MarketPlaceContext>();
             var authSeeder = scope.ServiceProvider.GetRequiredService<AuthenticationSeeder>();
+
             dbContext.Database.EnsureDeleted();
             dbContext.Database.EnsureCreated();
             authSeeder.AddRoles();
