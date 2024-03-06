@@ -1,6 +1,7 @@
 using ElProyecteGrandeBackend.Data;
 using ElProyecteGrandeBackend.Model;
 using ElProyecteGrandeBackend.Services.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -14,18 +15,15 @@ public class OrderController : ControllerBase
 {
     private readonly IOrderRepository _orderRepository;
     private readonly IProductRepository _productRepository;
-    private readonly IUserRepository _userRepository;
     private readonly UserManager<User> _userManager;
 
     public OrderController(
-        IUserRepository userRepository, 
         IOrderRepository orderRepository, 
         IProductRepository productRepository,
         UserManager<User> userManager)
     {
         _orderRepository = orderRepository;
         _productRepository = productRepository;
-        _userRepository = userRepository;
         _userManager = userManager;
     }
 
@@ -43,14 +41,14 @@ public class OrderController : ControllerBase
         }
     }
 
-    [HttpGet]
-    public async Task<ActionResult<List<Order>>> GetUserOrders(string userId)
+    [HttpGet, Authorize(Roles = "Customer, Admin")]
+    public async Task<ActionResult<List<Order>>> GetUserOrders()
     {
         try
         {
             var user = await _userManager.Users
                 .Include(user => user.Orders)
-                .SingleOrDefaultAsync(user => user.Id == userId);
+                .SingleOrDefaultAsync(user => user.UserName == User.Identity.Name);
             var orders = user.Orders;
             
             return Ok(orders);
@@ -61,15 +59,15 @@ public class OrderController : ControllerBase
         }
     }
 
-    [HttpPost]
-    public async Task<ActionResult> AddOrder(string userId)
+    [HttpPost, Authorize(Roles = "Customer, Admin")]
+    public async Task<ActionResult> AddOrder()
     {
         try
         {
             //var user = _userRepository.GetUser(userId);
             var user = await _userManager.Users
                 .Include(user1 => user1.Orders)
-                .SingleAsync(user1 => user1.Id == userId);;
+                .SingleAsync(user1 => user1.UserName == User.Identity.Name);;
             var orderToAdd = new Order {User = user, Date = DateTime.Now, PriceToPay = 0};
             /*user.Orders.Add(orderToAdd);
             
@@ -90,7 +88,7 @@ public class OrderController : ControllerBase
         }
     }
 
-    [HttpPost]
+    [HttpPost, Authorize(Roles = "Customer, Admin")]
     public async Task<ActionResult> AddOrRemoveProductFromOrder(int orderId, int productId, int quantity)
     {
         try
@@ -105,7 +103,7 @@ public class OrderController : ControllerBase
         }
     }
     
-    [HttpPatch]
+    [HttpPatch, Authorize(Roles = "Customer, Admin")]
     public async Task<ActionResult> EmptyOrderItems(int orderId)
     {
         try
@@ -121,7 +119,7 @@ public class OrderController : ControllerBase
         }
     }
 
-    [HttpDelete]
+    [HttpDelete, Authorize(Roles = "Customer, Admin")]
     public ActionResult DeleteOrder(int orderId)
     {
         try

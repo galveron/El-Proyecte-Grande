@@ -10,8 +10,16 @@ function UserProfile() {
     const id = Cookies.get('user_id');
 
     async function fetchUser() {
-        let url = `http://localhost:5036/User/GetUser?id=${id.replace(/^"|"$/g, '')}`;
-        const res = await fetch(url);
+        let url = `http://localhost:5036/User/GetUser`;
+        const res = await fetch(url,
+            {
+                method: "GET",
+                credentials: 'include',
+                headers: { 
+                  "Content-Type": "application/json",
+                  "Authorization": "Bearer token"
+                   }
+            });
         const data = await res.json();
         return data;
     }

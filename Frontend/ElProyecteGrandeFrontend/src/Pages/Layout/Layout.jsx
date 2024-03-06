@@ -9,13 +9,43 @@ notification.config({
     closeIcon: null
 })
 
+function getCookie(cname) {
+    let name = cname + "=";
+    let decodedCookie = decodeURIComponent(document.cookie);
+    let ca = decodedCookie.split(';');
+    for(let i = 0; i <ca.length; i++) {
+      let c = ca[i];
+      while (c.charAt(0) == ' ') {
+        c = c.substring(1);
+      }
+      if (c.indexOf(name) == 0) {
+        return c.substring(name.length, c.length);
+      }
+    }
+    return "";
+  }
+
 function Layout() {
-    const token = Cookies.get('token');
+    const isToken = getCookie('User');
     const navigate = useNavigate();
 
-    function handleLogout() {
-        Cookies.remove('token');
-        Cookies.remove('user_id');
+    async function handleLogout() {
+        try {
+            const res = await fetch('http://localhost:5036/Auth/Logout', {
+                method: 'POST',
+                credentials: 'include',
+                headers: { 'Content-Type': 'application/json' },
+            });
+            if (!res.ok) {
+                notification.error({ message: 'Email or password incorrect!' });
+                throw new Error(`HTTP error! status: ${res.status}`);
+            }
+            navigate('/');
+            notification.success({ message: 'Successful login. Welcome!' });
+        }
+        catch (error) {
+            throw error;
+        }
         navigate('/');
         notification.success({ message: 'Logged out.' })
     }
@@ -34,7 +64,7 @@ function Layout() {
                             <li className="products-layout">
                                 <Link to="/marketplace">MarketPlace</Link>
                             </li>
-                            {token ?
+                            {isToken != "" ?
                                 <>
                                     <li className="profile-layout">
                                         <Link to="/profile">Profile</Link>
