@@ -158,10 +158,11 @@ public class OrderControllerTest
         var regResponse = await client.PostAsJsonAsync("/Auth/Register", regRequest);
         var loginResponse = await client.PostAsJsonAsync("/Auth/Login", loginRequest);
         var addOrderResponse = await client.PostAsJsonAsync($"Order/AddOrder", "");
+        var logout = await client.PostAsJsonAsync("Auth/Logout", "");
 
-        var getUserOrderResponse = await client.GetAsync($"Order/GetUserOrders?userId=12");
+        var getUserOrderResponse = await client.GetAsync($"Order/GetUserOrders");
 
-        //Assert.Equal();
+        Assert.Equal(HttpStatusCode.Unauthorized,getUserOrderResponse.StatusCode);
 
     }
     
