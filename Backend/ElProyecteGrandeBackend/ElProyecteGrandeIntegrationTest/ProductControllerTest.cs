@@ -1,13 +1,7 @@
 using System.Net.Http.Json;
-using System.Text.Json;
 using ElProyecteGrandeBackend.Contracts;
-using ElProyecteGrandeBackend.Controllers;
-using ElProyecteGrandeBackend.Data;
 using ElProyecteGrandeBackend.Model;
 using ElProyecteGrandeBackend.Services;
-using ElProyecteGrandeBackend.Services.Repositories;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 
 namespace ElProyecteGrandeIntegrationTest;
 
