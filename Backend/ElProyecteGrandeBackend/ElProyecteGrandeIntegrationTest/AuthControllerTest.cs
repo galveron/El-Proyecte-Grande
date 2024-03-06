@@ -1,6 +1,7 @@
 using System.Net;
 using System.Net.Http.Json;
 using ElProyecteGrandeBackend.Contracts;
+using ElProyecteGrandeBackend.Model;
 using ElProyecteGrandeBackend.Services;
 
 namespace ElProyecteGrandeIntegrationTest;
@@ -50,17 +51,16 @@ public class AuthControllerTest
         var client = application.CreateClient();
 
         var registerResponse = await client.PostAsJsonAsync("/Auth/Register", registrationRequest);
-
         registerResponse.EnsureSuccessStatusCode();
         
         var loginResponse = await client.PostAsJsonAsync("/Auth/Login", loginRequest);
-
         loginResponse.EnsureSuccessStatusCode();
-
-        var authResponse = await loginResponse.Content.ReadFromJsonAsync<AuthResponse>();
         
-        Assert.Equal(testEmail, authResponse?.Email);
-        Assert.NotNull(authResponse?.Token);
+        var getUserRes = await client.GetAsync($"/User/GetUser");
+        getUserRes.EnsureSuccessStatusCode();
+        var user = await getUserRes.Content.ReadFromJsonAsync<User>();
+        
+        Assert.Equal(testEmail, user.Email);
     }
     
     [Fact]
