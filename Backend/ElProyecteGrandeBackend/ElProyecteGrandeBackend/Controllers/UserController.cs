@@ -142,6 +142,12 @@ public class UserController : ControllerBase
         try
         {
             var user = await _userManager.FindByNameAsync(User.Identity.Name);
+            
+            if (user == null)
+            {
+                return NotFound("User was not found.");
+            }
+            
             user.UserName = userName;
             user.Email = email;
             user.PhoneNumber = phoneNumber;
@@ -168,6 +174,12 @@ public class UserController : ControllerBase
         try
         {
             var user = await _userManager.FindByNameAsync(User.Identity.Name);
+            
+            if (user == null)
+            {
+                return NotFound("User was not found.");
+            }
+            
             user.UserName = userName;
             user.Email = email;
             user.PhoneNumber = phoneNumber;
@@ -195,6 +207,12 @@ public class UserController : ControllerBase
         try
         {
             var user = await _userManager.FindByIdAsync(id);
+            
+            if (user == null)
+            {
+                return NotFound("User was not found.");
+            }
+            
             user.Company.Verified = verified;
             var identityResult = await _userManager.UpdateAsync(user);
             
@@ -217,22 +235,22 @@ public class UserController : ControllerBase
     {
         try
         {
-            var productToAddAsFavourite = _productRepository.GetProduct(productId);
             var userToAddFavouriteTo = await _userManager.Users
                 .Include(user => user.Favourites)
                 .SingleOrDefaultAsync(user => user.UserName == User.Identity.Name);
-
-            //TODO check it and return Ok maybe with message about it
-
-            //should we test whether the product is already a favourite or would be wasteful since it works anyway??
-            //This probably throws an exception
-            //because we try to track the Product as productToAddAsFavourite and as part of userToAddFavouriteTo.Favourites.
 
             if (userToAddFavouriteTo == null)
             {
                 return NotFound("User was not found for adding favourite.");
             }
-
+            
+            if (userToAddFavouriteTo.Favourites.SingleOrDefault(product => product.Id == productId) != null)
+            {
+                return Ok("Product is already a favourite.");
+            }
+            
+            var productToAddAsFavourite = _productRepository.GetProduct(productId);
+            
             if (productToAddAsFavourite == null)
             {
                 return NotFound("Product was not found for adding favourite");
@@ -246,7 +264,7 @@ public class UserController : ControllerBase
                 return BadRequest(identityResult.Errors);
             }
 
-            return Ok("Done.");
+            return Ok("Successfully added product to favourites.");
         }
         catch (Exception e)
         {
@@ -286,7 +304,7 @@ public class UserController : ControllerBase
                 return BadRequest(identityResult.Errors);
             }
             
-            return Ok("Done.");
+            return Ok("Successfully removed product to favourites.");
         }
         catch (Exception e)
         {
@@ -359,7 +377,7 @@ public class UserController : ControllerBase
                 return BadRequest(identityResult.Errors);
             }
             
-            return Ok("Done.");
+            return Ok("Successfully added product to cart.");
         }
         catch (Exception e)
         {
