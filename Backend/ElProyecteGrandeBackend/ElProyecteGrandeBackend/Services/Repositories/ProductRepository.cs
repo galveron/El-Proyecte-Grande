@@ -23,25 +23,21 @@ public class ProductRepository : IProductRepository
     }
     public IEnumerable<Product> GetAllProducts()
     {
-        using var dbContext = new MarketPlaceContext(_optionsBuilder.Options);
-        return dbContext.Products.Include(product => product.Seller).ToList();
+        return _dbContext.Products.Include(product => product.Seller).ToList();
     }
     
     public IEnumerable<Product> GetAllProductsByUser(User user)
     {
-        using var dbContext = new MarketPlaceContext(_optionsBuilder.Options);
-        return dbContext.Products.Where(p => p.Seller.Id == user.Id);
+        return _dbContext.Products.Where(p => p.Seller.Id == user.Id);
     }
 
     public Product GetProduct(int productId)
     {
-        using var dbContext = new MarketPlaceContext(_optionsBuilder.Options);
-        return dbContext.Products.FirstOrDefault(p => p.Id == productId);
+        return _dbContext.Products.FirstOrDefault(p => p.Id == productId);
     }
 
     public void AddProduct(Product product)
     {
-        //using var dbContext = new MarketPlaceContext(_optionsBuilder.Options);
         var userFromDb = _dbContext.Users.FirstOrDefault(user1 => user1.Id == product.Seller.Id);
         
         if (userFromDb == null)
@@ -59,48 +55,42 @@ public class ProductRepository : IProductRepository
 
     public void AddMultipleProducts(int userId, IEnumerable<Product> products)
     {
-        using var dbContext = new MarketPlaceContext(_optionsBuilder.Options);
         foreach (var product in products)
         {
-            dbContext.Products.Add(product);
+            _dbContext.Products.Add(product);
         }
-        dbContext.SaveChanges();
+        _dbContext.SaveChanges();
     }
 
     public void DeleteProduct(Product product)
     {
-        using var dbContext = new MarketPlaceContext(_optionsBuilder.Options);
-        dbContext.Products.Remove(product);
-        dbContext.SaveChanges();
+        _dbContext.Products.Remove(product);
+        _dbContext.SaveChanges();
     }
 
     public void UpdateProduct(Product product)
     {
-        using var dbContext = new MarketPlaceContext(_optionsBuilder.Options);
-        dbContext.Products.Update(product);
-        dbContext.SaveChanges();
+        _dbContext.Products.Update(product);
+        _dbContext.SaveChanges();
     }
 
     public IEnumerable<Product> GetProductsByPrice(decimal minPrice, decimal maxPrice)
     {
-        using var dbContext = new MarketPlaceContext(_optionsBuilder.Options);
-        return dbContext.Products.Where(p => p.Price >= minPrice && p.Price <= maxPrice);
+        return _dbContext.Products.Where(p => p.Price >= minPrice && p.Price <= maxPrice);
     }
 
     public IEnumerable<Product> GetProductsByDetails(IEnumerable<string> details)
     {
-        using var dbContext = new MarketPlaceContext(_optionsBuilder.Options);
         var foundProducts = new List<Product>();
         foreach (var detail in details)
         {
-            foundProducts.AddRange(dbContext.Products.Where(p => p.Details.ToLower().Contains(detail.ToLower())));
+            foundProducts.AddRange(_dbContext.Products.Where(p => p.Details.ToLower().Contains(detail.ToLower())));
         }
         return foundProducts;
     }
 
     public IEnumerable<Product> GetProductsByQuantity(int quantity)
     {
-        using var dbContext = new MarketPlaceContext(_optionsBuilder.Options);
-        return dbContext.Products.Where(p => p.Quantity == quantity);
+        return _dbContext.Products.Where(p => p.Quantity == quantity);
     }
 }

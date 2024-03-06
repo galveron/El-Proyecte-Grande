@@ -34,7 +34,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddTransient<IProductRepository, ProductRepository>();
 builder.Services.AddTransient<IOrderRepository, OrderRepository>();
-builder.Services.AddSingleton<IUserRepository, UserRepository>();
+builder.Services.AddTransient<IUserRepository, UserRepository>();
 builder.Services.AddScoped<AuthenticationSeeder>();
 builder.Services.AddDbContext<MarketPlaceContext>((container, options) =>
     options.UseSqlServer(config["ConnectionString"]));

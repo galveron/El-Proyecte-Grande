@@ -24,8 +24,7 @@ public class OrderRepository : IOrderRepository
     }
     public Order GetOrder(int orderId)
     {
-        using var dbContext = new MarketPlaceContext(_optionsBuilder.Options);
-        return dbContext.Orders.Where(o => o.Id == orderId)
+        return _dbContext.Orders.Where(o => o.Id == orderId)
             .Include(order => order.User)
             .Include(order => order.OrderItems)
             .First();
@@ -33,15 +32,12 @@ public class OrderRepository : IOrderRepository
 
     public List<Order> GetUserOrders(string userId)
     {
-        using var dbContext = new MarketPlaceContext(_optionsBuilder.Options);
         var user = _userRepository.GetUser(userId);
         return user.Orders.ToList();
     }
 
     public void AddOrder(Order order)
     {
-        //using var dbContext = new MarketPlaceContext(_optionsBuilder.Options);
-        
         var userFromDb = _dbContext.Users.FirstOrDefault(user1 => user1.Id == order.User.Id);
         
         if (userFromDb == null)
@@ -61,16 +57,14 @@ public class OrderRepository : IOrderRepository
 
     public void DeleteOrder(Order order)
     {
-        using var dbContext = new MarketPlaceContext(_optionsBuilder.Options);
-        dbContext.Orders.Remove(order);
-        dbContext.SaveChanges();
+        _dbContext.Orders.Remove(order);
+        _dbContext.SaveChanges();
     }
 
     public void UpdateOrder(Order order)
     {
-        using var dbContext = new MarketPlaceContext(_optionsBuilder.Options);
-        dbContext.Orders.Update(order);
-        dbContext.SaveChanges();
+        _dbContext.Orders.Update(order);
+        _dbContext.SaveChanges();
     }
     
     public void AddOrRemoveOrderItems(int orderId, int productId, int quantity)
@@ -79,13 +73,12 @@ public class OrderRepository : IOrderRepository
         {
             throw new Exception("You cannot add zero product.");
         }
-        
-        using var dbContext = new MarketPlaceContext(_optionsBuilder.Options);
-        var orderForAddToOrderItems = dbContext.Orders
+
+        var orderForAddToOrderItems = _dbContext.Orders
             .Include(order => order.OrderItems)
             .ThenInclude(orderItem => orderItem.Product)
             .SingleOrDefault(order => order.Id == orderId);
-        var productToAddToOrderItems = dbContext.Products.FirstOrDefault(product1 => product1.Id == productId);
+        var productToAddToOrderItems = _dbContext.Products.FirstOrDefault(product1 => product1.Id == productId);
         
         if (orderForAddToOrderItems == null)
         {
@@ -130,20 +123,19 @@ public class OrderRepository : IOrderRepository
             }
         }
         
-        dbContext.Update(orderForAddToOrderItems);
-        dbContext.SaveChanges();
+        _dbContext.Update(orderForAddToOrderItems);
+        _dbContext.SaveChanges();
     }
     
     public void EmptyOrderItems(int orderId)
     {
-        using var dbContext = new MarketPlaceContext(_optionsBuilder.Options);
-        var orderForCartEmptying = dbContext.Orders
+        var orderForCartEmptying = _dbContext.Orders
             .Include(order => order.OrderItems)
             .Single(order => order.Id == orderId);
         
         orderForCartEmptying.OrderItems.Clear();
         orderForCartEmptying.PriceToPay = 0;
         
-        dbContext.SaveChanges();
+        _dbContext.SaveChanges();
     }
 }
