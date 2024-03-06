@@ -84,4 +84,12 @@ public class AuthController : ControllerBase
 
         return Ok(new AuthResponse(result.Email, result.UserName, result.UserId,result.Token));
     }
+    
+    [Authorize(Roles = "Customer, Company, Admin")]
+    [HttpPost("Logout")]
+    public IActionResult Logout()
+    {
+        HttpContext.Response.Cookies.Delete("User");
+        return Ok();
+    }
 }
