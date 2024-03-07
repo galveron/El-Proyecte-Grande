@@ -22,6 +22,8 @@ jobs:
       with:
         dotnet-version: 6.0.x
     - name: "Write directories"
+      run: cd Backend/ElProyecteGrandeBackend
+    - name: "Write directories"
       run: ls
     - name: "Print Working Directory"
       run: pwd
@@ -30,7 +32,7 @@ jobs:
     - name: "Print Working Directory"
       run: pwd
     - name: Build
-      run: dotnet build /Backend/ElProyecteGrandeBackend
+      run: dotnet build Backend/ElProyecteGrandeBackend
     - name: "Print Working Directory"
       run: pwd
     - name: Test
