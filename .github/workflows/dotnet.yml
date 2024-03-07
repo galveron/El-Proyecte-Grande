@@ -21,19 +21,9 @@ jobs:
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: 6.0.x
-    - name: "Write directories"
-      run: cd Backend/ElProyecteGrandeBackend
-    - name: "Write directories"
-      run: ls
-    - name: "Print Working Directory"
-      run: pwd
     - name: Restore dependencies
       run: dotnet restore  Backend/ElProyecteGrandeBackend
-    - name: "Print Working Directory"
-      run: pwd
     - name: Build
       run: dotnet build Backend/ElProyecteGrandeBackend/ElProyecteGrandeBackend.sln
-    - name: "Print Working Directory"
-      run: pwd
     - name: Test
-      run: dotnet test ElProyecteGrandeIntegrationTest.csproj --verbosity normal
+      run: dotnet test Backend/ElProyecteGrandeBackend/ElProyecteGrandeIntegrationTest/ElProyecteGrandeIntegrationTest.csproj --verbosity normal
