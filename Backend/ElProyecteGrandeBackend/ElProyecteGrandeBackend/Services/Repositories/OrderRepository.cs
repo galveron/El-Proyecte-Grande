@@ -111,7 +111,7 @@ public class OrderRepository : IOrderRepository
         }
         else
         {
-            if (orderItem.Quantity + quantity < 0)
+            if (orderItem.Quantity + quantity <= 0)
             {
                 orderForAddToOrderItems.OrderItems.Remove(orderItem);
                 orderForAddToOrderItems.PriceToPay -= productToAddToOrderItems.Price * orderItem.Quantity;
