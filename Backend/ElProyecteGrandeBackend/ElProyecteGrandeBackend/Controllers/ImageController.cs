@@ -9,11 +9,14 @@ public class ImageController : ControllerBase
 {
         private readonly AmazonS3Service _s3Service;
 
-        public ImageController(IConfiguration configuration)
+        public ImageController(IConfiguration config)
         {
-            var accessKey = "AKIA6GBMCS7P6VWY4KEK";
-            var secretKey = "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";
-            var bucketName = "elproyectegrande";
+            var accessKey = config["AccessKey"] != null
+                ? config["AccessKey"] : Environment.GetEnvironmentVariable("ACCESSKEY");
+            var secretKey = config["SecretKey"] != null
+                ? config["SecretKey"] : Environment.GetEnvironmentVariable("SECRETKEY");
+            var bucketName = config["BucketName"] != null
+                ? config["BucketName"] : Environment.GetEnvironmentVariable("BUCKETNAME");
             var region = RegionEndpoint.GetBySystemName("eu-north-1");
 
             _s3Service = new AmazonS3Service(accessKey, secretKey, bucketName, region);
