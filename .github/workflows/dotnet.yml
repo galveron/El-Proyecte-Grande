@@ -17,7 +17,7 @@ jobs:
       mssql:
         image: mcr.microsoft.com/mssql/server:2019-latest
         env:
-          SA_PASSWORD: ${{ secrets.PASSWORD }}
+          PASSWORD: ${{ secrets.PASSWORD }}
           ACCEPT_EULA: 'Y'
         ports:
           - 1433:1433
