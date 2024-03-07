@@ -30,7 +30,7 @@ jobs:
     - name: "Print Working Directory"
       run: pwd
     - name: Build
-      run: dotnet build
+      run: dotnet build /Backend/ElProyecteGrandeBackend
     - name: "Print Working Directory"
       run: pwd
     - name: Test
