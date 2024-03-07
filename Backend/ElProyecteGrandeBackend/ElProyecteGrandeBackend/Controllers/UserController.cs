@@ -41,11 +41,6 @@ public class UserController : ControllerBase
                 .Include(user1 => user1.Orders)
                 .SingleOrDefaultAsync(user1 => user1.UserName == User.Identity.Name);
             
-            if (user == null)
-            {
-                return NotFound("User was not found.");
-            }
-            
             return Ok(user);
         }
         catch (Exception e)
@@ -120,11 +115,6 @@ public class UserController : ControllerBase
         {
             var user = await _userManager.FindByNameAsync(User.Identity.Name);
             
-            if (user == null)
-            {
-                return NotFound("User was not found.");
-            }
-            
             user.UserName = userName;
             user.Email = email;
             user.PhoneNumber = phoneNumber;
@@ -152,10 +142,6 @@ public class UserController : ControllerBase
         {
             var user = await _userManager.FindByNameAsync(User.Identity.Name);
             
-            if (user == null)
-            {
-                return NotFound("User was not found.");
-            }
             
             user.UserName = userName;
             user.Email = email;
@@ -178,18 +164,16 @@ public class UserController : ControllerBase
         }
     }
     
-    [HttpPatch("VerifyCompany")]//,Authorize(Roles="Admin")]
+    [HttpPatch("VerifyCompany"), Authorize(Roles="Admin")]
     public async Task<ActionResult> VerifyCompany(string userName, bool verified)
     {
         try
         {
             var user = await _userManager.FindByNameAsync(userName);
-            
             if (user == null)
             {
-                return NotFound("User was not found.");
+                return BadRequest("No user found");
             }
-            
             user.Company.Verified = verified;
             var identityResult = await _userManager.UpdateAsync(user);
             
@@ -215,11 +199,6 @@ public class UserController : ControllerBase
             var userToAddFavouriteTo = await _userManager.Users
                 .Include(user => user.Favourites)
                 .SingleOrDefaultAsync(user => user.UserName == User.Identity.Name);
-
-            if (userToAddFavouriteTo == null)
-            {
-                return NotFound("User was not found for adding favourite.");
-            }
             
             if (userToAddFavouriteTo.Favourites.SingleOrDefault(product => product.Id == productId) != null)
             {
@@ -255,15 +234,9 @@ public class UserController : ControllerBase
     {
         try
         {
-            
             var userToRemoveFavouriteFrom = await _userManager.Users
                 .Include(user => user.Favourites)
                 .SingleOrDefaultAsync(user => user.UserName == User.Identity.Name);
-            
-            if (userToRemoveFavouriteFrom == null)
-            {
-                return NotFound("User was not found for removing favourite.");
-            }
             
             var productToRemoveFromFavourite = userToRemoveFavouriteFrom.Favourites.SingleOrDefault(product => product.Id == productId);
 
@@ -304,11 +277,6 @@ public class UserController : ControllerBase
                 .Include(user => user.CartItems)
                 .ThenInclude(cartItem => cartItem.Product)
                 .SingleOrDefaultAsync(user => user.UserName == User.Identity.Name);
-            
-            if (userWhoseCartToAddTo == null)
-            {
-                return NotFound("User was not found for adding to cart.");
-            }
 
             var productToAddToCart = _productRepository.GetProduct(productId); //should we throw errors or return null
 
