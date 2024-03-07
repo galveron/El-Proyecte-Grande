@@ -34,4 +34,10 @@ jobs:
     - name: Test
       env:
         TESTCONNECTIONSTRING: ${{ secrets.TESTCONNECTIONSTRING }}
+        ADMINROLE: ${{ secrets.ADMINROLE }}
+        CUSTOMERROLE: ${{ secrets.CUSTOMERROLE }}
+        COMPANYROLE: ${{ secrets.COMPANYROLE }}
+        ADMINPASSWORD: ${{ secrets.ADMINPASSWORD }}
+        
+        
       run: dotnet test Backend/ElProyecteGrandeBackend/ElProyecteGrandeIntegrationTest/ElProyecteGrandeIntegrationTest.csproj --verbosity normal
