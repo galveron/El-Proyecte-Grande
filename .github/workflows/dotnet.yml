@@ -24,6 +24,6 @@ jobs:
     - name: Restore dependencies
       run: dotnet restore
     - name: Build
-      run: dotnet build Backend/ElProyecteGrandeBackend/ElProyecteGrandeBackend.sln
+      run: dotnet build ElProyecteGrandeBackend.sln
     - name: Test
-      run: dotnet test Backend/ElProyecteGrandeBackend/ElProyecteGrandeIntegrationTest/ElProyecteGrandeIntegrationTest.csproj --verbosity normal
+      run: dotnet test ElProyecteGrandeIntegrationTest.csproj --verbosity normal
