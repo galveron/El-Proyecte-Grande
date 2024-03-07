@@ -26,11 +26,11 @@ public class MarketPlaceContext : IdentityDbContext<User, IdentityRole, string>
         builder.Entity<User>()
             .HasMany(e => e.Favourites)
             .WithMany();
-        
+
         builder.Entity<CartItem>()
             .HasOne(e => e.Product)
             .WithMany();
-        
+
         builder.Entity<OrderItem>()
             .HasOne(e => e.Product)
             .WithMany();
@@ -44,6 +44,6 @@ public class MarketPlaceContext : IdentityDbContext<User, IdentityRole, string>
         builder.Entity<User>()
             .HasMany(u => u.Orders)
             .WithOne(o => o.User)
-            .OnDelete(DeleteBehavior.NoAction);
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }
