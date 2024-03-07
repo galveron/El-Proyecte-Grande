@@ -28,11 +28,11 @@ jobs:
     - name: "Print Working Directory"
       run: pwd
     - name: Restore dependencies
-      run: dotnet restore
+      run: dotnet restore  Backend/ElProyecteGrandeBackend
     - name: "Print Working Directory"
       run: pwd
     - name: Build
-      run: dotnet build Backend/ElProyecteGrandeBackend
+      run: dotnet build Backend/ElProyecteGrandeBackend/ElProyecteGrandeBackend.sln
     - name: "Print Working Directory"
       run: pwd
     - name: Test
