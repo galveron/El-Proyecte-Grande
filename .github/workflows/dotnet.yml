@@ -21,6 +21,8 @@ jobs:
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: 6.0.x
+    - name: "Write directories"
+      run: ls
     - name: "Print Working Directory"
       run: pwd
     - name: Restore dependencies
