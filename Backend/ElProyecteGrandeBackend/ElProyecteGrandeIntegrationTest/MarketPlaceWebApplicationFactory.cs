@@ -26,7 +26,7 @@ public class MarketPlaceWebApplicationFactory : WebApplicationFactory<Program>
             
             services.AddDbContext<MarketPlaceContext>((container, options) =>
             {
-                options.UseSqlServer(config["TestConnectionString"]);
+                options.UseSqlServer(config["TestConnectionString"] != null ? config["TestConnectionString"]:Environment.GetEnvironmentVariable("TESTCONNECTIONSTRING"));
             });
 
             var serviceProvider = services.BuildServiceProvider();
