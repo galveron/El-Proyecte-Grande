@@ -41,5 +41,6 @@ jobs:
         ISSUERSIGNINGKEY: ${{ secrets.ISSUERSIGNINGKEY }}
         VALIDISSUER: ${{ secrets.VALIDISSUER }}
         VALIDAUDIENCE: ${{ secrets.VALIDAUDIENCE }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         
       run: dotnet test Backend/ElProyecteGrandeBackend/ElProyecteGrandeIntegrationTest/ElProyecteGrandeIntegrationTest.csproj --verbosity normal
