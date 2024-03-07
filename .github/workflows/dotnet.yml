@@ -27,5 +27,5 @@ jobs:
       run: dotnet build Backend/ElProyecteGrandeBackend/ElProyecteGrandeBackend.sln
     - name: Test
       env:
-        connectinstring: ${{ secrets.TESTCONNECTIONSTRING }}
+        TestConnectionString: ${{ secrets.TESTCONNECTIONSTRING }}
       run: dotnet test Backend/ElProyecteGrandeBackend/ElProyecteGrandeIntegrationTest/ElProyecteGrandeIntegrationTest.csproj --verbosity normal
