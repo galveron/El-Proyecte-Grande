@@ -42,6 +42,9 @@ jobs:
         ISSUERSIGNINGKEY: ${{ secrets.ISSUERSIGNINGKEY }}
         VALIDISSUER: ${{ secrets.VALIDISSUER }}
         VALIDAUDIENCE: ${{ secrets.VALIDAUDIENCE }}
+        ACCESSKEY: ${{ secrets.ACCESSKEY }}
+        SECRETKEY: ${{ secrets.SECRETKEY }}
+        BUCKETNAME: ${{ secrets.BUCKETNAME }}
         
         
       run: dotnet test Backend/ElProyecteGrandeBackend/ElProyecteGrandeIntegrationTest/ElProyecteGrandeIntegrationTest.csproj --verbosity normal
