@@ -103,8 +103,7 @@ public class UserControllerTest
         var res = await client.PostAsJsonAsync("/Auth/Login", loginBodyReq);
 
         var response =
-            await client.PatchAsJsonAsync("/User/DeleteUser",
-                new { });
+            await client.DeleteAsync("/User/DeleteUser");
 
         //Logout
         await client.PostAsJsonAsync("Auth/Logout", "");
