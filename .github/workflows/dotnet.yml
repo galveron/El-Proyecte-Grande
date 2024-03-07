@@ -38,6 +38,8 @@ jobs:
         CUSTOMERROLE: ${{ secrets.CUSTOMERROLE }}
         COMPANYROLE: ${{ secrets.COMPANYROLE }}
         ADMINPASSWORD: ${{ secrets.ADMINPASSWORD }}
-        
+        ISSUERSIGNINGKEY: ${{ secrets.ISSUERSIGNINGKEY }}
+        VALIDISSUER: ${{ secrets.VALIDISSUER }}
+        VALIDAUDIENCE: ${{ secrets.VALIDAUDIENCE }}
         
       run: dotnet test Backend/ElProyecteGrandeBackend/ElProyecteGrandeIntegrationTest/ElProyecteGrandeIntegrationTest.csproj --verbosity normal
