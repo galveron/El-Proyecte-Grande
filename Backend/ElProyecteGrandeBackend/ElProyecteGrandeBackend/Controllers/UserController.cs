@@ -337,7 +337,7 @@ public class UserController : ControllerBase
             }
             else
             {
-                if (cartItem.Quantity + quantity < 0)
+                if (cartItem.Quantity + quantity <= 0)
                 {
                     userWhoseCartToAddTo.CartItems.Remove(cartItem);
                 }
