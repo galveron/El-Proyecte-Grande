@@ -1,6 +1,5 @@
 using System.Text;
 using System.Text.Json.Serialization;
-using AskMate.Service;
 using ElProyecteGrandeBackend.Data;
 using ElProyecteGrandeBackend.Model;
 using ElProyecteGrandeBackend.Services.Authentication;
