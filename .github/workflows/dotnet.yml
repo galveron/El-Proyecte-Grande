@@ -23,7 +23,11 @@ jobs:
         dotnet-version: 6.0.x
     - name: Restore dependencies
       run: dotnet restore
+    - name: "Print Working Directory"
+      run: pwd
     - name: Build
       run: dotnet build
+    - name: "Print Working Directory"
+      run: pwd
     - name: Test
       run: dotnet test ElProyecteGrandeIntegrationTest.csproj --verbosity normal
