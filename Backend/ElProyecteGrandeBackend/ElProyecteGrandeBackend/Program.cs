@@ -134,7 +134,7 @@ void AddAuthentication()
         .AddJwtBearer(options =>
         {
             var issuerSignInKey = config["IssuerSigningKey"] != null
-                ? config["IssuesSigningKey"] : Environment.GetEnvironmentVariable("ISSUESSIGNINGKEY");
+                ? config["IssuerSigningKey"] : Environment.GetEnvironmentVariable("ISSUERSIGNINGKEY");
             var validIssuer = config["ValidIssuer"] != null
                 ? config["ValidIssuer"] : Environment.GetEnvironmentVariable("VALIDISSUER");
             var validAudience = config["ValidAudience"] != null
