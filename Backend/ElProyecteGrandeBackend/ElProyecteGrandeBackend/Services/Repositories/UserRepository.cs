@@ -7,17 +7,28 @@ namespace ElProyecteGrandeBackend.Services.Repositories;
 
 public class UserRepository : IUserRepository
 {
+    private readonly IConfigurationRoot _config;
+    private readonly DbContextOptionsBuilder<MarketPlaceContext> _optionsBuilder;
+    private readonly MarketPlaceContext _dbContext;
+
+    public UserRepository(MarketPlaceContext marketPlaceContext)
+    {
+        _config =
+            new ConfigurationBuilder()
+                .AddUserSecrets<Program>()
+                .Build();
+        _optionsBuilder = new DbContextOptionsBuilder<MarketPlaceContext>();
+        _optionsBuilder.UseSqlServer(_config["ConnectionString"]);
+        _dbContext = marketPlaceContext;
+    }
     public IEnumerable<User> GetAllUsers()
     {
-        using var dbContext = new MarketPlaceContext();
-        return dbContext.Users.ToList();
+        return _dbContext.Users.ToList();
     }
 
     public User? GetUser(string id)
     {
-        using var dbContext = new MarketPlaceContext();
-        
-        return dbContext.Users.Where(user => user.Id == id)
+        return _dbContext.Users.Where(user => user.Id == id)
             .Include(user => user.Favourites)
             .Include(user => user.CompanyProducts)
             .Include(user => user.CartItems)
@@ -27,10 +38,9 @@ public class UserRepository : IUserRepository
 
     public void DeleteUser(string id)
     {
-        using var dbContext = new MarketPlaceContext();
-        var user = dbContext.Users.First(user1 => user1.Id == id);
-        dbContext.Users.Remove(user);
-        dbContext.SaveChanges();
+        var user = _dbContext.Users.First(user1 => user1.Id == id);
+        _dbContext.Users.Remove(user);
+        _dbContext.SaveChanges();
     }
 
     public void UpdateUser(User user)
@@ -44,9 +54,8 @@ public class UserRepository : IUserRepository
         userToUpdate.NormalizedEmail = email.ToUpper();
         userToUpdate.PhoneNumber = phoneNumber;
         */
-        using var dbContext = new MarketPlaceContext();
-        dbContext.Update(user);
-        dbContext.SaveChanges();
+        _dbContext.Update(user);
+        _dbContext.SaveChanges();
         
         // EZT MEGKÉRDEZNI!!!
         /*
@@ -57,9 +66,8 @@ public class UserRepository : IUserRepository
 
     public void AddFavourite(string userId, int productId)
     {
-        using var dbContext = new MarketPlaceContext();
-        var productToAddFavourite = dbContext.Products.Find(productId);
-        var userToAddFavourite = dbContext.Users.Include(user => user.Favourites)
+        var productToAddFavourite = _dbContext.Products.Find(productId);
+        var userToAddFavourite = _dbContext.Users.Include(user => user.Favourites)
             .SingleOrDefault(user => user.Id == userId);
         
         if (userToAddFavourite == null)
@@ -75,15 +83,14 @@ public class UserRepository : IUserRepository
         //should we test whether the product is already a favourite or would be wasteful since it works anyway??
         
         userToAddFavourite.Favourites.Add(productToAddFavourite);
-        dbContext.Update(userToAddFavourite);
-        dbContext.SaveChanges();
+        _dbContext.Update(userToAddFavourite);
+        _dbContext.SaveChanges();
     }
     
     public void DeleteFavourite(string userId, int productId)
     {
-        using var dbContext = new MarketPlaceContext();
-        var productToRemoveFromFavourite = dbContext.Products.Find(productId);
-        var userToRemoveFavouriteFrom = dbContext.Users.Include(user => user.Favourites)
+        var productToRemoveFromFavourite = _dbContext.Products.Find(productId);
+        var userToRemoveFavouriteFrom = _dbContext.Users.Include(user => user.Favourites)
             .SingleOrDefault(user => user.Id == userId);
         
         if (userToRemoveFavouriteFrom == null)
@@ -99,8 +106,8 @@ public class UserRepository : IUserRepository
         //should we test whether the product is already a favourite or would be wasteful since it works anyway??
         
         userToRemoveFavouriteFrom.Favourites.Remove(productToRemoveFromFavourite);
-        dbContext.Update(userToRemoveFavouriteFrom);
-        dbContext.SaveChanges();
+        _dbContext.Update(userToRemoveFavouriteFrom);
+        _dbContext.SaveChanges();
     }
     
     public void AddToCart(string userId, int productId, int quantity)
@@ -110,12 +117,11 @@ public class UserRepository : IUserRepository
             throw new Exception("You cannot add zero product.");
         }
         
-        using var dbContext = new MarketPlaceContext();
-        var userToAddToCart = dbContext.Users
+        var userToAddToCart = _dbContext.Users
             .Include(user => user.CartItems)
             .ThenInclude(cartItem => cartItem.Product)
             .SingleOrDefault(user => user.Id == userId);
-        var productToAddToCart = dbContext.Products.FirstOrDefault(product1 => product1.Id == productId);
+        var productToAddToCart = _dbContext.Products.FirstOrDefault(product1 => product1.Id == productId);
         
         if (userToAddToCart == null)
         {
@@ -157,19 +163,18 @@ public class UserRepository : IUserRepository
             }
         }
         
-        dbContext.Update(userToAddToCart);
-        dbContext.SaveChanges();
+        _dbContext.Update(userToAddToCart);
+        _dbContext.SaveChanges();
     }
 
     public void EmptyCart(string userId)
     {
-        using var dbContext = new MarketPlaceContext();
-        var userForCartEmptying = dbContext.Users
+        var userForCartEmptying = _dbContext.Users
             .Include(user => user.CartItems)
             .Single(user => user.Id == userId);
         
         userForCartEmptying.CartItems.Clear();
         
-        dbContext.SaveChanges();
+        _dbContext.SaveChanges();
     }
 }

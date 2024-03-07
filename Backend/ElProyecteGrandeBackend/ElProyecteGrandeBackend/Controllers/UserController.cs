@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using ElProyecteGrandeBackend.Model;
 using ElProyecteGrandeBackend.Services.Repositories;
 using Microsoft.AspNetCore.Authorization;
@@ -12,27 +13,24 @@ namespace ElProyecteGrandeBackend.Controllers;
 public class UserController : ControllerBase
 {
     private readonly ILogger<UserController> _logger;
-    private readonly IUserRepository _userRepository;
     private readonly IOrderRepository _orderRepository;
     private readonly IProductRepository _productRepository;
     private readonly UserManager<User> _userManager;
 
     public UserController(
         ILogger<UserController> logger, 
-        IUserRepository userRepository, 
         IOrderRepository orderRepository,
         IProductRepository productRepository,
         UserManager<User> userManager)
     {
         _logger = logger;
-        _userRepository = userRepository;
         _orderRepository = orderRepository;
         _productRepository = productRepository;
         _userManager = userManager;
     }
 
-    [HttpGet("GetUser")]
-    public async Task<ActionResult<User>> GetUser(string id)
+    [HttpGet("GetUser"), Authorize(Roles = "Customer, Company, Admin")]
+    public async Task<ActionResult<User>> GetUser()
     {
         try
         {
@@ -41,12 +39,7 @@ public class UserController : ControllerBase
                 .Include(user1 => user1.CartItems)
                 .Include(user1 => user1.CompanyProducts)
                 .Include(user1 => user1.Orders)
-                .SingleOrDefaultAsync(user1 => user1.Id == id);
-            
-            if (user == null)
-            {
-                return NotFound("User was not found.");
-            }
+                .SingleOrDefaultAsync(user1 => user1.UserName == User.Identity.Name);
             
             return Ok(user);
         }
@@ -57,29 +50,7 @@ public class UserController : ControllerBase
         }
     }
     
-    //for testing
-    [HttpGet("GetUsers")]
-    public async Task<ActionResult<User[]>> GetUsers()
-    {
-        try
-        {
-            var users = _userManager.Users.ToArray();
-            
-            if (users == null)
-            {
-                return NotFound("Users were not found.");
-            }
-            
-            return Ok(users);
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-            return StatusCode(500, e.Message);
-        }
-    }
-    
-    [HttpDelete("DeleteUser")]//, Authorize(Roles = "Admin")]
+    [HttpDelete("DeleteUserForAdmin"), Authorize(Roles = "Admin")]
     public async Task<ActionResult> DeleteUser(string id)
     {
         try
@@ -93,12 +64,13 @@ public class UserController : ControllerBase
             
             var identityResult = await _userManager.DeleteAsync(user);
             
+
             if (!identityResult.Succeeded)
             {
                 return BadRequest(identityResult.Errors);
             }
             
-            return Ok("Successfully added user.");
+            return Ok("Successfully deleted user.");
         }
         catch (Exception e)
         {
@@ -107,12 +79,42 @@ public class UserController : ControllerBase
         }
     }
     
-    [HttpPatch("UpdateCustomer")]
-    public async Task<ActionResult> UpdateCustomer(string id, string userName, string email, string phoneNumber)
+    [HttpDelete("DeleteUser"), Authorize(Roles = "Customer, Company")]
+    public async Task<ActionResult> DeleteUser()
+    {
+        //TODO: companies can't be deleted yet (server error)
+        try
+        {
+            var user = await _userManager.FindByNameAsync(User.Identity.Name);
+            
+            if (user == null)
+            {
+                return NotFound("User was not found.");
+            }
+            
+            var identityResult = await _userManager.DeleteAsync(user);
+            
+            if (!identityResult.Succeeded)
+            {
+                return BadRequest(identityResult.Errors);
+            }
+            
+            return Ok("Successfully deleted user.");
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return StatusCode(500, e.Message);
+        }
+    }
+    
+    [HttpPatch("UpdateCustomer"), Authorize(Roles = "Customer, Company, Admin")]
+    public async Task<ActionResult> UpdateCustomer(string userName, string email, string phoneNumber)
     {
         try
         {
-            var user = await _userManager.FindByIdAsync(id);
+            var user = await _userManager.FindByNameAsync(User.Identity.Name);
+            
             user.UserName = userName;
             user.Email = email;
             user.PhoneNumber = phoneNumber;
@@ -132,13 +134,15 @@ public class UserController : ControllerBase
         }
     }
     
-    [HttpPatch("UpdateCompany")]
-    public async Task<ActionResult> UpdateCompany(string id, string userName, string email, string phoneNumber,
+    [HttpPatch("UpdateCompany"), Authorize(Roles = "Company, Admin")]
+    public async Task<ActionResult> UpdateCompany(string userName, string email, string phoneNumber,
         string companyName, string identifier)
     {
         try
         {
-            var user = await _userManager.FindByIdAsync(id);
+            var user = await _userManager.FindByNameAsync(User.Identity.Name);
+            
+            
             user.UserName = userName;
             user.Email = email;
             user.PhoneNumber = phoneNumber;
@@ -161,11 +165,15 @@ public class UserController : ControllerBase
     }
     
     [HttpPatch("VerifyCompany"), Authorize(Roles="Admin")]
-    public async Task<ActionResult> VerifyCompany(string id, bool verified)
+    public async Task<ActionResult> VerifyCompany(string userName, bool verified)
     {
         try
         {
-            var user = await _userManager.FindByIdAsync(id);
+            var user = await _userManager.FindByNameAsync(userName);
+            if (user == null)
+            {
+                return BadRequest("No user found");
+            }
             user.Company.Verified = verified;
             var identityResult = await _userManager.UpdateAsync(user);
             
@@ -183,39 +191,36 @@ public class UserController : ControllerBase
         }
     }
     
-    [HttpPatch("AddFavourite")]
-    public async Task<ActionResult> AddFavourite(string userId, int productId)
+    [HttpPatch("AddFavourite"), Authorize(Roles = "Customer, Admin")]
+    public async Task<ActionResult> AddFavourite(int productId)
     {
         try
         {
-            var productToAddAsFavourite = _productRepository.GetProduct(productId);
             var userToAddFavouriteTo = await _userManager.Users
                 .Include(user => user.Favourites)
-                .SingleOrDefaultAsync(user => user.Id == userId);
-        
-            //should we test whether the product is already a favourite or would be wasteful since it works anyway??
-            //This probably throws an exception
-            //because we try to track the Product as productToAddAsFavourite and as part of userToAddFavouriteTo.Favourites.
+                .SingleOrDefaultAsync(user => user.UserName == User.Identity.Name);
             
-            if (userToAddFavouriteTo == null)
+            if (userToAddFavouriteTo.Favourites.SingleOrDefault(product => product.Id == productId) != null)
             {
-                return NotFound("User was not found for adding favourite.");
+                return Ok("Product is already a favourite.");
             }
-
+            
+            var productToAddAsFavourite = _productRepository.GetProduct(productId);
+            
             if (productToAddAsFavourite == null)
             {
                 return NotFound("Product was not found for adding favourite");
             }
-        
+
             userToAddFavouriteTo.Favourites.Add(productToAddAsFavourite);
             var identityResult = await _userManager.UpdateAsync(userToAddFavouriteTo);
-            
+
             if (!identityResult.Succeeded)
             {
                 return BadRequest(identityResult.Errors);
             }
-            
-            return Ok("Done.");
+
+            return Ok("Successfully added product to favourites.");
         }
         catch (Exception e)
         {
@@ -224,20 +229,14 @@ public class UserController : ControllerBase
         }
     }
     
-    [HttpPatch("RemoveFavourite")]
-    public async Task<ActionResult> RemoveFavourite(string userId, int productId)
+    [HttpPatch("RemoveFavourite"), Authorize(Roles = "Customer, Admin")]
+    public async Task<ActionResult> RemoveFavourite(int productId)
     {
         try
         {
-            
             var userToRemoveFavouriteFrom = await _userManager.Users
                 .Include(user => user.Favourites)
-                .SingleOrDefaultAsync(user => user.Id == userId);
-            
-            if (userToRemoveFavouriteFrom == null)
-            {
-                return NotFound("User was not found for removing favourite.");
-            }
+                .SingleOrDefaultAsync(user => user.UserName == User.Identity.Name);
             
             var productToRemoveFromFavourite = userToRemoveFavouriteFrom.Favourites.SingleOrDefault(product => product.Id == productId);
 
@@ -248,16 +247,6 @@ public class UserController : ControllerBase
         
             userToRemoveFavouriteFrom.Favourites.Remove(productToRemoveFromFavourite);
             
-            Console.WriteLine();
-            Console.WriteLine($"productToRemoveFromFavourite.Id: {productToRemoveFromFavourite.Id}");
-            Console.WriteLine();
-            foreach (var favourite in userToRemoveFavouriteFrom.Favourites)
-            {
-                Console.WriteLine($"favourite.id: {favourite.Id}");
-                Console.WriteLine(productToRemoveFromFavourite == favourite);
-            }
-            Console.WriteLine();
-            
             var identityResult = await _userManager.UpdateAsync(userToRemoveFavouriteFrom);
             
             if (!identityResult.Succeeded)
@@ -265,7 +254,7 @@ public class UserController : ControllerBase
                 return BadRequest(identityResult.Errors);
             }
             
-            return Ok("Done.");
+            return Ok("Successfully removed product to favourites.");
         }
         catch (Exception e)
         {
@@ -275,7 +264,7 @@ public class UserController : ControllerBase
     }
     
     [HttpPatch("AddOrRemoveCartItems"), Authorize(Roles="Customer, Admin")]
-    public async Task<ActionResult> AddOrRemoveCartItems(string userId, int productId, int quantity)
+    public async Task<ActionResult> AddOrRemoveCartItems(int productId, int quantity)
     {
         try
         {
@@ -287,12 +276,7 @@ public class UserController : ControllerBase
             var userWhoseCartToAddTo = await _userManager.Users
                 .Include(user => user.CartItems)
                 .ThenInclude(cartItem => cartItem.Product)
-                .SingleOrDefaultAsync(user => user.Id == userId);
-            
-            if (userWhoseCartToAddTo == null)
-            {
-                return NotFound("User was not found for adding to cart.");
-            }
+                .SingleOrDefaultAsync(user => user.UserName == User.Identity.Name);
 
             var productToAddToCart = _productRepository.GetProduct(productId); //should we throw errors or return null
 
@@ -338,7 +322,7 @@ public class UserController : ControllerBase
                 return BadRequest(identityResult.Errors);
             }
             
-            return Ok("Done.");
+            return Ok("Successfully added product to cart.");
         }
         catch (Exception e)
         {
@@ -347,14 +331,14 @@ public class UserController : ControllerBase
         }
     }
     
-    [HttpPatch("EmptyCart")]
-    public async Task<ActionResult> EmptyCart(string userId)
+    [HttpPatch("EmptyCart"), Authorize(Roles = "Customer, Admin")]
+    public async Task<ActionResult> EmptyCart()
     {
         try
         {
             var userForCartEmptying = await _userManager.Users
                 .Include(user => user.CartItems)
-                .SingleOrDefaultAsync(user => user.Id == userId);
+                .SingleOrDefaultAsync(user => user.UserName == User.Identity.Name);
 
             if (userForCartEmptying == null)
             {
