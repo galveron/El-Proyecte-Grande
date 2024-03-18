@@ -1,11 +1,10 @@
 import './ProductCard.css';
-function ProductCard(props) {
-    const { product } = props
-    const company = props.product.seller.company
+function ProductCard({product, user}) {
+    const company = product.seller.company
     return (
         <div className='productCard'>
             <img className='img' src={product.image ? product.images.coverart : '/plant1.jpg'} />
-            <button className='save'><i className="fa-regular fa-heart"></i></button>
+            {user.company !== null && (<button className='save'><i className="fa-regular fa-heart"></i></button>)}
             <p>{product.name}</p>
             <div className='details-container'>
                 <ul className='details-title'>
