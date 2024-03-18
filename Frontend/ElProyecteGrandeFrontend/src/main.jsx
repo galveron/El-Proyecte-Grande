@@ -14,6 +14,7 @@ import Login from './Pages/Login';
 import TestPage from './Pages/TestPage';
 import UserProfile from './Pages/UserProfile';
 import ImageUploader from './Pages/ImageUploader';
+import AddProduct from './Pages/AddProduct';
 
 const router = createBrowserRouter([
   {
@@ -55,6 +56,10 @@ const router = createBrowserRouter([
       {
         path: '/upload-image',
         element: <ImageUploader />
+      },
+      {
+        path: '/add-product',
+        element: <AddProduct />
       }
     ]
   }
