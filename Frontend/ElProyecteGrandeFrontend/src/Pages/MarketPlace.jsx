@@ -17,7 +17,7 @@ function MarketPlace() {
             {
                 method: "GET",
                 credentials: 'include',
-                headers: { "Authorization": "Bearer token" }
+                headers: { 'Content-type': 'application/json' }
             });
         const data = await res.json();
         return data;
@@ -26,6 +26,8 @@ function MarketPlace() {
     useEffect(() => {
         fetchProducts()
             .then(products => setProducts(products), setLoading(false));
+        fetchUser()
+            .then(user => setUser(user));
     }, [])
 
     return (<>
