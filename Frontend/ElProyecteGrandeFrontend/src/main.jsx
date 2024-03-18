@@ -15,6 +15,7 @@ import TestPage from './Pages/TestPage';
 import UserProfile from './Pages/UserProfile';
 import ImageUploader from './Pages/ImageUploader';
 import AddProduct from './Pages/AddProduct';
+import FavouriteProducts from './Pages/FavouriteProducts';
 
 const router = createBrowserRouter([
   {
@@ -60,6 +61,10 @@ const router = createBrowserRouter([
       {
         path: '/add-product',
         element: <AddProduct />
+      },
+      {
+        path: '/favourites',
+        element: <FavouriteProducts />
       }
     ]
   }

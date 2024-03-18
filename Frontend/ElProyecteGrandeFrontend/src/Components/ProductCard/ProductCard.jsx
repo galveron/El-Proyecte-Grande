@@ -27,7 +27,6 @@ function ProductCard({ product, user }) {
         }
     }
 
-    const company = product.seller.company
     return (
         <div className='productCard'>
             <img className='img' src={product.image ? product.images.coverart : '/plant1.jpg'} />
