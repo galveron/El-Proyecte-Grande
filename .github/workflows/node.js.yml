@@ -28,6 +28,6 @@ jobs:
         cache: 'npm'
         cache-dependency-path: Frontend/ElProyecteGrandeFrontend/package-lock.json
     - run: npm ci
-      working-directory: Frontend/ElProyecteGrandeFrontend/package-lock.json
+      working-directory: Frontend/ElProyecteGrandeFrontend
     - run: npm run build --if-present
     - run: npm test
