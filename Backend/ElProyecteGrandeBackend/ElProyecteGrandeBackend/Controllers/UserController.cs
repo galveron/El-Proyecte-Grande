@@ -36,6 +36,7 @@ public class UserController : ControllerBase
         {
             var user = await _userManager.Users
                 .Include(user1 => user1.Favourites)
+                .ThenInclude(fav => fav.Seller)
                 .Include(user1 => user1.CartItems)
                 .Include(user1 => user1.CompanyProducts)
                 .Include(user1 => user1.Orders)
