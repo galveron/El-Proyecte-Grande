@@ -1,7 +1,6 @@
 import { Outlet, Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { notification } from 'antd';
-import Cookies from "js-cookie";
 import './Layout.css';
 
 notification.config({
@@ -13,20 +12,24 @@ function getCookie(cname) {
     let name = cname + "=";
     let decodedCookie = decodeURIComponent(document.cookie);
     let ca = decodedCookie.split(';');
-    for(let i = 0; i <ca.length; i++) {
-      let c = ca[i];
-      while (c.charAt(0) == ' ') {
-        c = c.substring(1);
-      }
-      if (c.indexOf(name) == 0) {
-        return c.substring(name.length, c.length);
-      }
+    for (let i = 0; i < ca.length; i++) {
+        let c = ca[i];
+        while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+        }
     }
     return "";
-  }
+}
+
+function eraseCookie(name) {
+    document.cookie = name + '=; Max-Age=-99999999;';
+}
 
 function Layout() {
-    const isToken = getCookie('User');
+    let isToken = getCookie('User');
     const navigate = useNavigate();
 
     async function handleLogout() {
@@ -37,20 +40,16 @@ function Layout() {
                 headers: { 'Content-Type': 'application/json' },
             });
             if (!res.ok) {
-                notification.error({ message: 'Email or password incorrect!' });
                 throw new Error(`HTTP error! status: ${res.status}`);
             }
+            isToken = "";
             navigate('/');
-            notification.success({ message: 'Successful login. Welcome!' });
+            notification.success({ message: 'Logged out.' })
         }
         catch (error) {
             throw error;
         }
-        navigate('/');
-        notification.success({ message: 'Logged out.' })
     }
-
-
 
     return (
         <>

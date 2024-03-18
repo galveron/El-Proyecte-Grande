@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import Cookies from "js-cookie";
 
 import CustomerProfile from "../Components/Profile/CustomerProfile";
 import CompanyProfile from "../Components/Profile/CompanyProfile";
@@ -7,7 +6,6 @@ import CompanyProfile from "../Components/Profile/CompanyProfile";
 function UserProfile() {
     const [user, setUser] = useState({});
     const [loading, setLoading] = useState(false);
-    const id = Cookies.get('user_id');
 
     async function fetchUser() {
         let url = `http://localhost:5036/User/GetUser`;
@@ -15,8 +13,7 @@ function UserProfile() {
             {
                 method: "GET",
                 credentials: 'include',
-                headers: { 
-                  "Content-Type": "application/json",
+                headers: {
                   "Authorization": "Bearer token"
                    }
             });

@@ -25,7 +25,8 @@ public class AuthController : ControllerBase
     [HttpPost("Register")]
     public async Task<ActionResult<RegistrationResponse>> RegisterCustomer(RegistrationRequest request)
     {
-        var result = await _authenticationService.RegisterAsync(request.Email, request.Username, request.Password, _config["CustomerRole"]);
+        var result = await _authenticationService.RegisterAsync(request.Email, request.Username, request.Password, _config["CustomerRole"] != null
+            ? _config["CustomerRole"] : Environment.GetEnvironmentVariable("CUSTOMERROLE"));
         Console.WriteLine(result);
         if (!result.Success)
         {
@@ -40,7 +41,8 @@ public class AuthController : ControllerBase
     [HttpPost("RegisterCompany")]
     public async Task<ActionResult<RegistrationResponseCompany>> RegisterCompany(RegistrationRequestCompany request)
     {
-        var result = await _authenticationService.RegisterAsyncCompany(request.Email, request.Username, request.Password, _config["CompanyRole"], request.CompanyName, request.Identifier);
+        var result = await _authenticationService.RegisterAsyncCompany(request.Email, request.Username, request.Password, _config["CompanyRole"] != null
+            ? _config["CompanyRole"] : Environment.GetEnvironmentVariable("COMPANYROLE"), request.CompanyName, request.Identifier);
         Console.WriteLine(result);
         if (!result.Success)
         {
