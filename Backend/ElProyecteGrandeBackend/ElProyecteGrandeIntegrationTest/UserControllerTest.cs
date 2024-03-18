@@ -240,10 +240,14 @@ public class UserControllerTest
         var loginBodyReq = new AuthRequest("body@body.com", "Bodybody123");
         await client.PostAsJsonAsync("/Auth/Login", loginBodyReq);
         
+        var content = new MultipartFormDataContent();
+        content.Add(new StringContent("12"), "Id");
+        content.Add(new StringContent(""), "ImageUrl");
+
         //Add product as company
         await client.PostAsync(
             $"/Product/AddProduct?name=product&price=2&details=nothing&quantity=3",
-            new MultipartContent());
+            content);
         
         //Logout company
         await client.PostAsJsonAsync("/Auth/Logout", new {});
@@ -280,10 +284,14 @@ public class UserControllerTest
         var loginBodyReq = new AuthRequest("body@body.com", "Bodybody123");
         await client.PostAsJsonAsync("/Auth/Login", loginBodyReq);
         
+        var content = new MultipartFormDataContent();
+        content.Add(new StringContent("12"), "Id");
+        content.Add(new StringContent(""), "ImageUrl");
+
         //Add product as company
         await client.PostAsync(
             $"/Product/AddProduct?name=product&price=2&details=nothing&quantity=3",
-            new MultipartContent());
+            content);
         
         //Logout company
         await client.PostAsJsonAsync("/Auth/Logout", new {});
@@ -321,10 +329,14 @@ public class UserControllerTest
         var loginBodyReq = new AuthRequest("body@body.com", "Bodybody123");
         await client.PostAsJsonAsync("/Auth/Login", loginBodyReq);
         
+        var content = new MultipartFormDataContent();
+        content.Add(new StringContent("12"), "Id");
+        content.Add(new StringContent(""), "ImageUrl");
+
         //Add product as company
         await client.PostAsync(
             $"/Product/AddProduct?name=product&price=2&details=nothing&quantity=3",
-            new MultipartContent());
+            content);
         
         //Logout company
         await client.PostAsJsonAsync("/Auth/Logout", new {});
@@ -368,10 +380,14 @@ public class UserControllerTest
         var login = await client.PostAsJsonAsync("/Auth/Login", loginReqComp);
         login.EnsureSuccessStatusCode();
         
+        var content = new MultipartFormDataContent();
+        content.Add(new StringContent("12"), "Id");
+        content.Add(new StringContent(""), "ImageUrl");
+
         //Add product as company
         await client.PostAsync(
             $"/Product/AddProduct?name=product&price=2&details=nothing&quantity=3",
-            new MultipartContent());
+            content);
         
         //Logout company
         await client.PostAsJsonAsync("/Auth/Logout", "");
@@ -410,10 +426,14 @@ public class UserControllerTest
         var login = await client.PostAsJsonAsync("/Auth/Login", loginReqComp);
         login.EnsureSuccessStatusCode();
         
+        var content = new MultipartFormDataContent();
+        content.Add(new StringContent("12"), "Id");
+        content.Add(new StringContent(""), "ImageUrl");
+
         //Add product by company
         await client.PostAsync(
             $"/Product/AddProduct?name=product&price=2&details=nothing&quantity=3",
-            new MultipartContent());
+            content);
         
         //Logout company
         await client.PostAsJsonAsync("/Auth/Logout", "");
@@ -452,10 +472,14 @@ public class UserControllerTest
         var login = await client.PostAsJsonAsync("/Auth/Login", loginReqComp);
         login.EnsureSuccessStatusCode();
         
+        var content = new MultipartFormDataContent();
+        content.Add(new StringContent("12"), "Id");
+        content.Add(new StringContent(""), "ImageUrl");
+
         //Add product by company
         await client.PostAsync(
             $"/Product/AddProduct?name=product&price=2&details=nothing&quantity=3",
-            new MultipartContent());
+            content);
         
         //Logut company
         await client.PostAsJsonAsync("/Auth/Logout", "");
@@ -495,10 +519,14 @@ public class UserControllerTest
         var user = await responseUser.Content.ReadFromJsonAsync<User>();
         var id = user.Id;
         
+        var content = new MultipartFormDataContent();
+        content.Add(new StringContent("12"), "Id");
+        content.Add(new StringContent(""), "ImageUrl");
+
         //Add product by company
         await client.PostAsync(
             $"/Product/AddProduct?userId={id}&name=product&price=2&details=nothing&quantity=3",
-            new MultipartContent());
+            content);
         
         //Add product to cart
         await client.PatchAsJsonAsync($"/User/AddOrRemoveCartItems?userName=body&productId=1&quantity=1", new { });

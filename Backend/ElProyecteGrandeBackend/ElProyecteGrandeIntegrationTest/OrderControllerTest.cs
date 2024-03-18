@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using System.Net;
+using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using ElProyecteGrandeBackend.Contracts;
 using ElProyecteGrandeBackend.Model;
@@ -83,10 +84,14 @@ public class OrderControllerTest
         var loginRequest = new AuthRequest(testEmail, testPassword);
         
         var client = application.CreateClient();
-
+        
+        var content = new MultipartFormDataContent();
+        content.Add(new StringContent("12"), "Id");
+        content.Add(new StringContent(""), "ImageUrl");
+        
         var regCompanyResponse = await client.PostAsJsonAsync("Auth/RegisterCompany",regCompanyRequest);
         var loginCompanyResponse = await client.PostAsJsonAsync("Auth/Login",new AuthRequest("vk@g.com", "companyPassword"));
-        var addProductResponse = await client.PostAsync($"/Product/AddProduct?name=product&price=2&details=nothing&quantity=3", new MultipartContent());
+        var addProductResponse = await client.PostAsync($"/Product/AddProduct?name=product&price=2&details=nothing&quantity=3", content);
         addProductResponse.EnsureSuccessStatusCode();
         var logOutResponse = await client.PostAsJsonAsync("Auth/Logout", "");
         var regResponse = await client.PostAsJsonAsync("/Auth/Register", regRequest);

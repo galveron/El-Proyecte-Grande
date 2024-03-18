@@ -44,9 +44,14 @@ public class ProductControllerTest
         getUserRes.EnsureSuccessStatusCode();
         var user = await getUserRes.Content.ReadFromJsonAsync<User>();
         var product = new Product { Name = "term", Seller = user, Price = 123, Details = "rrr", Quantity = 2 };
+        
+        var content = new MultipartFormDataContent();
+        content.Add(new StringContent("12"), "Id");
+        content.Add(new StringContent(""), "ImageUrl");
+        
         var addProductRes = await client.PostAsync(
             $"/Product/AddProduct?name={product.Name}&price={product.Price}&details={product.Details}&quantity={product.Quantity}",
-            new MultipartContent());
+            content);
         addProductRes.EnsureSuccessStatusCode();
 
         var productRes = await client.GetAsync("/Product/GetProduct?id=1");
@@ -78,10 +83,14 @@ public class ProductControllerTest
         getUserRes.EnsureSuccessStatusCode();
         var user = await getUserRes.Content.ReadFromJsonAsync<User>();
         
+        var content = new MultipartFormDataContent();
+        content.Add(new StringContent("12"), "Id");
+        content.Add(new StringContent(""), "ImageUrl");
+
         var product = new Product { Name = "term", Seller = user, Price = 123, Details = "rrr", Quantity = 2 };
         var addProductRes = await client.PostAsync(
             $"/Product/AddProduct?userId={user.Id}&name={product.Name}&price={product.Price}&details={product.Details}&quantity={product.Quantity}",
-            new MultipartContent());
+            content);
         addProductRes.EnsureSuccessStatusCode();
         var addedProduct = await addProductRes.Content.ReadFromJsonAsync<Product>();
         
