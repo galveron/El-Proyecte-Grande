@@ -86,7 +86,7 @@ public class OrderControllerTest
 
         var regCompanyResponse = await client.PostAsJsonAsync("Auth/RegisterCompany",regCompanyRequest);
         var loginCompanyResponse = await client.PostAsJsonAsync("Auth/Login",new AuthRequest("vk@g.com", "companyPassword"));
-        var addProductResponse = await client.PostAsJsonAsync($"/Product/AddProduct?name=product&price=2&details=nothing&quantity=3", "");
+        var addProductResponse = await client.PostAsync($"/Product/AddProduct?name=product&price=2&details=nothing&quantity=3", new MultipartContent());
         addProductResponse.EnsureSuccessStatusCode();
         var logOutResponse = await client.PostAsJsonAsync("Auth/Logout", "");
         var regResponse = await client.PostAsJsonAsync("/Auth/Register", regRequest);
@@ -114,7 +114,7 @@ public class OrderControllerTest
         var regResponse = await client.PostAsJsonAsync("/Auth/Register", regRequest);
         var loginResponse = await client.PostAsJsonAsync("/Auth/Login", loginRequest);
         var addOrderResponse = await client.PostAsJsonAsync($"Order/AddOrder", "");
-        var addProductResponse = await client.PostAsJsonAsync($"/Product/AddProduct?name=product&price=2&details=nothing&quantity=3", "");
+        var addProductResponse = await client.PostAsync($"/Product/AddProduct?name=product&price=2&details=nothing&quantity=3", new MultipartContent());
 
         var addProductToOrderResponse = await client.PostAsJsonAsync($"/Order/AddOrRemoveProductFromOrder?orderId=10&productId=10&quantity=2", "");
 
@@ -181,7 +181,7 @@ public class OrderControllerTest
         var regResponse = await client.PostAsJsonAsync("/Auth/Register", regRequest);
         var loginResponse = await client.PostAsJsonAsync("/Auth/Login", loginRequest);
         var addOrderResponse = await client.PostAsJsonAsync($"Order/AddOrder", "");
-        var addProductResponse = await client.PostAsJsonAsync($"/Product/AddProduct?name=product&price=2&details=nothing&quantity=3", "");
+        var addProductResponse = await client.PostAsync($"/Product/AddProduct?name=product&price=2&details=nothing&quantity=3", new MultipartContent());
         var addProductToOrderResponse = await client.PostAsJsonAsync($"/Order/AddOrRemoveProductFromOrder?orderId=1&productId=1&quantity=2", "");
 
         var emptyOrderItemsResponse = await client.PatchAsJsonAsync($"Order/EmptyOrderItems?orderId=1", "");
@@ -204,7 +204,7 @@ public class OrderControllerTest
         var regResponse = await client.PostAsJsonAsync("/Auth/Register", regRequest);
         var loginResponse = await client.PostAsJsonAsync("/Auth/Login", loginRequest);
         var addOrderResponse = await client.PostAsJsonAsync($"Order/AddOrder", "");
-        var addProductResponse = await client.PostAsJsonAsync($"/Product/AddProduct?name=product&price=2&details=nothing&quantity=3", "");
+        var addProductResponse = await client.PostAsync($"/Product/AddProduct?name=product&price=2&details=nothing&quantity=3", new MultipartContent());
         var addProductToOrderResponse = await client.PostAsJsonAsync($"/Order/AddOrRemoveProductFromOrder?orderId=1&productId=1&quantity=2", "");
         
         var emptyOrderItemsResponse = await client.PatchAsJsonAsync($"Order/EmptyOrderItems?orderId=11", "");

@@ -43,11 +43,10 @@ public class ProductControllerTest
         var getUserRes = await client.GetAsync($"/User/GetUser");
         getUserRes.EnsureSuccessStatusCode();
         var user = await getUserRes.Content.ReadFromJsonAsync<User>();
-        
         var product = new Product { Name = "term", Seller = user, Price = 123, Details = "rrr", Quantity = 2 };
-        var addProductRes = await client.PostAsJsonAsync(
+        var addProductRes = await client.PostAsync(
             $"/Product/AddProduct?name={product.Name}&price={product.Price}&details={product.Details}&quantity={product.Quantity}",
-            new { });
+            new MultipartContent());
         addProductRes.EnsureSuccessStatusCode();
 
         var productRes = await client.GetAsync("/Product/GetProduct?id=1");
@@ -80,9 +79,9 @@ public class ProductControllerTest
         var user = await getUserRes.Content.ReadFromJsonAsync<User>();
         
         var product = new Product { Name = "term", Seller = user, Price = 123, Details = "rrr", Quantity = 2 };
-        var addProductRes = await client.PostAsJsonAsync(
+        var addProductRes = await client.PostAsync(
             $"/Product/AddProduct?userId={user.Id}&name={product.Name}&price={product.Price}&details={product.Details}&quantity={product.Quantity}",
-            new { });
+            new MultipartContent());
         addProductRes.EnsureSuccessStatusCode();
         var addedProduct = await addProductRes.Content.ReadFromJsonAsync<Product>();
         

@@ -241,9 +241,9 @@ public class UserControllerTest
         await client.PostAsJsonAsync("/Auth/Login", loginBodyReq);
         
         //Add product as company
-        await client.PostAsJsonAsync(
+        await client.PostAsync(
             $"/Product/AddProduct?name=product&price=2&details=nothing&quantity=3",
-            new { });
+            new MultipartContent());
         
         //Logout company
         await client.PostAsJsonAsync("/Auth/Logout", new {});
@@ -281,9 +281,9 @@ public class UserControllerTest
         await client.PostAsJsonAsync("/Auth/Login", loginBodyReq);
         
         //Add product as company
-        await client.PostAsJsonAsync(
+        await client.PostAsync(
             $"/Product/AddProduct?name=product&price=2&details=nothing&quantity=3",
-            new { });
+            new MultipartContent());
         
         //Logout company
         await client.PostAsJsonAsync("/Auth/Logout", new {});
@@ -322,9 +322,9 @@ public class UserControllerTest
         await client.PostAsJsonAsync("/Auth/Login", loginBodyReq);
         
         //Add product as company
-        await client.PostAsJsonAsync(
+        await client.PostAsync(
             $"/Product/AddProduct?name=product&price=2&details=nothing&quantity=3",
-            new { });
+            new MultipartContent());
         
         //Logout company
         await client.PostAsJsonAsync("/Auth/Logout", new {});
@@ -369,9 +369,9 @@ public class UserControllerTest
         login.EnsureSuccessStatusCode();
         
         //Add product as company
-        await client.PostAsJsonAsync(
+        await client.PostAsync(
             $"/Product/AddProduct?name=product&price=2&details=nothing&quantity=3",
-            new { });
+            new MultipartContent());
         
         //Logout company
         await client.PostAsJsonAsync("/Auth/Logout", "");
@@ -411,9 +411,9 @@ public class UserControllerTest
         login.EnsureSuccessStatusCode();
         
         //Add product by company
-        await client.PostAsJsonAsync(
+        await client.PostAsync(
             $"/Product/AddProduct?name=product&price=2&details=nothing&quantity=3",
-            new { });
+            new MultipartContent());
         
         //Logout company
         await client.PostAsJsonAsync("/Auth/Logout", "");
@@ -453,9 +453,9 @@ public class UserControllerTest
         login.EnsureSuccessStatusCode();
         
         //Add product by company
-        await client.PostAsJsonAsync(
+        await client.PostAsync(
             $"/Product/AddProduct?name=product&price=2&details=nothing&quantity=3",
-            new { });
+            new MultipartContent());
         
         //Logut company
         await client.PostAsJsonAsync("/Auth/Logout", "");
@@ -496,9 +496,9 @@ public class UserControllerTest
         var id = user.Id;
         
         //Add product by company
-        await client.PostAsJsonAsync(
+        await client.PostAsync(
             $"/Product/AddProduct?userId={id}&name=product&price=2&details=nothing&quantity=3",
-            new { });
+            new MultipartContent());
         
         //Add product to cart
         await client.PatchAsJsonAsync($"/User/AddOrRemoveCartItems?userName=body&productId=1&quantity=1", new { });
