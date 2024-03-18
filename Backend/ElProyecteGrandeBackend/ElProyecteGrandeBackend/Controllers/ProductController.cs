@@ -62,15 +62,18 @@ public class ProductController : ControllerBase
     {
         var imagesCollection = new Collection<Image>();
         
-        foreach (var image in images)
+        if (images != null)
         {
-            var key = Guid.NewGuid() + Path.GetExtension(image.FileName);
-            var result = await _imageRepository.UploadObjectAsyncToAWS(key, image);
-            imagesCollection.Add(new Image{ImageURL = result});
-            if (result == null)
+            foreach (var image in images)
             {
-                return Problem("Image upload is not successful");
-            };
+                var key = Guid.NewGuid() + Path.GetExtension(image.FileName);
+                var result = await _imageRepository.UploadObjectAsyncToAWS(key, image);
+                imagesCollection.Add(new Image{ImageURL = result});
+                if (result == null)
+                {
+                    return Problem("Image upload is not successful");
+                };
+            }
         }
         
         try
