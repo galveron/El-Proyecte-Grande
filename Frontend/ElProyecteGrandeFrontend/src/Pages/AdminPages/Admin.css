@@ -1,0 +1,101 @@
+.admin-page {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    bottom: 0;
+    text-align: center;
+    height: 65vh;
+    border-collapse: collapse;
+    color: #19201d;
+    font-weight: 500;
+}
+
+th,
+td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    height: min-content;
+}
+
+tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+tr:hover {
+    background-color: #C58E3C;
+}
+
+th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: #0E523D;
+    color: white;
+}
+
+table {
+    height: min-content;
+}
+
+.adminButton {
+    margin: 2px;
+    border-style: none;
+    border-radius: 3px;
+}
+
+#details {
+    background-color: #ae3f08;
+}
+
+#details:hover,
+#delete:hover {
+    background-color: #0E523D;
+}
+
+.modal {
+    display: none;
+    /* Hidden by default */
+    position: fixed;
+    /* Stay in place */
+    z-index: 1;
+    /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%;
+    /* Full width */
+    height: 100%;
+    /* Full height */
+    overflow: auto;
+    /* Enable scroll if needed */
+    background-color: rgb(0, 0, 0);
+    /* Fallback color */
+    background-color: rgba(0, 0, 0, 0.4);
+    /* Black w/ opacity */
+}
+
+/* Modal Content/Box */
+.details-modal-content,
+.delete-modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    /* 15% from the top and centered */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    /* Could be more or less, depending on screen size */
+}
+
+/* The Close Button */
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
