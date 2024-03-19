@@ -16,15 +16,48 @@ import UserProfile from './Pages/UserProfile';
 import ImageUploader from './Pages/ImageUploader';
 import AddProduct from './Pages/AddProduct';
 
+async function fetchUser() {
+  let url = `http://localhost:5036/User/GetUser`;
+  const res = await fetch(url,
+    {
+      method: "GET",
+      credentials: 'include',
+      headers: {
+        "Authorization": "Bearer token"
+      }
+    });
+  const data = await res.json();
+  console.log("data: " + data.userName)
+  return data;
+}
+
+async function fetchRole() {
+  const user = await fetchUser();
+  let url = `http://localhost:5036/User/GetRole?userName=${user.userName}`;
+  const res = await fetch(url,
+    {
+      method: "GET",
+      credentials: 'include',
+      headers: {
+        "Authorization": "Bearer token"
+      }
+    });
+  const data = await res.text();
+  return data;
+}
+
+let role = await fetchRole();
+console.log("Role: " + role)
+
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <Layout />,
+    element: <Layout userRole={role} />,
     errorElement: <ErrorPage />,
     children: [
       {
         path: '/',
-        element: <Home />
+        element: <Home userRole={role} />
       },
       {
         path: '/marketplace',

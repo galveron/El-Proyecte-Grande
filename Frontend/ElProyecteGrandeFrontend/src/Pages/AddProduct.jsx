@@ -28,7 +28,7 @@ const AddProduct = () => {
                 credentials: 'include',
                 body: formData,
             });
-            console.log("length: " + selectedFile.length)
+
             if (response.ok) {
                 const data = await response.json();
                 setResponseOk(true);

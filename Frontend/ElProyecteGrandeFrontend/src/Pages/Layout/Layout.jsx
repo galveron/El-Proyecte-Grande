@@ -28,7 +28,7 @@ function eraseCookie(name) {
     document.cookie = name + '=; Max-Age=-99999999;';
 }
 
-function Layout() {
+function Layout({ userRole }) {
     let isToken = getCookie('User');
     const navigate = useNavigate();
 
