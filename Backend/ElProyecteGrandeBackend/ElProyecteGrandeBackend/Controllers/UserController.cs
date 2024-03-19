@@ -51,6 +51,25 @@ public class UserController : ControllerBase
             return StatusCode(500, e.Message);
         }
     }
+    
+    [HttpGet("GetAllUsers"), Authorize(Roles = "Admin")]
+    public async Task<ActionResult<IEnumerable<User>>> GetAllUsers()
+    {
+        try
+        {
+            var users =  _userManager.Users
+                .Include(user1 => user1.CompanyProducts)
+                .Include(user1 => user1.Orders)
+                .AsEnumerable();
+            
+            return Ok(users);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return StatusCode(500, e.Message);
+        }
+    }
 
     [HttpGet("GetRole"), Authorize(Roles = "Customer, Company, Admin")]
     public async Task<ActionResult<string>> GetRole(string userName )
