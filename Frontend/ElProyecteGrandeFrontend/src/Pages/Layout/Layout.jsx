@@ -1,6 +1,7 @@
 import { Outlet, Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { notification } from 'antd';
+import { useState, useEffect } from "react";
 import './Layout.css';
 
 notification.config({
@@ -32,6 +33,9 @@ function Layout({ userRole }) {
     let isToken = getCookie('User');
     const navigate = useNavigate();
 
+    const [isShowCart, setIsShowCart] = useState(false);
+    const [cartItems, setCartItems] = useState([]);
+
     async function handleLogout() {
         try {
             const res = await fetch('http://localhost:5036/Auth/Logout', {
@@ -50,6 +54,32 @@ function Layout({ userRole }) {
             throw error;
         }
     }
+
+    async function fetchUser(){
+        try {
+            let url = `http://localhost:5036/User/GetUser`;
+            const res = await fetch(url,
+            {
+                method: "GET",
+                credentials: 'include',
+                headers: { "Authorization": "Bearer token" }
+            });
+        const data = await res.json();
+        setCartItems(data.cartItems);
+        return data;
+        }
+        catch(error) {
+            throw error;
+        }
+    }
+
+    function clickOnCart(){
+        isShowCart ? setIsShowCart(false) : setIsShowCart(true);
+    }
+
+    useEffect(() => {
+        let user = fetchUser();
+    }, [])
 
     return (
         <>
@@ -81,9 +111,20 @@ function Layout({ userRole }) {
                                     </li>
                                 </>
                             }
+                            <button onClick={() => clickOnCart()}>Cart</button>
                         </ul>
                     </nav>
                 </div>
+                {isShowCart? 
+                <section className="modal">
+                    {cartItems ? cartItems.map((item) => {
+                        return (<div key={item.id}>
+                            <p>Name: {item.product.name}</p>
+                            <p>Quantity: {item.quantity}</p>
+                            <p>Price {item.quantity * item.product.price}</p>
+                        </div>)
+                    }) : <></>}
+                </section> : <></>}
             </header >
             <Outlet />
             <footer>

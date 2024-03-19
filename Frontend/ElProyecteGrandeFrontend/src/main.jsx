@@ -15,6 +15,7 @@ import TestPage from './Pages/TestPage';
 import UserProfile from './Pages/UserProfile';
 import ImageUploader from './Pages/ImageUploader';
 import AddProduct from './Pages/AddProduct';
+import FavouriteProducts from './Pages/FavouriteProducts';
 
 async function fetchUser() {
   let url = `http://localhost:5036/User/GetUser`;
@@ -93,6 +94,10 @@ const router = createBrowserRouter([
       {
         path: '/add-product',
         element: <AddProduct />
+      },
+      {
+        path: '/favourites',
+        element: <FavouriteProducts />
       }
     ]
   }

@@ -7,7 +7,7 @@ function Products({products, user}) {
         <>
             <article className="products">
                 <div className="category">
-                    {products.length > 0 ?
+                    {products ?
                         products.map((product) => <ProductCard product={product} key={product.id} user={user} />)
                         : <h2>Loading...</h2>}
                 </div>
