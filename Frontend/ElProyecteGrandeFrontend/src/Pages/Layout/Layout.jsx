@@ -9,6 +9,7 @@ notification.config({
     closeIcon: null
 })
 
+
 function getCookie(cname) {
     let name = cname + "=";
     let decodedCookie = decodeURIComponent(document.cookie);
@@ -49,36 +50,41 @@ function Layout({ userRole }) {
             isToken = "";
             navigate('/');
             notification.success({ message: 'Logged out.' })
+            setTimeout(function () {
+                window.location.reload();
+            }, 2000);
         }
         catch (error) {
             throw error;
         }
     }
 
-    async function fetchUser(){
+    async function fetchUser() {
         try {
             let url = `http://localhost:5036/User/GetUser`;
             const res = await fetch(url,
-            {
-                method: "GET",
-                credentials: 'include',
-                headers: { "Authorization": "Bearer token" }
-            });
-        const data = await res.json();
-        setCartItems(data.cartItems);
-        return data;
+                {
+                    method: "GET",
+                    credentials: 'include',
+                    headers: { "Authorization": "Bearer token" }
+                });
+            const data = await res.json();
+            setCartItems(data.cartItems);
+            return data;
         }
-        catch(error) {
+        catch (error) {
             throw error;
         }
     }
 
-    function clickOnCart(){
+    function clickOnCart() {
         isShowCart ? setIsShowCart(false) : setIsShowCart(true);
     }
 
     useEffect(() => {
-        let user = fetchUser();
+        if (isToken !== "") {
+            fetchUser();
+        }
     }, [])
 
     return (
@@ -115,16 +121,16 @@ function Layout({ userRole }) {
                         </ul>
                     </nav>
                 </div>
-                {isShowCart? 
-                <section className="modal">
-                    {cartItems ? cartItems.map((item) => {
-                        return (<div key={item.id}>
-                            <p>Name: {item.product.name}</p>
-                            <p>Quantity: {item.quantity}</p>
-                            <p>Price {item.quantity * item.product.price}</p>
-                        </div>)
-                    }) : <></>}
-                </section> : <></>}
+                {isShowCart ?
+                    <section className="modal">
+                        {cartItems ? cartItems.map((item) => {
+                            return (<div key={item.id}>
+                                <p>Name: {item.product.name}</p>
+                                <p>Quantity: {item.quantity}</p>
+                                <p>Price {item.quantity * item.product.price}</p>
+                            </div>)
+                        }) : <></>}
+                    </section> : <></>}
             </header >
             <Outlet />
             <footer>

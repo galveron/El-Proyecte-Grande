@@ -87,7 +87,7 @@ function App() {
             children: [
                 {
                     path: '/',
-                    element: <Home userRole={userRole ? userRole : ""} />
+                    element: <Home userRole={userRole} />
                 },
                 {
                     path: '/marketplace',

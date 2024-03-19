@@ -29,7 +29,9 @@ function Login() {
 
             navigate('/');
             notification.success({ message: 'Successful login. Welcome!' });
-            window.location.reload()
+            setTimeout(function () {
+                window.location.reload();
+            }, 2000);
         }
         catch (error) {
             throw error;
