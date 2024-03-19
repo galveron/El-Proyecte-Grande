@@ -30,10 +30,6 @@
     transition: 200ms ease-in-out;
 }
 
-.header li:hover {
-    color: rgb(255, 255, 255);
-}
-
 .footer {
     margin: 0;
     left: 0;
@@ -67,4 +63,9 @@
 
 .footer a:hover {
     color: #C58E3C;
+}
+
+#layout-heart:hover {
+    color: #C58E3C;
+    cursor: pointer;
 }

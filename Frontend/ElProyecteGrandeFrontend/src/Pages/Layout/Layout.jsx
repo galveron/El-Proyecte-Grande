@@ -117,6 +117,11 @@ function Layout({ userRole }) {
                                     </li>
                                 </>
                             }
+                            {userRole === "Customer" && <li className="favourites">
+                                <Link to="/favourites">
+                                    <i className="fa-solid fa-heart" id="layout-heart"></i>
+                                </Link>
+                            </li>}
                             <button onClick={() => clickOnCart()}>Cart</button>
                         </ul>
                     </nav>
