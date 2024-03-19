@@ -16,7 +16,9 @@ import UserProfile from './Pages/UserProfile';
 import ImageUploader from './Pages/ImageUploader';
 import AddProduct from './Pages/AddProduct';
 import FavouriteProducts from './Pages/FavouriteProducts';
-import Cookies from 'js-cookie';
+import EditUsers from './Pages/AdminPages/EditUsers';
+import EditCompanies from './Pages/AdminPages/EditCompanies';
+import EditProducts from './Pages/AdminPages/EditProducts';
 
 function getCookie(cname) {
     let name = cname + "=";
@@ -127,6 +129,18 @@ function App() {
                 {
                     path: '/favourites',
                     element: <FavouriteProducts />
+                },
+                {
+                    path: '/edit-users',
+                    element: <EditUsers />
+                },
+                {
+                    path: '/edit-companies',
+                    element: <EditCompanies />
+                },
+                {
+                    path: '/edit-products',
+                    element: <EditProducts />
                 }
             ]
         }

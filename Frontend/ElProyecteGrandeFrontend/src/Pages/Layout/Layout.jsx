@@ -91,40 +91,55 @@ function Layout({ userRole }) {
         <>
             <header className="header-container">
                 <div className="header">
-                    <nav>
-                        <ul>
-                            <li className="home-layout">
-                                <Link to="/">Home</Link>
-                            </li>
-                            <li className="products-layout">
-                                <Link to="/marketplace">MarketPlace</Link>
-                            </li>
-                            {isToken != "" ?
-                                <>
-                                    <li className="profile-layout">
-                                        <Link to="/profile">Profile</Link>
-                                    </li>
-                                    <li className="logout-layout" onClick={handleLogout}>
-                                        <Link to="/">Logout</Link>
-                                    </li>
-                                </> :
-                                <>
-                                    <li className="registration-layout">
-                                        <Link to="/register">Registration</Link>
-                                    </li>
-                                    <li className="login-layout">
-                                        <Link to="/login">Login</Link>
-                                    </li>
-                                </>
-                            }
+                    {userRole === "Admin" ?
+                        <nav>
+                            <ul>
+                                <li className="edit-users-layout">
+                                    <Link to="/edit-users">Users</Link>
+                                </li>
+                                <li className="edit-companies-layout">
+                                    <Link to="/edit-companies">Companies</Link>
+                                </li>
+                                <li className="edit-products-layout">
+                                    <Link to="/edit-products">Products</Link>
+                                </li>
+                            </ul>
+                        </nav>
+                        : <nav>
+                            <ul>
+                                <li className="home-layout">
+                                    <Link to="/">Home</Link>
+                                </li>
+                                <li className="products-layout">
+                                    <Link to="/marketplace">MarketPlace</Link>
+                                </li>
+                                {isToken != "" ?
+                                    <>
+                                        <li className="profile-layout">
+                                            <Link to="/profile">Profile</Link>
+                                        </li>
+                                        <li className="logout-layout" onClick={handleLogout}>
+                                            <Link to="/">Logout</Link>
+                                        </li>
+                                    </> :
+                                    <>
+                                        <li className="registration-layout">
+                                            <Link to="/register">Registration</Link>
+                                        </li>
+                                        <li className="login-layout">
+                                            <Link to="/login">Login</Link>
+                                        </li>
+                                    </>
+                                }
                             {userRole === "Customer" && <li className="favourites">
                                 <Link to="/favourites">
                                     <i className="fa-solid fa-heart" id="layout-heart"></i>
                                 </Link>
                             </li>}
-                            <button onClick={() => clickOnCart()}>Cart</button>
-                        </ul>
-                    </nav>
+                                <button onClick={() => clickOnCart()}>Cart</button>
+                            </ul>
+                        </nav>}
+
                 </div>
                 {isShowCart ?
                     <section className="modal">
