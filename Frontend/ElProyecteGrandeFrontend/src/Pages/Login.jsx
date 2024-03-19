@@ -26,8 +26,10 @@ function Login() {
                 notification.error({ message: 'Email or password incorrect!' });
                 throw new Error(`HTTP error! status: ${res.status}`);
             }
+
             navigate('/');
             notification.success({ message: 'Successful login. Welcome!' });
+            window.location.reload()
         }
         catch (error) {
             throw error;
