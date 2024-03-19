@@ -19,6 +19,10 @@ const FavouriteProducts = () => {
         return data;
     }
 
+    const handleSetUser = (data) => {
+        setUser(data);
+    }
+
     useEffect(() => {
         fetchUser()
     }, [])
@@ -26,7 +30,7 @@ const FavouriteProducts = () => {
     return (<>
         <div className='marketplace'>
             {loading ? <h1>Loading...</h1> :
-                <Products products={user.favourites} user={user} />
+                <Products products={user.favourites} user={user} handleSetUser={handleSetUser} />
             }
         </div>
     </>

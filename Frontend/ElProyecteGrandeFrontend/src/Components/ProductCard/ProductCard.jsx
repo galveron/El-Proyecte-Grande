@@ -1,27 +1,75 @@
 import './ProductCard.css';
 import { notification } from 'antd';
+import { useState, useEffect } from 'react';
 
 notification.config({
     duration: 2,
     closeIcon: null
 })
 
-function ProductCard({ product, user }) {
+function ProductCard({ product, user, handleSetUser }) {
 
-    async function handleFavourite() {
+    function isProductInFavourites() {
+        if (user.favourites) {
+            return user.favourites.some(fav => fav.id === product.id);
+        }
+    }
+
+    const [isFavourite, setIsFavourite] = useState(undefined);
+
+    useEffect(() => {
+        setIsFavourite(isProductInFavourites());
+    })
+
+    async function fetchUser() {
+        let url = `http://localhost:5036/User/GetUser`;
+        const res = await fetch(url,
+            {
+                method: "GET",
+                credentials: 'include',
+                headers: { 'Content-type': 'application/json' }
+            });
+        const data = await res.json();
+        return data;
+    }
+
+    async function addFavourite() {
         try {
             const res = await fetch(`http://localhost:5036/User/AddFavourite?productId=${product.id}`, {
                 method: 'PATCH',
                 credentials: 'include'
             });
             if (!res.ok) {
-                notification.error({ message: 'Email or password incorrect!' });
                 throw new Error(`HTTP error! status: ${res.status}`);
             }
             res.text()
             .then(text => {
                 notification.info({message: `${text}`})
             })
+            setIsFavourite(true);
+            let userAfterAddFav = await fetchUser();
+            handleSetUser(userAfterAddFav);
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    async function removeFavourite() {
+        try {
+            const res = await fetch(`http://localhost:5036/User/RemoveFavourite?productId=${product.id}`, {
+                method: 'PATCH',
+                credentials: 'include'
+            });
+            if (!res.ok) {
+                throw new Error(`HTTP error! status: ${res.status}`);
+            }
+            res.text()
+            .then(text => {
+                notification.info({message: `${text}`})
+            })
+            setIsFavourite(false);
+            let userAfterRemoveFav = await fetchUser();
+            handleSetUser(userAfterRemoveFav);
         } catch (error) {
             throw error;
         }
@@ -30,7 +78,9 @@ function ProductCard({ product, user }) {
     return (
         <div className='productCard'>
             <img className='img' src={product.image ? product.images.coverart : '/plant1.jpg'} />
-            {user.company == null && (<button className='save' onClick={handleFavourite}><i className="fa-regular fa-heart"></i></button>)}
+            {user.company == null && (<button className='save' onClick={isFavourite ? removeFavourite : addFavourite}>
+                {isFavourite ? <i className="fa-solid fa-heart"></i> : <i className="fa-regular fa-heart"></i>}
+                </button>)}
             <p>{product.name}</p>
             <div className='details-container'>
                 <ul className='details-title'>

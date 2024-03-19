@@ -23,6 +23,10 @@ function MarketPlace() {
         return data;
     }
 
+    const handleSetUser = (data) => {
+        setUser(data);
+    }
+
     useEffect(() => {
         fetchProducts()
             .then(products => setProducts(products), setLoading(false));
@@ -33,7 +37,7 @@ function MarketPlace() {
     return (<>
         <div className='marketplace'>
             {loading ? <h1>Loading...</h1> :
-                <Products products={products} user={user} />
+                <Products {...{products, user, handleSetUser}} />
             }
         </div>
     </>
