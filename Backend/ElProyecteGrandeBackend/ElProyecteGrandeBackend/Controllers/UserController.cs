@@ -49,6 +49,20 @@ public class UserController : ControllerBase
             return StatusCode(500, e.Message);
         }
     }
+
+    [HttpGet("GetRole"), Authorize(Roles = "Customer, Company, Admin")]
+    public async Task<ActionResult<string>> GetRole(string userName )
+    {
+        if (userName != null)
+        {
+            var user = await _userManager.FindByNameAsync(userName);
+            
+            var roles = await _userManager.GetRolesAsync(user);
+            return roles[0];
+        }
+
+        return "nothing";
+    }
     
     [HttpDelete("DeleteUserForAdmin"), Authorize(Roles = "Admin")]
     public async Task<ActionResult> DeleteUser(string id)
