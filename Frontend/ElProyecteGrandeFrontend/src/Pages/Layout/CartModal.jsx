@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react";
 
 function CartModal({token, setIsShowCart, isShowCart, user}){
-
-    const [cartItems, setCartItems] = useState([]);
+    const [customer, setCustomer] = useState({});
 
     async function fetchUser() {
         try {
@@ -14,7 +13,7 @@ function CartModal({token, setIsShowCart, isShowCart, user}){
                     headers: { "Authorization": "Bearer token" }
                 });
             const data = await res.json();
-            setCartItems(data.cartItems);
+            setCustomer(data);
             return data;
         }
         catch (error) {
@@ -23,8 +22,8 @@ function CartModal({token, setIsShowCart, isShowCart, user}){
     }
 
     useEffect(() => {
-        if (token !== "") {
-            fetchUser();
+        if (token !== "" && user) {
+            setCustomer(user);
         }
     }, [user])
 
@@ -52,7 +51,7 @@ function CartModal({token, setIsShowCart, isShowCart, user}){
     {isShowCart ?
         <section className="cartModal">
             <button className="closeModalButton" onClick={() => setIsShowCart(false)}>Close</button>
-            {cartItems && cartItems.length > 0 ? cartItems.map((item) => {
+            {customer.cartItems && customer.cartItems.length > 0 ? customer.cartItems.map((item) => {
                 return (<div key={item.id} className="cartItem">
                     <p>Name: {item.product.name}</p>
                     <p>Quantity: {item.quantity}</p>
@@ -60,8 +59,8 @@ function CartModal({token, setIsShowCart, isShowCart, user}){
                     <button onClick={() => removeFromCart(item.productId, item.quantity)}>Remove from Cart</button>
                 </div>)
             }) : <></>}
-            <p>Total Price: {cartItems && cartItems.length > 0? 
-            cartItems.reduce((accumulator, currentValue) => 
+            <p>Total Price: {customer.cartItems && customer.cartItems.length > 0? 
+            customer.cartItems.reduce((accumulator, currentValue) => 
             accumulator + (currentValue.product.price * currentValue.quantity), 0) : 0} </p>
         </section> : <></>}
         </>)
