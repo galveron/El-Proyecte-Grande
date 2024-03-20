@@ -128,7 +128,7 @@ function App() {
                 },
                 {
                     path: '/favourites',
-                    element: <FavouriteProducts />
+                    element: <FavouriteProducts userRole={userRole} />
                 },
                 {
                     path: '/edit-users',
