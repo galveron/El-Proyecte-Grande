@@ -1,8 +1,9 @@
 import React from "react";
 import { useEffect, useState } from "react";
 import Products from "../Components/Products/Products";
+import Unauthorized from "./Unauthorized/Unauthorized";
 
-const FavouriteProducts = () => {
+const FavouriteProducts = ({ userRole }) => {
     const [user, setUser] = useState({});
     const [loading, setLoading] = useState(true);
 
@@ -26,6 +27,8 @@ const FavouriteProducts = () => {
     useEffect(() => {
         fetchUser()
     }, [])
+
+    if (userRole === "") return <Unauthorized />;
 
     return (<>
         <div className='marketplace'>
