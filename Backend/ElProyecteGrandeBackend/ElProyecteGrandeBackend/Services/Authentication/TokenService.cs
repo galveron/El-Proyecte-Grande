@@ -9,7 +9,7 @@ namespace ElProyecteGrandeBackend.Services.Authentication;
 
 public class TokenService : ITokenService
 {
-    private const int ExpirationMinutes = 30;
+    private const int ExpirationMinutes = 180;
     private readonly IConfigurationRoot _config;
 
     public TokenService()
