@@ -61,7 +61,7 @@ function App() {
         const user = await fetchUser();
         if (user.length !== 0) {
 
-            let url = `http://localhost:5036/User/GetRole?userName=${user.userName}`;
+            let url = `http://localhost:5036/User/GetRole?id=${user.id}`;
             const res = await fetch(url,
                 {
                     method: "GET",
