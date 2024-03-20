@@ -39,10 +39,10 @@ function getCookie(cname) {
 function App() {
 
     let [userRole, setUserRole] = useState("")
+    let cookie = getCookie('User')
 
     async function fetchUser() {
         let url = `http://localhost:5036/User/GetUser`;
-        let cookie = getCookie('User')
         if (cookie.length !== 0) {
             const res = await fetch(url,
                 {
@@ -93,7 +93,7 @@ function App() {
                 },
                 {
                     path: '/marketplace',
-                    element: <MarketPlace />
+                    element: <MarketPlace userRole={userRole} />
                 },
                 {
                     path: '/register',

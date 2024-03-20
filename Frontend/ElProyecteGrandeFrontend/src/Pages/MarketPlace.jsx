@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import Products from '../Components/Products/Products';
 
-function MarketPlace() {
+function MarketPlace({ userRole }) {
     const [loading, setLoading] = useState(true);
     const [products, setProducts] = useState([]);
     const [user, setUser] = useState({});
@@ -12,15 +12,17 @@ function MarketPlace() {
     }
 
     async function fetchUser() {
-        let url = `http://localhost:5036/User/GetUser`;
-        const res = await fetch(url,
-            {
-                method: "GET",
-                credentials: 'include',
-                headers: { 'Content-type': 'application/json' }
-            });
-        const data = await res.json();
-        return data;
+        if (userRole !== "") {
+            let url = `http://localhost:5036/User/GetUser`;
+            const res = await fetch(url,
+                {
+                    method: "GET",
+                    credentials: 'include',
+                    headers: { 'Content-type': 'application/json' }
+                });
+            const data = await res.json();
+            return data;
+        }
     }
 
     const handleSetUser = (data) => {
@@ -37,7 +39,7 @@ function MarketPlace() {
     return (<>
         <div className='marketplace'>
             {loading ? <h1>Loading...</h1> :
-                <Products {...{products, user, handleSetUser}} />
+                <Products {...{ products, user, handleSetUser, userRole }} />
             }
         </div>
     </>
