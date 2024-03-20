@@ -80,7 +80,7 @@ function App() {
         fetchRole()
             .then(role => setUserRole(role))
 
-    }, [user])
+    }, [])
 
 
     const router = createBrowserRouter([
@@ -95,7 +95,7 @@ function App() {
                 },
                 {
                     path: '/marketplace',
-                    element: <MarketPlace userRole={userRole} fetchCustomer={fetchUser} />
+                    element: <MarketPlace userRole={userRole} setCustomer={setUser} />
                 },
                 {
                     path: '/register',
