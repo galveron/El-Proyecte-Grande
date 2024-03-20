@@ -50,7 +50,6 @@ function App() {
                     credentials: 'include'
                 });
             const data = await res.json();
-            console.log("data: " + data.userName)
             return data;
         }
         return ""
