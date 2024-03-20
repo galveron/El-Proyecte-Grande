@@ -42,7 +42,6 @@ public class UserController : ControllerBase
                 .Include(user1 => user1.CompanyProducts)
                 .Include(user1 => user1.Orders)
                 .SingleOrDefaultAsync(user1 => user1.UserName == User.Identity.Name);
-            
             return Ok(user);
         }
         catch (Exception e)
@@ -61,6 +60,44 @@ public class UserController : ControllerBase
                 .Include(user1 => user1.CompanyProducts)
                 .Include(user1 => user1.Orders)
                 .AsEnumerable();
+            
+            return Ok(users);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return StatusCode(500, e.Message);
+        }
+    }
+    
+    [HttpGet("GetAllCustomers"), Authorize(Roles = "Admin")]
+    public async Task<ActionResult<IEnumerable<User>>> GetAllCustomers()
+    {
+        try
+        {
+            var users =  _userManager.Users
+                .Include(user1 => user1.CompanyProducts)
+                .Include(user1 => user1.Orders)
+                .Where(user1 => user1.Company == null);
+            
+            return Ok(users);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return StatusCode(500, e.Message);
+        }
+    }
+    
+    [HttpGet("GetAllCompanies"), Authorize(Roles = "Admin")]
+    public async Task<ActionResult<IEnumerable<User>>> GetAllCompanies()
+    {
+        try
+        {
+            var users =  _userManager.Users
+                .Include(user1 => user1.CompanyProducts)
+                .Include(user1 => user1.Orders)
+                .Where(user1 => user1.Company != null);
             
             return Ok(users);
         }
