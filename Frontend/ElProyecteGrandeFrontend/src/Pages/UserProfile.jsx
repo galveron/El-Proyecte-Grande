@@ -2,8 +2,9 @@ import { useState, useEffect } from "react";
 
 import CustomerProfile from "../Components/Profile/CustomerProfile";
 import CompanyProfile from "../Components/Profile/CompanyProfile";
+import Unauthorized from "./Unauthorized/Unauthorized";
 
-function UserProfile() {
+function UserProfile({ userRole }) {
     const [user, setUser] = useState({});
     const [loading, setLoading] = useState(false);
 
@@ -27,6 +28,8 @@ function UserProfile() {
 
 
     if (loading) return <h2>Loading...</h2>;
+
+    if (userRole === "") return <Unauthorized />
 
     return (
         <div className="profile">

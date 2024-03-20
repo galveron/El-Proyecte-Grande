@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
+import Unauthorized from './Unauthorized/Unauthorized';
 
-const AddProduct = () => {
+const AddProduct = ({ userRole }) => {
     const [selectedFile, setSelectedFile] = useState(null);
     const [images, setImages] = useState([])
     const [name, setName] = useState("")
@@ -50,6 +51,8 @@ const AddProduct = () => {
             console.error('Error uploading image:', error.message);
         }
     };
+
+    if (userRole !== "Company") return <Unauthorized />
 
     return (
         <div className='imageuploader'>

@@ -1,7 +1,8 @@
 import { Outlet, Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { notification } from 'antd';
-import { useState, useEffect } from "react";
+import CartModal from "./CartModal";
+import { useState } from "react";
 import './Layout.css';
 
 notification.config({
@@ -35,7 +36,6 @@ function Layout({ userRole }) {
     const navigate = useNavigate();
 
     const [isShowCart, setIsShowCart] = useState(false);
-    const [cartItems, setCartItems] = useState([]);
 
     async function handleLogout() {
         try {
@@ -59,33 +59,9 @@ function Layout({ userRole }) {
         }
     }
 
-    async function fetchUser() {
-        try {
-            let url = `http://localhost:5036/User/GetUser`;
-            const res = await fetch(url,
-                {
-                    method: "GET",
-                    credentials: 'include',
-                    headers: { "Authorization": "Bearer token" }
-                });
-            const data = await res.json();
-            setCartItems(data.cartItems);
-            return data;
-        }
-        catch (error) {
-            throw error;
-        }
-    }
-
     function clickOnCart() {
         isShowCart ? setIsShowCart(false) : setIsShowCart(true);
     }
-
-    useEffect(() => {
-        if (isToken !== "") {
-            fetchUser();
-        }
-    }, [])
 
     return (
         <>
@@ -139,21 +115,11 @@ function Layout({ userRole }) {
                                         <i className="fa-solid fa-heart" id="layout-heart"></i>
                                     </Link>
                                 </li>}
-                                <button onClick={() => clickOnCart()}>Cart</button>
+                                {userRole === "Customer" && <button className="cart-button" onClick={() => clickOnCart()}>Cart</button>}
                             </ul>
                         </nav>}
-
                 </div>
-                {isShowCart ?
-                    <section className="modal">
-                        {cartItems ? cartItems.map((item) => {
-                            return (<div key={item.id}>
-                                <p>Name: {item.product.name}</p>
-                                <p>Quantity: {item.quantity}</p>
-                                <p>Price {item.quantity * item.product.price}</p>
-                            </div>)
-                        }) : <></>}
-                    </section> : <></>}
+                <CartModal token={isToken} setIsShowCart={setIsShowCart} isShowCart={isShowCart} />
             </header >
             <Outlet />
             <footer>
