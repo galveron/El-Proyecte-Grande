@@ -112,7 +112,7 @@ function App() {
                     element: <CompanyRegistration />
                 }, {
                     path: '/profile',
-                    element: <UserProfile />
+                    element: <UserProfile userRole={userRole} />
                 },
                 {
                     path: '/test-page',
@@ -124,7 +124,7 @@ function App() {
                 },
                 {
                     path: '/add-product',
-                    element: <AddProduct />
+                    element: <AddProduct userRole={userRole} />
                 },
                 {
                     path: '/favourites',

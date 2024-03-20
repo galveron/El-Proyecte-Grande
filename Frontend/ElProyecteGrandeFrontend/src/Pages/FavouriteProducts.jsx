@@ -28,12 +28,12 @@ const FavouriteProducts = ({ userRole }) => {
         fetchUser()
     }, [])
 
-    if (userRole === "") return <Unauthorized />;
+    if (userRole !== "Customer") return <Unauthorized />;
 
     return (<>
         <div className='marketplace'>
             {loading ? <h1>Loading...</h1> :
-                <Products products={user.favourites} user={user} handleSetUser={handleSetUser} />
+                <Products products={user.favourites} user={user} handleSetUser={handleSetUser} userRole={userRole} />
             }
         </div>
     </>
