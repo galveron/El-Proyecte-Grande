@@ -23,7 +23,10 @@ public class ProductRepository : IProductRepository
     }
     public IEnumerable<Product> GetAllProducts()
     {
-        return _dbContext.Products.Include(product => product.Seller).ToList();
+        return _dbContext.Products
+            .Include(product => product.Seller)
+            .Include(product => product.Images)
+            .ToList();
     }
     
     public IEnumerable<Product> GetAllProductsByUser(User user)

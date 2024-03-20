@@ -115,7 +115,7 @@ function Layout({ userRole, user }) {
                                         <i className="fa-solid fa-heart" id="layout-heart"></i>
                                     </Link>
                                 </li>}
-                                <button className="cart-button" onClick={() => clickOnCart()}>Cart</button>
+                                {userRole === "Customer" && <button className="cart-button" onClick={() => clickOnCart()}>Cart</button>}
                             </ul>
                         </nav>}
                 </div>
