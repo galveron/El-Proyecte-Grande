@@ -31,7 +31,7 @@ function eraseCookie(name) {
     document.cookie = name + '=; Max-Age=-99999999;';
 }
 
-function Layout({ userRole }) {
+function Layout({ userRole, user }) {
     let isToken = getCookie('User');
     const navigate = useNavigate();
 
@@ -119,7 +119,7 @@ function Layout({ userRole }) {
                             </ul>
                         </nav>}
                 </div>
-                <CartModal token={isToken} setIsShowCart={setIsShowCart} isShowCart={isShowCart} />
+                <CartModal token={isToken} setIsShowCart={setIsShowCart} isShowCart={isShowCart} user={user}/>
             </header >
             <Outlet />
             <footer>

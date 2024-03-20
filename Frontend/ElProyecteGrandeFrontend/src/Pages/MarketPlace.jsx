@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import Products from '../Components/Products/Products';
 
-function MarketPlace({ userRole }) {
+function MarketPlace({ userRole, fetchCustomer }) {
     const [loading, setLoading] = useState(true);
     const [products, setProducts] = useState([]);
     const [user, setUser] = useState({});
@@ -39,7 +39,7 @@ function MarketPlace({ userRole }) {
     return (<>
         <div className='marketplace'>
             {loading ? <h1>Loading...</h1> :
-                <Products {...{ products, user, handleSetUser, userRole }} />
+                <Products {...{ products, user, handleSetUser, userRole, fetchCustomer }} />
             }
         </div>
     </>

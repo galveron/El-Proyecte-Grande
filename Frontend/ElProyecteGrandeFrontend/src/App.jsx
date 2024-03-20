@@ -39,6 +39,7 @@ function getCookie(cname) {
 function App() {
 
     let [userRole, setUserRole] = useState("")
+    let [user, setUser] = useState();
     let cookie = getCookie('User')
 
     async function fetchUser() {
@@ -50,6 +51,7 @@ function App() {
                     credentials: 'include'
                 });
             const data = await res.json();
+            setUser(data)
             return data;
         }
         return ""
@@ -78,12 +80,13 @@ function App() {
         fetchRole()
             .then(role => setUserRole(role))
 
-    }, [])
+    }, [user])
+
 
     const router = createBrowserRouter([
         {
             path: '/',
-            element: <Layout userRole={userRole} />,
+            element: <Layout userRole={userRole} user={user} />,
             errorElement: <ErrorPage />,
             children: [
                 {
@@ -92,7 +95,7 @@ function App() {
                 },
                 {
                     path: '/marketplace',
-                    element: <MarketPlace userRole={userRole} />
+                    element: <MarketPlace userRole={userRole} fetchCustomer={fetchUser} />
                 },
                 {
                     path: '/register',

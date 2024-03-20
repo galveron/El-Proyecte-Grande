@@ -7,7 +7,7 @@ notification.config({
     closeIcon: null
 })
 
-function ProductCard({ product, user, handleSetUser, userRole }) {
+function ProductCard({ product, user, handleSetUser, userRole, fetchCustomer }) {
 
     function isProductInFavourites() {
         if (user && user.favourites) {
@@ -101,6 +101,7 @@ function ProductCard({ product, user, handleSetUser, userRole }) {
                     .then(text => {
                         notification.info({ message: `${text}` })
                     })
+                fetchCustomer;
             } catch (error) {
                 throw error;
             }
