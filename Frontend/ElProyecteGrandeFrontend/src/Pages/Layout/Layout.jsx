@@ -1,7 +1,8 @@
 import { Outlet, Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { notification } from 'antd';
-import { useState, useEffect } from "react";
+import CartModal from "./CartModal";
+import { useState } from "react";
 import './Layout.css';
 
 notification.config({
@@ -35,7 +36,6 @@ function Layout({ userRole }) {
     const navigate = useNavigate();
 
     const [isShowCart, setIsShowCart] = useState(false);
-    const [cartItems, setCartItems] = useState([]);
 
     async function handleLogout() {
         try {
@@ -59,33 +59,9 @@ function Layout({ userRole }) {
         }
     }
 
-    async function fetchUser() {
-        try {
-            let url = `http://localhost:5036/User/GetUser`;
-            const res = await fetch(url,
-                {
-                    method: "GET",
-                    credentials: 'include',
-                    headers: { "Authorization": "Bearer token" }
-                });
-            const data = await res.json();
-            setCartItems(data.cartItems);
-            return data;
-        }
-        catch (error) {
-            throw error;
-        }
-    }
-
     function clickOnCart() {
         isShowCart ? setIsShowCart(false) : setIsShowCart(true);
     }
-
-    useEffect(() => {
-        if (isToken !== "") {
-            fetchUser();
-        }
-    }, [])
 
     return (
         <>
@@ -142,22 +118,8 @@ function Layout({ userRole }) {
                                 <button onClick={() => clickOnCart()}>Cart</button>
                             </ul>
                         </nav>}
-
                 </div>
-                {isShowCart ?
-                    <section className="cartModal">
-                        <button className="closeModalButton" onClick={() => setIsShowCart(false)}>Close</button>
-                        {cartItems ? cartItems.map((item) => {
-                            return (<div key={item.id} className="cartItem">
-                                <p>Name: {item.product.name}</p>
-                                <p>Quantity: {item.quantity}</p>
-                                <p>Price {item.quantity * item.product.price}</p>
-                            </div>)
-                        }) : <></>}
-                        <p>Total Price: {cartItems && cartItems.length > 0? 
-                        cartItems.reduce((accumulator, currentValue) => 
-                        (accumulator.product.price * accumulator.quantity) + (currentValue.product.price * currentValue.quantity)) : 0} </p>
-                    </section> : <></>}
+                <CartModal token={isToken} setIsShowCart={setIsShowCart} isShowCart={isShowCart} />
             </header >
             <Outlet />
             <footer>
