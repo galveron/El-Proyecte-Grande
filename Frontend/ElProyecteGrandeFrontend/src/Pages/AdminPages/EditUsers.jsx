@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import './Admin.css';
 import '../../index.css'
-import Modal from '../../Modal/Modal;'
 
 
 
@@ -49,8 +48,8 @@ function EditUsers() {
                                     <td>{user.email}</td>
                                     <td>role</td>
                                     <td>
-                                        <button class="adminButton" id="details" >Details</button>
-                                        <button class="adminButton" id="delete">Delete</button>
+                                        <button class="adminButton" id="details" onClick={(e => setShowDetails(true))}>Details</button>
+                                        <button class="adminButton" id="delete" onClick={(e => setShowDelete(true))}>Delete</button>
                                     </td>
                                 </tr>
                             )}
@@ -58,8 +57,21 @@ function EditUsers() {
                         </tbody>
                     </table>
                     : <p>no users</p>}
-            </div>
-            <Modal />
+            </div >
+            {
+                showDetails ?
+                    <div className='details-modal'>
+                        Hello
+                    </div>
+                    : <div>By</div>
+            }
+            {
+                showDelete ?
+                    <div className='delete-modal'>
+                        Hello
+                    </div>
+                    : <div>By</div>
+            }
         </>
     )
 }

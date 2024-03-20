@@ -103,6 +103,9 @@ function Layout({ userRole }) {
                                 <li className="edit-products-layout">
                                     <Link to="/edit-products">Products</Link>
                                 </li>
+                                <li className="logout-layout" onClick={handleLogout}>
+                                    <Link to="/">Logout</Link>
+                                </li>
                             </ul>
                         </nav>
                         : <nav>
@@ -131,11 +134,11 @@ function Layout({ userRole }) {
                                         </li>
                                     </>
                                 }
-                            {userRole === "Customer" && <li className="favourites">
-                                <Link to="/favourites">
-                                    <i className="fa-solid fa-heart" id="layout-heart"></i>
-                                </Link>
-                            </li>}
+                                {userRole === "Customer" && <li className="favourites">
+                                    <Link to="/favourites">
+                                        <i className="fa-solid fa-heart" id="layout-heart"></i>
+                                    </Link>
+                                </li>}
                                 <button onClick={() => clickOnCart()}>Cart</button>
                             </ul>
                         </nav>}
