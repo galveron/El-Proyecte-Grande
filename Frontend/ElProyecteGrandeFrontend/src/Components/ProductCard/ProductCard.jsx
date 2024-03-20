@@ -87,6 +87,29 @@ function ProductCard({ product, user, handleSetUser, userRole }) {
         }
     }
 
+    async function addToCart() {
+        if (user) {
+            try {
+                const res = await fetch(`http://localhost:5036/User/AddOrRemoveCartItems?productId=${product.id}&quantity=1`, {
+                    method: 'PATCH',
+                    credentials: 'include'
+                });
+                if (!res.ok) {
+                    throw new Error(`HTTP error! status: ${res.status}`);
+                }
+                res.text()
+                    .then(text => {
+                        notification.info({ message: `${text}` })
+                    })
+            } catch (error) {
+                throw error;
+            }
+        }
+        else {
+            notification.warning({ message: "Login first to buy this item!" })
+        }
+    }
+
     return (
         <div className='productCard'>
             <img className='img' src={product.image ? product.images.coverart : '/plant1.jpg'} />
@@ -107,6 +130,7 @@ function ProductCard({ product, user, handleSetUser, userRole }) {
                     <li>{product.quantity}</li>
                 </ul>
             </div>
+            {(userRole === "Customer" || userRole === "") && <button className='add-to-cart' onClick={addToCart}>Add to Cart</button>}
         </div>
     )
 }

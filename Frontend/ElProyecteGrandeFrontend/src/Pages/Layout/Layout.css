@@ -110,3 +110,9 @@
     right: 0;
     top: 0;
 }
+
+.cart-button {
+    background-color: #0E523D;
+    border: 2px solid #0E523D;
+    border-radius: 5px;
+}
