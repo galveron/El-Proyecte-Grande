@@ -74,10 +74,9 @@ function Checkout(){
         e.preventDefault();
         console.log("SUBMIT")
         const orderID = await fetchPlaceOrder();
-        console.log("order id" + orderID)
-        user.cartItems.map((item) => {
-            addProductToOrder(orderID, item.product.id, item.quantity)
-        })
+        for(let item of user.cartItems){
+            await addProductToOrder(orderID, item.product.id, item.quantity);
+        }
     }
 
     return(
