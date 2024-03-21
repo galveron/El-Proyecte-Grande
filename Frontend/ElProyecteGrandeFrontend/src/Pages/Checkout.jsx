@@ -34,8 +34,28 @@ function Checkout(){
     async function fetchPlaceOrder(){
         try{
             const url = 'http://localhost:5036/Order/AddOrder';
-            const res = await fetch(url);
-            const response = res.json();
+            const res = await fetch(url, 
+                {
+                    method: "POST",
+                    credentials: 'include',
+                    headers: { "Authorization": "Bearer token" }
+                });
+            return await res.json();
+        } 
+        catch(error){
+            throw error;
+        }
+    }
+
+    async function addProductToOrder(orderId, productId, quantity){
+        try{
+            const url =  `http://localhost:5036/Order/AddOrRemoveProductFromOrder?orderId=${orderId}&productId=${productId}&quantity=${quantity}`;
+            const res = await fetch(url, 
+                {
+                    method: "POST",
+                    credentials: 'include',
+                    headers: { "Authorization": "Bearer token" }
+                });
         } 
         catch(error){
             throw error;
@@ -50,9 +70,14 @@ function Checkout(){
         setSelected((prev) => (i === prev ? null : i));
     }
 
-    function placeOrder(e){
-        e.preventdefault();
-        fetchPlaceOrder();
+    async function placeOrder(e){
+        e.preventDefault();
+        console.log("SUBMIT")
+        const orderID = await fetchPlaceOrder();
+        console.log("order id" + orderID)
+        user.cartItems.map((item) => {
+            addProductToOrder(orderID, item.product.id, item.quantity)
+        })
     }
 
     return(
@@ -85,7 +110,7 @@ function Checkout(){
         </table>
         <section className="orderForm">
             <h2>Please fill in the details to finalize the order:</h2>
-        <form >
+        <form onSubmit={(e) => placeOrder(e)}>
             <label >First Name:
                 <input type="text" value={firstName} onChange={(e) => setFirstName(e.target.value)}/>
             </label>
@@ -115,7 +140,7 @@ function Checkout(){
                 ))}
             </label>
             </div>
-        <button onSubmit={(e) => placeOrder(e)}>Place Order</button>
+        <button>Place Order</button>
         </form>
         </section>
         </>
