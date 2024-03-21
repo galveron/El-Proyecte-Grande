@@ -1,6 +1,8 @@
 .home-page {
     position: relative;
     display: flex;
+    flex-direction: column-reverse;
+    align-items: center;
     justify-content: center;
     bottom: 0;
     text-align: center;
@@ -21,6 +23,8 @@ img {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 200px;
     text-align: center;
+    position: relative;
+    top: 0;
+
 }
