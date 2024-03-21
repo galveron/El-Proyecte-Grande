@@ -72,4 +72,31 @@ public class ProductController : ControllerBase
             return NotFound("Product not found");
         }
     }
+    
+    [HttpDelete("DeleteProduct"), Authorize(Roles = "Company, Admin")]
+    public async Task<ActionResult> DeleteProduct(int productId)
+    {
+        try
+        {
+            var product = _productRepository.GetProduct(productId);
+            
+            if (product == null)
+            {
+                return NotFound("Product was not found.");
+            }
+            
+            if (product.Seller.UserName != User.Identity.Name)
+            {
+                return Unauthorized("Not authorized to delete this product");
+            }
+            
+            _productRepository.DeleteProduct(product);
+            
+            return Ok(product);
+        }
+        catch (Exception e)
+        {
+            return NotFound("Product not found");
+        }
+    }
 }

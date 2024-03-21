@@ -79,10 +79,9 @@ public class UserController : ControllerBase
         }
     }
     
-    [HttpDelete("DeleteUser"), Authorize(Roles = "Customer, Company")]
+    [HttpDelete("DeleteUser"), Authorize(Roles = "Customer")]
     public async Task<ActionResult> DeleteUser()
     {
-        //TODO: companies can't be deleted yet (server error)
         try
         {
             var user = await _userManager.FindByNameAsync(User.Identity.Name);
@@ -108,13 +107,47 @@ public class UserController : ControllerBase
         }
     }
     
+    [HttpDelete("DeleteCompanyUser"), Authorize(Roles = "Company")]
+    public async Task<ActionResult> DeleteCompanyUser()
+    {
+        try
+        {
+            var user = await _userManager.Users
+                .Include(user1 => user1.CompanyProducts)
+                .SingleOrDefaultAsync(user1 => user1.UserName == User.Identity.Name);
+            
+            if (user == null)
+            {
+                return NotFound("User was not found.");
+            }
+            
+            foreach (var userCompanyProduct in user.CompanyProducts.ToList())
+            {
+                _productRepository.DeleteProduct(userCompanyProduct);
+            }
+            
+            var identityResult = await _userManager.DeleteAsync(user);
+            
+            if (!identityResult.Succeeded)
+            {
+                return BadRequest(identityResult.Errors);
+            }
+            
+            return Ok("Successfully deleted user.");
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return StatusCode(500, e.Message);
+        }
+    }
+    
     [HttpPatch("UpdateCustomer"), Authorize(Roles = "Customer, Company, Admin")]
     public async Task<ActionResult> UpdateCustomer(string userName, string email, string phoneNumber)
     {
         try
         {
             var user = await _userManager.FindByNameAsync(User.Identity.Name);
-            
             user.UserName = userName;
             user.Email = email;
             user.PhoneNumber = phoneNumber;
