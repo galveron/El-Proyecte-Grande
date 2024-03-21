@@ -107,7 +107,7 @@ function CartModal({ token, setIsShowCart, isShowCart, user }) {
                         accumulator + (currentValue.product.price * currentValue.quantity), 0) : 0}Ft </p>
                 <button onClick={() => clearCart()} className="clear-cart">Clear Cart</button>
 
-                <a to='/checkout'><button className="go-checkout" onClick={() => setIsShowCart(false)}>Go to Checkout</button></a>
+                <Link className="go-checkout" to='/checkout' onClick={() => setIsShowCart(false)}>Go to Checkout</Link>
             </Modal.Body>
         </Modal>
     </>)

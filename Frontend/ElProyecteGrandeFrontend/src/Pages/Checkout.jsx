@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-function Checkout(){
+function Checkout() {
 
     const [user, setUser] = useState({});
     const [firstName, setFirstName] = useState("");
@@ -31,118 +31,142 @@ function Checkout(){
         }
     }
 
-    async function fetchPlaceOrder(){
-        try{
+    async function fetchPlaceOrder() {
+        try {
             const url = 'http://localhost:5036/Order/AddOrder';
-            const res = await fetch(url, 
+            const res = await fetch(url,
                 {
                     method: "POST",
                     credentials: 'include',
                     headers: { "Authorization": "Bearer token" }
                 });
             return await res.json();
-        } 
-        catch(error){
+        }
+        catch (error) {
             throw error;
         }
     }
 
-    async function addProductToOrder(orderId, productId, quantity){
-        try{
-            const url =  `http://localhost:5036/Order/AddOrRemoveProductFromOrder?orderId=${orderId}&productId=${productId}&quantity=${quantity}`;
-            const res = await fetch(url, 
+    async function addProductToOrder(orderId, productId, quantity) {
+        try {
+            const url = `http://localhost:5036/Order/AddOrRemoveProductFromOrder?orderId=${orderId}&productId=${productId}&quantity=${quantity}`;
+            const res = await fetch(url,
                 {
                     method: "POST",
                     credentials: 'include',
                     headers: { "Authorization": "Bearer token" }
                 });
-        } 
-        catch(error){
+        }
+        catch (error) {
             throw error;
         }
     }
 
     useEffect(() => {
         fetchUser();
-    },[])
+    }, [])
 
     function onCheckboxChange(i) {
         setSelected((prev) => (i === prev ? null : i));
     }
 
-    async function placeOrder(e){
+    async function placeOrder(e) {
         e.preventDefault();
         console.log("SUBMIT")
         const orderID = await fetchPlaceOrder();
-        for(let item of user.cartItems){
+        for (let item of user.cartItems) {
             await addProductToOrder(orderID, item.product.id, item.quantity);
         }
     }
 
-    return(
-        <>
-        <table>
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Price</th>
-                    <th>Quantity</th>
-                    <th>Total Price</th>
-                </tr>
-            </thead>
-            <tbody>
-                {user.cartItems ? user.cartItems.map((item) => (<tr>
-                    <td>{item.product.name}</td>
-                    <td>{item.product.price}</td>
-                    <td>{item.quantity}</td>
-                    <td>{item.product.price * item.quantity}</td>
-                </tr>)) : <></>}
-                <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>{user.cartItems ? 
-            user.cartItems.reduce((accumulator, currentValue) => 
-            accumulator + (currentValue.product.price * currentValue.quantity), 0) : 0}</td>
-                </tr>
-            </tbody>
-        </table>
-        <section className="orderForm">
-            <h2>Please fill in the details to finalize the order:</h2>
-        <form onSubmit={(e) => placeOrder(e)}>
-            <label >First Name:
-                <input type="text" value={firstName} onChange={(e) => setFirstName(e.target.value)}/>
-            </label>
-            <label >Last Name:
-                <input type="text" value={lastName} onChange={(e) => setLastName(e.target.value)}/>
-            </label>
-            <label >Country:
-                <input type="text" value={country} onChange={(e) => setCountry(e.target.value)}/>
-            </label>
-            <label >City:
-                <input type="text" value={city} onChange={(e) => setCity(e.target.value)}/>
-            </label>
-            <label >Address:
-                <input type="text" value={address} onChange={(e) => setAddress(e.target.value)}/>
-            </label>
-            <div className="paymentMethods">
-            <label >Payment method:
-                {paymentOptions.map((o, i) => (
-                    <label key={i}>
-                    {o}
-                        <input
-                        type="checkbox"
-                        checked={i === selected}
-                        onChange={() => onCheckboxChange(i)}
-                        />
-                    </label>
-                ))}
-            </label>
+    return (
+        <div className="checkout-page">
+            <div className="checkout-table-div">
+                <table className="checkout-table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Price</th>
+                            <th>Quantity</th>
+                            <th>Total Price</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {user.cartItems ? user.cartItems.map((item) => (<tr key={item.product.id}>
+                            <td>{item.product.name}</td>
+                            <td>{item.product.price}Ft</td>
+                            <td>{item.quantity}db</td>
+                            <td>{item.product.price * item.quantity}Ft</td>
+                        </tr>)) : <></>}
+                        <tr className="empty-row">
+
+                        </tr>
+                        <tr>
+                            <td style={{ fontWeight: '900' }}>Total</td>
+                            <td></td>
+                            <td></td>
+                            <td style={{ fontWeight: '900' }}>{user.cartItems ?
+                                user.cartItems.reduce((accumulator, currentValue) =>
+                                    accumulator + (currentValue.product.price * currentValue.quantity), 0) : 0}Ft</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
-        <button>Place Order</button>
-        </form>
-        </section>
-        </>
+            <section className="orderForm">
+                <h2>Please fill in the details to finalize the order:</h2>
+
+                <table className='checkout-details-table'>
+                    <tbody className='checkout-details-tbody'>
+                        <tr className='checkout-details-tr'>
+                            <td style={{ fontWeight: '400' }} className='checkout-details-td'>First Name:</td>
+                            <td className='checkout-details-td'><input type="text" value={firstName} onChange={(e) => setFirstName(e.target.value)} /></td>
+                        </tr>
+                        <tr className='checkout-details-tr'>
+                            <td style={{ fontWeight: '400' }} className='checkout-details-td'>Last Name:</td>
+                            <td className='checkout-details-td'>
+                                <input type="text" value={lastName} onChange={(e) => setLastName(e.target.value)} />
+                            </td>
+                        </tr>
+                        <tr className='checkout-details-tr'>
+                            <td style={{ fontWeight: '400' }} className='checkout-details-td'>Country:</td>
+                            <td className='checkout-details-td'>
+                                <input type="text" value={country} onChange={(e) => setCountry(e.target.value)} />
+                            </td>
+                        </tr>
+                        <tr className='checkout-details-tr'>
+                            <td style={{ fontWeight: '400' }} className='checkout-details-td'>City:</td>
+                            <td className='checkout-details-td'>
+                                <input type="text" value={city} onChange={(e) => setCity(e.target.value)} />
+                            </td>
+                        </tr>
+                        <tr className='checkout-details-tr'>
+                            <td style={{ fontWeight: '400' }} className='checkout-details-td'>Address:</td>
+                            <td className='checkout-details-td'>
+                                <input type="text" value={address} onChange={(e) => setAddress(e.target.value)} />
+                            </td>
+                        </tr>
+                        <tr className='checkout-details-tr'>
+                            <td style={{ fontWeight: '400' }} className='checkout-details-td'>Payment method:</td>
+                            <td className='checkout-details-td'>
+                                {paymentOptions.map((o, i) => (
+                                    <label key={i}>
+                                        {o}
+                                        <input
+                                            type="checkbox"
+                                            checked={i === selected}
+                                            onChange={() => onCheckboxChange(i)}
+                                        />
+                                    </label>
+                                ))}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <button className="save-order" onClick={e => handleSave(e)}>Save</button>
+
+
+            </section>
+        </div >
     )
 }
 

@@ -71,47 +71,47 @@ function Layout({ userRole, user }) {
                         <nav>
                             <ul>
                                 <li className="edit-users-layout">
-                                    <Link to="/edit-users">Users</Link>
+                                    <Link className="nav-link" to="/edit-users">Users</Link>
                                 </li>
                                 <li className="edit-companies-layout">
-                                    <Link to="/edit-companies">Companies</Link>
+                                    <Link className="nav-link" to="/edit-companies">Companies</Link>
                                 </li>
                                 <li className="edit-products-layout">
-                                    <Link to="/edit-products">Products</Link>
+                                    <Link className="nav-link" to="/edit-products">Products</Link>
                                 </li>
                                 <li className="logout-layout" onClick={handleLogout}>
-                                    <Link to="/">Logout</Link>
+                                    <Link className="nav-link" to="/">Logout</Link>
                                 </li>
                             </ul>
                         </nav>
                         : <nav>
                             <ul>
                                 <li className="home-layout">
-                                    <Link to="/">Home</Link>
+                                    <Link className="nav-link" to="/">Home</Link>
                                 </li>
                                 <li className="products-layout">
-                                    <Link to="/marketplace">MarketPlace</Link>
+                                    <Link className="nav-link" to="/marketplace">MarketPlace</Link>
                                 </li>
                                 {isToken != "" ?
                                     <>
                                         <li className="profile-layout">
-                                            <Link to="/profile">Profile</Link>
+                                            <Link className="nav-link" to="/profile">Profile</Link>
                                         </li>
                                         <li className="logout-layout" onClick={handleLogout}>
-                                            <Link to="/">Logout</Link>
+                                            <Link className="nav-link" to="/">Logout</Link>
                                         </li>
                                     </> :
                                     <>
                                         <li className="registration-layout">
-                                            <Link to="/register">Registration</Link>
+                                            <Link className="nav-link" to="/register">Registration</Link>
                                         </li>
                                         <li className="login-layout">
-                                            <Link to="/login">Login</Link>
+                                            <Link className="nav-link" to="/login">Login</Link>
                                         </li>
                                     </>
                                 }
                                 {userRole === "Customer" && <li className="favourites">
-                                    <Link to="/favourites">
+                                    <Link className="nav-link" to="/favourites">
                                         <i className="fa-solid fa-heart" id="layout-heart"></i>
                                     </Link>
                                 </li>}
@@ -131,8 +131,8 @@ function Layout({ userRole, user }) {
                             <li>Address: 2345, Jungle str. 345.</li>
                         </ul>
                         <ul className="column">
-                            <li><Link to="/faq">FAQ</Link></li>
-                            <li><Link to="/termsandpolicy">Terms & Policy</Link></li>
+                            <li><Link className="nav-link" to="/faq">FAQ</Link></li>
+                            <li><Link className="nav-link" to="/termsandpolicy">Terms & Policy</Link></li>
                         </ul>
                     </nav>
                 </div>
