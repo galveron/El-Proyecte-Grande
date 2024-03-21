@@ -115,11 +115,11 @@ function Layout({ userRole, user }) {
                                         <i className="fa-solid fa-heart" id="layout-heart"></i>
                                     </Link>
                                 </li>}
-                                {userRole === "Customer" && <button className="cart-button" onClick={() => clickOnCart()}>Cart</button>}
+                                {userRole === "Customer" && <button className="cart-button" onClick={() => clickOnCart()}><i class="fa-solid fa-cart-shopping"></i></button>}
                             </ul>
                         </nav>}
                 </div>
-                <CartModal token={isToken} setIsShowCart={setIsShowCart} isShowCart={isShowCart} user={user}/>
+                <CartModal token={isToken} setIsShowCart={setIsShowCart} isShowCart={isShowCart} user={user} />
             </header >
             <Outlet />
             <footer>

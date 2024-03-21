@@ -110,9 +110,8 @@ table {
     flex-direction: column;
 }
 
-button:hover,
-button:focus {
-    color: black;
+.adminButton:hover,
+.adminButton:focus {
     text-decoration: none;
     cursor: pointer;
 }

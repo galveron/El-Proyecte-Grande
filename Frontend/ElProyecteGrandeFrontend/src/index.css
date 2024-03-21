@@ -1,7 +1,7 @@
 body {
   margin: 0 !important;
   display: block !important;
-  height: fit-content
+  height: fit-content;
 }
 
 :root {
@@ -129,85 +129,83 @@ a:hover {
 .customer-profile {
   display: block;
   background-color: #28896a6d;
-  border: solid 4px;
-  border-radius: 10px;
+  padding: 20px;
   width: 300px;
-  height: 350px;
-}
-
-.customer-profile>label {
-  font-size: medium;
-  font-weight: bold;
-  background-color: #D0DFDC;
-  width: 200px;
-  display: inline-block;
+  min-height: 350px;
+  margin-top: 2vh;
+  border-radius: 4px;
+  margin-bottom: 2vh;
 }
 
 .customer-profile>p {
   font-size: medium;
   font-weight: bold;
-  background-color: whitesmoke;
+  background-color: #D0DFDC;
+  width: 200px;
+  display: inline-block;
+  padding: 5px;
+  border-radius: 4px;
+}
+
+.edit-info {
+  padding: 10px;
+  border-style: none;
+  border-radius: 4px;
+}
+
+.edit-info:hover {
+  padding: 10px;
+  background-color: #C58E3C;
+  border-style: none;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.customer-profile>label {
+  font-size: medium;
+  font-weight: bold;
   display: inline-block;
   width: 200px;
   text-align: center;
-  border: solid 2px;
-  border-radius: 10px;
-  border-color: #0E523D;
 }
 
 .company-profile-container {
-  display: inline-block;
+  display: block;
   background-color: #28896a6d;
-  border: solid 4px;
-  border-radius: 10px;
+  padding: 20px;
   width: 300px;
-  height: 550px;
+  min-height: 350px;
+  margin-top: 2vh;
+  border-radius: 4px;
+  margin-bottom: 2vh;
 }
 
-.company-profile>label {
-  font-size: medium;
-  font-weight: bold;
-  background-color: #D0DFDC;
-  width: 200px;
-  display: inline-block;
-}
-
-.company-profile>p {
-  font-size: medium;
-  font-weight: bold;
-  background-color: whitesmoke;
-  display: inline-block;
-  width: 200px;
-  text-align: center;
-  border: solid 2px;
-  border-radius: 10px;
-  border-color: #0E523D;
-}
-
+.company-profile>label,
 .company-details>label {
   font-size: medium;
   font-weight: bold;
-  background-color: #D0DFDC;
   width: 200px;
   display: inline-block;
+  text-align: center;
 }
 
+.company-profile>p,
 .company-details>p {
   font-size: medium;
   font-weight: bold;
-  background-color: whitesmoke;
+  background-color: #D0DFDC;
   display: inline-block;
   width: 200px;
-  text-align: center;
-  border: solid 2px;
-  border-radius: 10px;
-  border-color: #0E523D;
+  border-radius: 4px;
+  padding: 5px;
 }
 
 .register,
 .register-cust,
 .register-comp,
 .imageuploader,
+.admin-page,
+.unauthorized-page,
 .productcard-container {
   min-height: calc(100vh - 60px - 200px);
   display: inline-block;
@@ -245,4 +243,8 @@ a:hover {
   display: inline-block;
   align-content: center;
   justify-content: center;
+}
+
+#\:rp:\  {
+  display: flex;
 }
