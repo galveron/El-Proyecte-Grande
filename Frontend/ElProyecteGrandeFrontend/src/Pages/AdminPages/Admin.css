@@ -42,6 +42,7 @@ table {
     background-color: #8da6a1;
     font-weight: 300;
     border-style: none;
+    width: 100%;
 }
 
 .user-details-body {
@@ -104,7 +105,7 @@ table {
     border-left: 1px solid #888;
     border-right: 1px solid #888;
     max-width: max-content;
-    min-width: 30%;
+    min-width: 150%;
     display: flex;
     flex-direction: column;
 }

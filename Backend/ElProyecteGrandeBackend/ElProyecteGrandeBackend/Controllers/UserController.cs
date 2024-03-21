@@ -109,11 +109,11 @@ public class UserController : ControllerBase
     }
 
     [HttpGet("GetRole"), Authorize(Roles = "Customer, Company, Admin")]
-    public async Task<ActionResult<string>> GetRole(string userName )
+    public async Task<ActionResult<string>> GetRole(string id )
     {
-        if (userName != null)
+        if (id != null)
         {
-            var user = await _userManager.FindByNameAsync(userName);
+            var user = await _userManager.FindByIdAsync(id);
             
             var roles = await _userManager.GetRolesAsync(user);
             return roles[0];

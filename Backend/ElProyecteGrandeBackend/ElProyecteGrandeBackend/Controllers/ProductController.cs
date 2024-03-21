@@ -93,4 +93,20 @@ public class ProductController : ControllerBase
             return NotFound("Adding product is failed");
         }
     }
+    
+    [HttpDelete("DeleteProduct")]
+    public ActionResult<Product> DeleteProduct(int id)
+    {
+        try
+        {
+            var product = _productRepository.GetProduct(id);
+            Console.WriteLine("product: " + product.Name);
+            _productRepository.DeleteProduct(product);
+            return Ok();
+        }
+        catch (Exception e)
+        {
+            return NotFound("Product delete not successful");
+        }
+    }
 }
