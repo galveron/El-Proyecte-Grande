@@ -1,7 +1,9 @@
 import { useState, useEffect } from "react";
 import { Outlet, Link } from "react-router-dom";
+import { Button, Modal } from 'flowbite-react';
+import '../../index.css'
 
-function CartModal({token, setIsShowCart, isShowCart, user}){
+function CartModal({ token, setIsShowCart, isShowCart, user }) {
     const [customer, setCustomer] = useState({});
 
     async function fetchUser() {
@@ -28,8 +30,8 @@ function CartModal({token, setIsShowCart, isShowCart, user}){
         }
     }, [user])
 
-    async function removeItemFromCart(productId, quantity){
-        try{
+    async function removeItemFromCart(productId, quantity) {
+        try {
             let url = `http://localhost:5036/User/AddOrRemoveCartItems?productId=${productId}&quantity=${quantity}`;
             await fetch(url,
                 {
@@ -38,35 +40,41 @@ function CartModal({token, setIsShowCart, isShowCart, user}){
                     headers: { "Authorization": "Bearer token" }
                 });
             fetchUser();
-        } 
-        catch(error){
+        }
+        catch (error) {
             throw error;
         }
     }
 
-    function removeFromCart(productId, quantity){
+    function removeFromCart(productId, quantity) {
         removeItemFromCart(productId, quantity * -1)
     }
 
-    return(<>
-    {isShowCart ?
-        <section className="cartModal">
-            <button className="closeModalButton" onClick={() => setIsShowCart(false)}>Close</button>
-            {customer.cartItems && customer.cartItems.length > 0 ? customer.cartItems.map((item) => {
-                return (<div key={item.id} className="cartItem">
-                    <p>Name: {item.product.name}</p>
-                    <p>Quantity: {item.quantity}</p>
-                    <p>Price {item.quantity * item.product.price}</p>
-                    <button onClick={() => removeFromCart(item.productId, item.quantity)}>Remove from Cart</button>
-                </div>)
-            }) : <></>}
-            <p>Total Price: {customer.cartItems && customer.cartItems.length > 0? 
-            customer.cartItems.reduce((accumulator, currentValue) => 
-            accumulator + (currentValue.product.price * currentValue.quantity), 0) : 0} </p>
-            <button>Clear Cart</button>
-            <Link to='/checkout'>Go to Checkout</Link>
-        </section> : <></>}
-        </>)
+    return (<>
+        <Modal className="cartModal" dismissible show={isShowCart} onClose={() => setIsShowCart(false)}>
+            <Modal.Body className='cart-modal-body'>
+                <div className='modal-header'>
+                    <button className="closeModalButton" onClick={() => setIsShowCart(false)}>X</button>
+                </div>
+                {customer.cartItems && customer.cartItems.length > 0 ? customer.cartItems.map((item) => {
+                    return (<div key={item.id} className="cartItem">
+                        <div><p><span style={{ fontWeight: '400' }}>
+                            Name: </span> {item.product.name} | <span style={{ fontWeight: '600' }}>
+                                Price: </span> {item.quantity * item.product.price}Ft | <span style={{ fontWeight: '600' }}>
+                                Quantity: </span> {item.quantity}db</p><p></p></div>
+                        <button className="remove-from-cart" onClick={() => removeFromCart(item.productId, item.quantity)}>Remove</button>
+                        <div className="line"></div>
+                    </div>)
+                }) : <></>}
+                <p style={{ fontWeight: '600' }}>Total Price: {customer.cartItems && customer.cartItems.length > 0 ?
+                    customer.cartItems.reduce((accumulator, currentValue) =>
+                        accumulator + (currentValue.product.price * currentValue.quantity), 0) : 0}Ft </p>
+                <button className="clear-cart">Clear Cart</button>
+
+                <a to='/checkout'><button className="go-checkout" onClick={() => setIsShowCart(false)}>Go to Checkout</button></a>
+            </Modal.Body>
+        </Modal>
+    </>)
 }
 
 export default CartModal;

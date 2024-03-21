@@ -71,51 +71,31 @@
     cursor: pointer;
 }
 
-.cartModal {
-    position: fixed;
-    z-index: 1;
-    left: 30%;
-    top: 0;
-    width: 40%;
-    height: 40%;
-    overflow: auto;
-    color: orangered;
-    background-color: rgb(8, 88, 88);
-    background-color: rgba(8, 88, 88);
-    margin: 5% auto;
-    border: 1px solid #888;
-}
-
-.cartItem {
-    display: flex;
-    flex-direction: column;
-    justify-content: left;
-    font-family: Montserrat;
-    font-weight: 500;
-    font-size: medium;
-    list-style: none;
-    text-align: left;
-    padding-inline-start: 20;
-    padding: 10px;
-    margin: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    display: inline-block;
-    justify-content: center;
-    background-color: #FFFFFF;
-    border-radius: 30px;
-}
-
-.closeModalButton {
-    color: red;
-    position: relative;
-    right: 0;
-    top: 0;
-}
-
 .cart-button {
     background-color: #0E523D;
     border: 2px solid #0E523D;
     border-radius: 5px;
     padding: 20px;
     font-size: large;
+}
+
+.cartItem {
+    font-weight: 300;
+}
+
+.line {
+    border-style: solid;
+    margin-top: 3px;
+    margin-bottom: 3px;
+    border-width: 1px;
+}
+
+.closeModalButton {
+    padding: 10px;
+    background-color: #C58E3C;
+}
+
+.closeModalButton:hover {
+    cursor: pointer;
+    background-color: #0E523D;
 }

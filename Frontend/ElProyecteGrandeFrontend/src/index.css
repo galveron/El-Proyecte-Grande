@@ -147,13 +147,29 @@ a:hover {
   border-radius: 4px;
 }
 
-.edit-info {
+.edit-info,
+.clear-cart,
+.go-checkout {
   padding: 10px;
   border-style: none;
   border-radius: 4px;
+  margin-top: 2px;
+  width: 100%;
 }
 
-.edit-info:hover {
+.remove-from-cart {
+  padding: 10px;
+  border-style: none;
+  border-radius: 4px;
+  margin-top: 2px;
+  width: 30%;
+  background-color: #3e6b5d;
+}
+
+.edit-info:hover,
+.clear-cart:hover,
+.go-checkout:hover,
+.remove-from-cart:hover {
   padding: 10px;
   background-color: #C58E3C;
   border-style: none;
@@ -243,8 +259,4 @@ a:hover {
   display: inline-block;
   align-content: center;
   justify-content: center;
-}
-
-#\:rp:\  {
-  display: flex;
 }

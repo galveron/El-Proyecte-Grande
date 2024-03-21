@@ -114,7 +114,10 @@ function EditCompanies() {
                                 <tr className='user-details-tr'>
                                     <td>Products</td>
                                     <td>{currentUser !== null ? (currentUser.companyProducts !== 0
-                                        ? currentUser.companyProducts.map(product => <div><p><span style={{ fontWeight: '400' }}>Id: </span> {product.id} | <span style={{ fontWeight: '400' }}>Name: </span> {product.name} | <span style={{ fontWeight: '400' }}>Quantity: </span> {product.quantity}</p><p></p></div>) :
+                                        ? currentUser.companyProducts.map(product => <div><p><span style={{ fontWeight: '400' }}>
+                                            Id: </span> {product.id} | <span style={{ fontWeight: '400' }}>
+                                                Name: </span> {product.name} | <span style={{ fontWeight: '400' }}>
+                                                Quantity: </span> {product.quantity}</p><p></p></div>) :
                                         "no products yet") : ""}</td>
                                 </tr>
                                 <tr className='user-details-tr'>

@@ -68,7 +68,8 @@ table {
 }
 
 .adminButton,
-.close-modal {
+.close-modal,
+.closeModalButton {
     margin: 2px;
     border-style: none;
     border-radius: 3px;
@@ -79,8 +80,7 @@ table {
 }
 
 #details:hover,
-#delete:hover,
-.close-modal {
+#delete:hover {
     background-color: #0E523D;
 }
 
@@ -96,8 +96,32 @@ table {
     justify-content: center;
 }
 
+.cartModal {
+    position: fixed;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4);
+    display: flex;
+    justify-content: center;
+}
+
 .details-modal-body,
 .delete-modal-body {
+    margin-top: 50%;
+    position: relative;
+    background-color: #fefefe;
+    padding: 20px;
+    border-left: 1px solid #888;
+    border-right: 1px solid #888;
+    max-width: max-content;
+    min-width: 150%;
+    display: flex;
+    flex-direction: column;
+}
+
+.cart-modal-body {
     margin-top: 50%;
     position: relative;
     background-color: #fefefe;
