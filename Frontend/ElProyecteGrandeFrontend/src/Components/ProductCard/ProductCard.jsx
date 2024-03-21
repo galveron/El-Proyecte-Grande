@@ -110,10 +110,10 @@ function ProductCard({ product, user, handleSetUser, userRole, setCustomer }) {
             notification.warning({ message: "Login first to buy this item!" })
         }
     }
-
+    console.log("images: " + product.images.length)
     return (
         <div className='productCard'>
-            <img className='img' src={product.image ? product.images.coverart : '/plant1.jpg'} />
+            <img className='img' src={product.images.length !== 0 ? product.images[0].imageURL : '/plant1.jpg'} />
             {(userRole === "Customer" || userRole === "") && (<button className='save' onClick={isFavourite ? removeFavourite : addFavourite}>
                 {isFavourite ? <i className="fa-solid fa-heart"></i> : <i className="fa-regular fa-heart"></i>}
             </button>)}
