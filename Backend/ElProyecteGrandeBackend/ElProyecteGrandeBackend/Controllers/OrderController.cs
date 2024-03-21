@@ -60,7 +60,7 @@ public class OrderController : ControllerBase
     }
 
     [HttpPost, Authorize(Roles = "Customer, Admin")]
-    public async Task<ActionResult> AddOrder()
+    public async Task<ActionResult<int>> AddOrder()
     {
         try
         {
@@ -78,8 +78,8 @@ public class OrderController : ControllerBase
                 return BadRequest(identityResult.Errors);
             }*/
             
-            _orderRepository.AddOrder(orderToAdd);
-            return Ok("Order added");
+            var orderId = _orderRepository.AddOrder(orderToAdd);
+            return Ok(orderId);
         }
         catch (Exception e)
         {
