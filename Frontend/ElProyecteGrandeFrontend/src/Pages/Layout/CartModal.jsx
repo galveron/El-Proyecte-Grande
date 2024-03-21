@@ -46,8 +46,44 @@ function CartModal({ token, setIsShowCart, isShowCart, user }) {
         }
     }
 
+    async function clearCartItems() {
+        try {
+            let url = 'http://localhost:5036/User/EmptyCart';
+            await fetch(url,
+                {
+                    method: "PATCH",
+                    credentials: 'include',
+                    headers: { "Authorization": "Bearer token" }
+                });
+            fetchUser();
+        }
+        catch (error) {
+            throw error;
+        }
+    }
+
+    async function clearCartItems() {
+        try {
+            let url = 'http://localhost:5036/User/EmptyCart';
+            await fetch(url,
+                {
+                    method: "PATCH",
+                    credentials: 'include',
+                    headers: { "Authorization": "Bearer token" }
+                });
+            fetchUser();
+        }
+        catch (error) {
+            throw error;
+        }
+    }
+
     function removeFromCart(productId, quantity) {
         removeItemFromCart(productId, quantity * -1)
+    }
+
+    function clearCart() {
+        clearCartItems();
     }
 
     return (<>
@@ -69,7 +105,7 @@ function CartModal({ token, setIsShowCart, isShowCart, user }) {
                 <p style={{ fontWeight: '600' }}>Total Price: {customer.cartItems && customer.cartItems.length > 0 ?
                     customer.cartItems.reduce((accumulator, currentValue) =>
                         accumulator + (currentValue.product.price * currentValue.quantity), 0) : 0}Ft </p>
-                <button className="clear-cart">Clear Cart</button>
+                <button onClick={() => clearCart()} className="clear-cart">Clear Cart</button>
 
                 <a to='/checkout'><button className="go-checkout" onClick={() => setIsShowCart(false)}>Go to Checkout</button></a>
             </Modal.Body>
