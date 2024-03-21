@@ -35,6 +35,7 @@
     left: 0;
     display: flex;
     position: relative;
+    width: 100%;
     flex-direction: row;
     justify-content: center;
     align-items: center;
@@ -70,22 +71,22 @@
     cursor: pointer;
 }
 
-.cartModal{
-    position: fixed; 
-    z-index: 1; 
+.cartModal {
+    position: fixed;
+    z-index: 1;
     left: 30%;
     top: 0;
-    width: 40%; 
-    height: 40%; 
-    overflow: auto; 
-    color:orangered;
-    background-color: rgb(8, 88, 88); 
-    background-color: rgba(8,88,88);
-    margin: 5% auto; 
+    width: 40%;
+    height: 40%;
+    overflow: auto;
+    color: orangered;
+    background-color: rgb(8, 88, 88);
+    background-color: rgba(8, 88, 88);
+    margin: 5% auto;
     border: 1px solid #888;
 }
 
-.cartItem{
+.cartItem {
     display: flex;
     flex-direction: column;
     justify-content: left;
@@ -104,7 +105,7 @@
     border-radius: 30px;
 }
 
-.closeModalButton{
+.closeModalButton {
     color: red;
     position: relative;
     right: 0;
