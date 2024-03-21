@@ -110,7 +110,7 @@ function ProductCard({ product, user, handleSetUser, userRole, setCustomer }) {
             notification.warning({ message: "Login first to buy this item!" })
         }
     }
-    console.log("images: " + product.images.length)
+
     return (
         <div className='productCard'>
             <img className='img' src={product.images.length !== 0 ? product.images[0].imageURL : '/plant1.jpg'} />

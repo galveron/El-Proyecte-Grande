@@ -2,16 +2,12 @@
     padding: 10px;
     margin: 10px;
     width: 250px;
-    height: 400px;
+    height: min-content;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     display: inline-block;
     justify-content: center;
     background-color: #FFFFFF;
     border-radius: 30px;
-}
-
-.productCard:hover {
-    background-color: #C58E3C;
 }
 
 .productCard p {
@@ -71,19 +67,21 @@
 }
 
 .save:hover {
-    color: #B8809D;
+    background-color: #C58E3C;
+
 }
 
 .add-to-cart {
     background-color: #0E523D;
-    border: 5px solid #0E523D;
+    border-style: none;
     border-radius: 5px;
     margin-top: 5px;
     width: 90px;
+    padding: 10px;
     transition: all 100ms ease-in-out;
 }
 
 .add-to-cart:hover {
     cursor: pointer;
-    width: 100px;
+    background-color: #C58E3C;
 }

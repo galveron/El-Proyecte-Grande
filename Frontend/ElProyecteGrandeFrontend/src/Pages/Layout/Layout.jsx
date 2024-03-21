@@ -86,9 +86,9 @@ function Layout({ userRole, user }) {
                         </nav>
                         : <nav>
                             <ul>
-                                <li className="home-layout">
+                                {/* <li className="home-layout">
                                     <Link className="nav-link" to="/">Home</Link>
-                                </li>
+                                </li> */}
                                 <li className="products-layout">
                                     <Link className="nav-link" to="/marketplace">MarketPlace</Link>
                                 </li>
