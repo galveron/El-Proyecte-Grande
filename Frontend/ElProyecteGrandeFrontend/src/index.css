@@ -1,5 +1,7 @@
 body {
   margin: 0 !important;
+  display: block !important;
+  height: fit-content
 }
 
 :root {
@@ -18,9 +20,9 @@ body {
 }
 
 #root {
-  min-height: 100%;
   text-align: center;
   display: flex;
+  flex-direction: column;
   position: relative;
   bottom: 0;
   flex-direction: column;
@@ -28,17 +30,6 @@ body {
   padding: 0;
   margin-top: 10vh;
 
-}
-
-.root img+.welcome {
-  position: absolute;
-  top: 0;
-  left: 0;
-}
-
-.welcome {
-  position: absolute;
-  top: 0;
 }
 
 a {
@@ -218,7 +209,7 @@ a:hover {
 .register-comp,
 .imageuploader,
 .productcard-container {
-  min-height: 70vh;
+  min-height: calc(100vh - 60px - 200px);
   display: inline-block;
   align-content: center;
 }
@@ -228,7 +219,14 @@ a:hover {
 }
 
 .marketplace {
-  min-height: 70vh;
+  position: relative;
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: center;
+  justify-content: center;
+  bottom: 0;
+  text-align: center;
+  min-height: calc(100vh - 60px - 200px);
 }
 
 .login {
