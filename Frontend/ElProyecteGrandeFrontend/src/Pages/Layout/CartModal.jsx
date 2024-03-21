@@ -44,8 +44,28 @@ function CartModal({token, setIsShowCart, isShowCart, user}){
         }
     }
 
+    async function clearCartItems(){
+        try{
+            let url = 'http://localhost:5036/User/EmptyCart';
+            await fetch(url,
+                {
+                    method: "PATCH",
+                    credentials: 'include',
+                    headers: { "Authorization": "Bearer token" }
+                });
+            fetchUser();
+        } 
+        catch(error){
+            throw error;
+        }
+    }
+
     function removeFromCart(productId, quantity){
         removeItemFromCart(productId, quantity * -1)
+    }
+
+    function clearCart(){
+        clearCartItems();
     }
 
     return(<>
@@ -63,7 +83,7 @@ function CartModal({token, setIsShowCart, isShowCart, user}){
             <p>Total Price: {customer.cartItems && customer.cartItems.length > 0? 
             customer.cartItems.reduce((accumulator, currentValue) => 
             accumulator + (currentValue.product.price * currentValue.quantity), 0) : 0} </p>
-            <button>Clear Cart</button>
+            <button onClick={() => clearCart()}>Clear Cart</button>
             <Link to='/checkout'>Go to Checkout</Link>
         </section> : <></>}
         </>)
