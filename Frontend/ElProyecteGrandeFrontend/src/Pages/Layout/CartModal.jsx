@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Outlet, Link } from "react-router-dom";
 
 function CartModal({token, setIsShowCart, isShowCart, user}){
     const [customer, setCustomer] = useState({});
@@ -62,6 +63,8 @@ function CartModal({token, setIsShowCart, isShowCart, user}){
             <p>Total Price: {customer.cartItems && customer.cartItems.length > 0? 
             customer.cartItems.reduce((accumulator, currentValue) => 
             accumulator + (currentValue.product.price * currentValue.quantity), 0) : 0} </p>
+            <button>Clear Cart</button>
+            <Link to='/checkout'>Go to Checkout</Link>
         </section> : <></>}
         </>)
 }
