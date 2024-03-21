@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Cookies from 'js-cookie';
 import { notification } from 'antd';
 
 notification.config({
@@ -26,8 +25,12 @@ function Login() {
                 notification.error({ message: 'Email or password incorrect!' });
                 throw new Error(`HTTP error! status: ${res.status}`);
             }
+
             navigate('/');
             notification.success({ message: 'Successful login. Welcome!' });
+            setTimeout(function () {
+                window.location.reload();
+            }, 2000);
         }
         catch (error) {
             throw error;
@@ -38,6 +41,7 @@ function Login() {
         <div className="login">
             <div className="login-container">
                 <form className='login' onSubmit={e => handleLogin(e)}>
+                    <h3>Login</h3>
                     <label>E-mail</label>
                     <input type='text' onChange={e => setEmail(e.target.value)} value={email} required />
                     <label>Password</label>

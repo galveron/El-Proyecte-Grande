@@ -17,6 +17,8 @@ function CompanyProfile({ user }) {
                 <label>Verified company?</label>
                 {user.company.verified ? (<p>Yes</p>) : (<p>No</p>)}
             </div>
+            <br></br>
+            <button>Edit info</button>
         </div>
     )
 }

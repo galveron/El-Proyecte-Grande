@@ -1,6 +1,5 @@
 using System.Text;
 using System.Text.Json.Serialization;
-using AskMate.Service;
 using ElProyecteGrandeBackend.Data;
 using ElProyecteGrandeBackend.Model;
 using ElProyecteGrandeBackend.Services.Authentication;
@@ -35,6 +34,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddTransient<IProductRepository, ProductRepository>();
 builder.Services.AddTransient<IOrderRepository, OrderRepository>();
 builder.Services.AddTransient<IUserRepository, UserRepository>();
+builder.Services.AddTransient<IImageRepository, ImageRepository>();
 builder.Services.AddScoped<AuthenticationSeeder>();
 builder.Services.AddDbContext<MarketPlaceContext>((container, options) =>
     options.UseSqlServer(config["ConnectionString"]));
@@ -134,9 +134,12 @@ void AddAuthentication()
         .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         .AddJwtBearer(options =>
         {
-            var issuerSignInKey = config["IssuerSigningKey"];
-            var validIssuer = config["ValidIssuer"];
-            var validAudience = config["ValidAudience"];
+            var issuerSignInKey = config["IssuerSigningKey"] != null
+                ? config["IssuerSigningKey"] : Environment.GetEnvironmentVariable("ISSUERSIGNINGKEY");
+            var validIssuer = config["ValidIssuer"] != null
+                ? config["ValidIssuer"] : Environment.GetEnvironmentVariable("VALIDISSUER");
+            var validAudience = config["ValidAudience"] != null
+                ? config["ValidAudience"] : Environment.GetEnvironmentVariable("VALIDAUDIENCE");
         
             options.TokenValidationParameters = new TokenValidationParameters()
             {

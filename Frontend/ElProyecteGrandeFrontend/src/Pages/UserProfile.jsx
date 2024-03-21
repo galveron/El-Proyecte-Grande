@@ -1,13 +1,12 @@
 import { useState, useEffect } from "react";
-import Cookies from "js-cookie";
 
 import CustomerProfile from "../Components/Profile/CustomerProfile";
 import CompanyProfile from "../Components/Profile/CompanyProfile";
+import Unauthorized from "./Unauthorized/Unauthorized";
 
-function UserProfile() {
+function UserProfile({ userRole }) {
     const [user, setUser] = useState({});
     const [loading, setLoading] = useState(false);
-    const id = Cookies.get('user_id');
 
     async function fetchUser() {
         let url = `http://localhost:5036/User/GetUser`;
@@ -15,10 +14,7 @@ function UserProfile() {
             {
                 method: "GET",
                 credentials: 'include',
-                headers: { 
-                  "Content-Type": "application/json",
-                  "Authorization": "Bearer token"
-                   }
+                headers: { 'Content-type': 'application/json' }
             });
         const data = await res.json();
         return data;
@@ -32,6 +28,8 @@ function UserProfile() {
 
 
     if (loading) return <h2>Loading...</h2>;
+
+    if (userRole === "") return <Unauthorized />
 
     return (
         <div className="profile">

@@ -29,6 +29,7 @@ function CompanyRegistration() {
                     Identifier: identifier
                 })
             });
+            const data = res.json();
             if (!res.ok) {
                 throw new Error(`${data[Object.keys(data)[0]][0]}`);
             }
