@@ -34,9 +34,9 @@ public class ProductRepository : IProductRepository
         return _dbContext.Products.Where(p => p.Seller.Id == user.Id);
     }
 
-    public Product GetProduct(int productId)
+    public Product? GetProduct(int productId)
     {
-        return _dbContext.Products.FirstOrDefault(p => p.Id == productId);
+        return _dbContext.Products.Include(product => product.Seller).FirstOrDefault(p => p.Id == productId);
     }
 
     public void AddProduct(Product product)

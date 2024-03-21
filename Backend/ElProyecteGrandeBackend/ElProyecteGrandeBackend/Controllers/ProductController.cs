@@ -109,4 +109,26 @@ public class ProductController : ControllerBase
             return NotFound("Product delete not successful");
         }
     }
+    
+    [HttpPatch("SetProductAvailability"), Authorize(Roles = "Company, Admin")]
+    public async Task<ActionResult> SetProductAvailability(int productId, bool availability)
+    {
+        try
+        {
+            var product = _productRepository.GetProduct(productId);
+            if (User.IsInRole("Admin") || User.Identity.Name == product.Seller.UserName)
+            {
+                product.Available = availability;
+                _productRepository.UpdateProduct(product);
+
+                return Ok("Product availability successfully changed.");
+            }
+
+            return Unauthorized("Only the admin and the seller of the product can change availability.");
+        }
+        catch (Exception e)
+        {
+            return NotFound("Product availability change fail.");
+        }
+    }
 }

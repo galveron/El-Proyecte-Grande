@@ -9,4 +9,5 @@ public class Product
     public string Details { get; init; }
     public int Quantity { get; init; }
     public ICollection<Image> Images { get; init; } = new List<Image>();
+    public bool Available { get; set; } = true;
 }
