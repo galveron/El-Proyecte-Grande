@@ -40,7 +40,6 @@ function EditCompany({ user, showEdit, setShowEdit, setUser }) {
             if (!res.ok) {
                 throw new Error(`HTTP error! status: ${res.status}`);
             }
-            console.log(res);
             notification.success({ message: 'Profile info updated.' });
             const userAfterSave = await fetchUser();
             setUser(userAfterSave);
