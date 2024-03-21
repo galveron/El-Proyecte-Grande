@@ -19,6 +19,7 @@ import FavouriteProducts from './Pages/FavouriteProducts';
 import EditUsers from './Pages/AdminPages/EditUsers';
 import EditCompanies from './Pages/AdminPages/EditCompanies';
 import EditProducts from './Pages/AdminPages/EditProducts';
+import Checkout from './Pages/Checkout';
 
 function getCookie(cname) {
     let name = cname + "=";
@@ -143,6 +144,10 @@ function App() {
                 {
                     path: '/edit-products',
                     element: <EditProducts />
+                },
+                {
+                    path: '/checkout',
+                    element: <Checkout />
                 }
             ]
         }
