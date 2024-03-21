@@ -25,9 +25,6 @@ function UserProfile({ userRole }) {
         .then(data => setUser(data), setLoading(false))
     }, []);
 
-    console.log(userRole);
-    console.log(user);
-
     if (loading) return <h2>Loading...</h2>;
 
     if (userRole === "") return <Unauthorized />
