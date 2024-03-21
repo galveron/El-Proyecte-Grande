@@ -1,4 +1,9 @@
-function CompanyProfile({ user }) {
+import { useState, useEffect } from "react";
+import EditCompany from "./EditCompany";
+
+function CompanyProfile({ user, setUser }) {
+    const [showEdit, setShowEdit] = useState(false);
+
     return (
         <div className="company-profile-container">
             <div className="company-profile">
@@ -18,7 +23,8 @@ function CompanyProfile({ user }) {
                 {user.company.verified ? (<p>Yes</p>) : (<p>No</p>)}
             </div>
             <br></br>
-            <button>Edit info</button>
+            <button onClick={e => setShowEdit(true)}>Edit info</button>
+            <EditCompany user={user} showEdit={showEdit} setShowEdit={setShowEdit} setUser={setUser}/>
         </div>
     )
 }

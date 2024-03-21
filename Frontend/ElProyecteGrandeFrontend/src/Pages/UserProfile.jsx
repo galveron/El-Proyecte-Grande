@@ -6,7 +6,7 @@ import Unauthorized from "./Unauthorized/Unauthorized";
 
 function UserProfile({ userRole }) {
     const [user, setUser] = useState({});
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
 
     async function fetchUser() {
         let url = `http://localhost:5036/User/GetUser`;
@@ -16,16 +16,17 @@ function UserProfile({ userRole }) {
                 credentials: 'include',
                 headers: { 'Content-type': 'application/json' }
             });
-        const data = await res.json();
+        const data = await res.json()
         return data;
     }
 
     useEffect(() => {
-        setLoading(true);
         fetchUser()
-            .then(userData => setUser(userData), setLoading(false));
+        .then(data => setUser(data), setLoading(false))
     }, []);
 
+    console.log(userRole);
+    console.log(user);
 
     if (loading) return <h2>Loading...</h2>;
 
@@ -35,10 +36,10 @@ function UserProfile({ userRole }) {
         <div className="profile">
             <div className="user-profile-container">
                 {user.company ? (
-                    <CompanyProfile user={user} />
+                    <CompanyProfile user={user} setUser={setUser} />
                 ) : (
                     <div className="customer-profile">
-                        <CustomerProfile user={user} />
+                        <CustomerProfile user={user} setUser={setUser} />
                     </div>
                 )}
             </div>
