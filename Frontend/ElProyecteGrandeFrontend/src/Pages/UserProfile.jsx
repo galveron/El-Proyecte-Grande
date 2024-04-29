@@ -2,10 +2,11 @@ import { useState, useEffect } from "react";
 
 import CustomerProfile from "../Components/Profile/CustomerProfile";
 import CompanyProfile from "../Components/Profile/CompanyProfile";
+import Unauthorized from "./Unauthorized/Unauthorized";
 
-function UserProfile() {
+function UserProfile({ userRole }) {
     const [user, setUser] = useState({});
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
 
     async function fetchUser() {
         let url = `http://localhost:5036/User/GetUser`;
@@ -13,31 +14,29 @@ function UserProfile() {
             {
                 method: "GET",
                 credentials: 'include',
-                headers: {
-                  "Authorization": "Bearer token"
-                   }
+                headers: { 'Content-type': 'application/json' }
             });
-        const data = await res.json();
+        const data = await res.json()
         return data;
     }
 
     useEffect(() => {
-        setLoading(true);
         fetchUser()
-            .then(userData => setUser(userData), setLoading(false));
+        .then(data => setUser(data), setLoading(false))
     }, []);
 
-
     if (loading) return <h2>Loading...</h2>;
+
+    if (userRole === "") return <Unauthorized />
 
     return (
         <div className="profile">
             <div className="user-profile-container">
                 {user.company ? (
-                    <CompanyProfile user={user} />
+                    <CompanyProfile user={user} setUser={setUser} />
                 ) : (
                     <div className="customer-profile">
-                        <CustomerProfile user={user} />
+                        <CustomerProfile user={user} setUser={setUser} />
                     </div>
                 )}
             </div>

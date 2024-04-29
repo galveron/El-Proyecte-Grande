@@ -42,6 +42,21 @@ public class ProductController : ControllerBase
             return NotFound("Product not found");
         }
     }
+    
+    [HttpGet("GetCompaniesProducts"), Authorize("Company, Admin")]
+    public async Task<ActionResult<IEnumerable<Product>>> GetCompaniesProducts(string userName)
+    {
+        try
+        {
+            var user = await _userManager.FindByNameAsync(userName);
+            var products = _productRepository.GetAllProductsByUser(user);
+            return Ok(products);
+        }
+        catch (Exception e)
+        {
+            return NotFound("Product not found");
+        }
+    }
 
     [HttpGet("GetProduct")]
     public ActionResult<Product> GetProduct(int id)
@@ -91,6 +106,22 @@ public class ProductController : ControllerBase
         catch (Exception e)
         {
             return NotFound("Adding product is failed");
+        }
+    }
+    
+    [HttpDelete("DeleteProduct")]
+    public ActionResult<Product> DeleteProduct(int id)
+    {
+        try
+        {
+            var product = _productRepository.GetProduct(id);
+            Console.WriteLine("product: " + product.Name);
+            _productRepository.DeleteProduct(product);
+            return Ok();
+        }
+        catch (Exception e)
+        {
+            return NotFound("Product delete not successful");
         }
     }
 }

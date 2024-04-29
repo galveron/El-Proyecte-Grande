@@ -36,7 +36,7 @@ public class OrderRepository : IOrderRepository
         return user.Orders.ToList();
     }
 
-    public void AddOrder(Order order)
+    public int AddOrder(Order order)
     {
         var userFromDb = _dbContext.Users.FirstOrDefault(user1 => user1.Id == order.User.Id);
         
@@ -49,10 +49,10 @@ public class OrderRepository : IOrderRepository
         userFromDb.Orders.Add(orderForDb);
         _dbContext.Update(userFromDb);
         _dbContext.Orders.Add(orderForDb);
-        //dbContext.Update(order);
-        //dbContext.Orders.Add(order);
-        //dbContext.Update(order.User);
         _dbContext.SaveChanges();
+
+        return orderForDb.Id;
+
     }
 
     public void DeleteOrder(Order order)

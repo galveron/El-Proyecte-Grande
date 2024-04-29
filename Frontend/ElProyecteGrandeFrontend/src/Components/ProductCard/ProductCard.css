@@ -2,7 +2,7 @@
     padding: 10px;
     margin: 10px;
     width: 250px;
-    height: 400px;
+    min-height: min-content;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     display: inline-block;
     justify-content: center;
@@ -10,9 +10,9 @@
     border-radius: 30px;
 }
 
-.productCard:hover {
-    background-color: #C58E3C;
-    cursor: pointer;
+.image-container {
+    height: 230px;
+    object-fit: cover;
 }
 
 .productCard p {
@@ -47,7 +47,7 @@
 
 .img {
     width: 100%;
-    height: 50%;
+    height: 100%;
     border-radius: 30px;
     display: flex;
     text-align: center;
@@ -72,5 +72,21 @@
 }
 
 .save:hover {
-    color: #B8809D;
+    background-color: #C58E3C;
+
+}
+
+.add-to-cart {
+    background-color: #0E523D;
+    border-style: none;
+    border-radius: 5px;
+    margin-top: 5px;
+    width: 90px;
+    padding: 10px;
+    transition: all 100ms ease-in-out;
+}
+
+.add-to-cart:hover {
+    cursor: pointer;
+    background-color: #C58E3C;
 }

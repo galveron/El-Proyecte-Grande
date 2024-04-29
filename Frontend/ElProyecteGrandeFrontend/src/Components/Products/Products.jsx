@@ -2,13 +2,14 @@ import ProductCard from "../ProductCard/ProductCard";
 import React from "react";
 import './Products.css'
 
-function Products({products, user}) {
+function Products({products, user, handleSetUser, userRole, setCustomer}) {
+
     return (
         <>
             <article className="products">
                 <div className="category">
-                    {products.length > 0 ?
-                        products.map((product) => <ProductCard product={product} key={product.id} user={user} />)
+                    {products ?
+                        products.map((product) => <ProductCard {...{product, user, handleSetUser, userRole, setCustomer}} key={product.id}/>)
                         : <h2>Loading...</h2>}
                 </div>
             </article>

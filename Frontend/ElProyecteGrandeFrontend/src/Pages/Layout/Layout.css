@@ -30,15 +30,12 @@
     transition: 200ms ease-in-out;
 }
 
-.header li:hover {
-    color: rgb(255, 255, 255);
-}
-
 .footer {
     margin: 0;
     left: 0;
     display: flex;
     position: relative;
+    width: 100%;
     flex-direction: row;
     justify-content: center;
     align-items: center;
@@ -67,4 +64,44 @@
 
 .footer a:hover {
     color: #C58E3C;
+}
+
+#layout-heart:hover {
+    color: #C58E3C;
+    cursor: pointer;
+}
+
+.cart-button {
+    background-color: #0E523D;
+    border-radius: 5px;
+    padding: 20px;
+    font-size: large;
+    border-style: none;
+}
+
+.cart-button:hover {
+    cursor: pointer;
+    background-color: #C58E3C;
+    border-style: none;
+}
+
+.cartItem {
+    font-weight: 300;
+}
+
+.line {
+    border-style: solid;
+    margin-top: 3px;
+    margin-bottom: 3px;
+    border-width: 1px;
+}
+
+.closeModalButton {
+    padding: 10px;
+    background-color: #C58E3C;
+}
+
+.closeModalButton:hover {
+    cursor: pointer;
+    background-color: #0E523D;
 }

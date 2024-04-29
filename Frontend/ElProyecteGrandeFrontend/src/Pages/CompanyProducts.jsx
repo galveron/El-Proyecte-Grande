@@ -1,13 +1,13 @@
 import { useState, useEffect } from 'react'
 import Products from '../Components/Products/Products';
 
-function MarketPlace({ userRole, setCustomer }) {
+function CompanyProducts({ userRole, setCustomer }) {
     const [loading, setLoading] = useState(true);
     const [products, setProducts] = useState([]);
     const [user, setUser] = useState({});
 
     async function fetchProducts() {
-        const response = await fetch("http://localhost:5036/Product/GetAllProducts");
+        const response = await fetch(`http://localhost:5036/Product/GetCompaniesProducts?userName=${user.userName}`);
         return await response.json();
     }
 
@@ -30,10 +30,10 @@ function MarketPlace({ userRole, setCustomer }) {
     }
 
     useEffect(() => {
-        fetchProducts()
-            .then(products => setProducts(products), setLoading(false));
         fetchUser()
-            .then(user => setUser(user));
+            .then(user => setUser(user))
+            .then(fetchProducts()
+                .then(products => setProducts(products), setLoading(false)));
     }, [])
 
     return (<>
@@ -46,4 +46,4 @@ function MarketPlace({ userRole, setCustomer }) {
     )
 }
 
-export default MarketPlace;
+export default CompanyProducts;

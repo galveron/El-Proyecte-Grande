@@ -1,22 +1,21 @@
-function CustomerProfile({ user }) {
+import { useState } from "react";
+import EditCustomer from "./EditCustomer";
+
+function CustomerProfile({ user, setUser }) {
+    const [showEdit, setShowEdit] = useState(false);
+
     return (
         <>
-            <h2>Profile</h2>
-            <label>Username</label>
+            <h1>Profile</h1>
+            <label>Username:</label>
             <p>{user.userName}</p>
-            <label>E-mail address</label>
+            <label>E-mail address:</label>
             <p>{user.email}</p>
-            <label>Favourite products</label>
-            {user.favourites && Array.isArray(user.favourites) ? (
-                user.favourites.map((favProduct, index) => (
-                    <div key={index} className="favourite-product-container">
-                        <p>{favProduct.details || 'N/A'}</p>
-                        <p>{favProduct.seller?.name || 'N/A'}</p>
-                    </div>
-                ))
-            ) : (
-                <p>No favourite products found</p>
-            )}
+            <label>Phone number:</label>
+            <p>{user !== null ? (user.phoneNumber !== null ? user.phoneNumber : "No phone number") : ""}</p>
+            <br></br>
+            <button className="edit-info" onClick={e => setShowEdit(true)}>Edit info</button>
+            <EditCustomer user={user} showEdit={showEdit} setShowEdit={setShowEdit} setUser={setUser} />
         </>
     )
 }

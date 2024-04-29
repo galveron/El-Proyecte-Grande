@@ -36,11 +36,14 @@ public class UserController : ControllerBase
         {
             var user = await _userManager.Users
                 .Include(user1 => user1.Favourites)
+                .ThenInclude(fav => fav.Images)
+                .Include(user1 => user1.Favourites)
+                .ThenInclude(fav => fav.Seller)
                 .Include(user1 => user1.CartItems)
+                .ThenInclude(user1 => user1.Product)
                 .Include(user1 => user1.CompanyProducts)
                 .Include(user1 => user1.Orders)
                 .SingleOrDefaultAsync(user1 => user1.UserName == User.Identity.Name);
-            
             return Ok(user);
         }
         catch (Exception e)
@@ -48,6 +51,77 @@ public class UserController : ControllerBase
             Console.WriteLine(e);
             return StatusCode(500, e.Message);
         }
+    }
+    
+    [HttpGet("GetAllUsers"), Authorize(Roles = "Admin")]
+    public async Task<ActionResult<IEnumerable<User>>> GetAllUsers()
+    {
+        try
+        {
+            var users =  _userManager.Users
+                .Include(user1 => user1.CompanyProducts)
+                .Include(user1 => user1.Orders)
+                .AsEnumerable();
+            
+            return Ok(users);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return StatusCode(500, e.Message);
+        }
+    }
+    
+    [HttpGet("GetAllCustomers"), Authorize(Roles = "Admin")]
+    public async Task<ActionResult<IEnumerable<User>>> GetAllCustomers()
+    {
+        try
+        {
+            var users =  _userManager.Users
+                .Include(user1 => user1.CompanyProducts)
+                .Include(user1 => user1.Orders)
+                .Where(user1 => user1.Company == null);
+            
+            return Ok(users);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return StatusCode(500, e.Message);
+        }
+    }
+    
+    [HttpGet("GetAllCompanies"), Authorize(Roles = "Admin")]
+    public async Task<ActionResult<IEnumerable<User>>> GetAllCompanies()
+    {
+        try
+        {
+            var users =  _userManager.Users
+                .Include(user1 => user1.CompanyProducts)
+                .Include(user1 => user1.Orders)
+                .Where(user1 => user1.Company != null);
+            
+            return Ok(users);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return StatusCode(500, e.Message);
+        }
+    }
+
+    [HttpGet("GetRole"), Authorize(Roles = "Customer, Company, Admin")]
+    public async Task<ActionResult<string>> GetRole(string id )
+    {
+        if (id != null)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+            
+            var roles = await _userManager.GetRolesAsync(user);
+            return roles[0];
+        }
+
+        return "nothing";
     }
     
     [HttpDelete("DeleteUserForAdmin"), Authorize(Roles = "Admin")]
@@ -305,7 +379,7 @@ public class UserController : ControllerBase
             }
             else
             {
-                if (cartItem.Quantity + quantity < 0)
+                if (cartItem.Quantity + quantity <= 0)
                 {
                     userWhoseCartToAddTo.CartItems.Remove(cartItem);
                 }
