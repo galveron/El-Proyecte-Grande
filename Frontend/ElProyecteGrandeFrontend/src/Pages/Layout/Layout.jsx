@@ -181,6 +181,12 @@ function Layout({ userRole, user }) {
                                         <li className="profile-layout">
                                             <Link className="nav-link" to="/profile">Profile</Link>
                                         </li>
+                                        {
+                                            userRole === "Company" &&
+                                            <li className="profile-layout">
+                                                <Link className="nav-link" to="/company-products">Products</Link>
+                                            </li>
+                                        }
                                         <li className="logout-layout" onClick={handleLogout}>
                                             <Link className="nav-link" to="/">Logout</Link>
                                         </li>
