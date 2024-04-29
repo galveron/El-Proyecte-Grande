@@ -42,6 +42,21 @@ public class ProductController : ControllerBase
             return NotFound("Product not found");
         }
     }
+    
+    [HttpGet("GetCompaniesProducts"), Authorize("Company, Admin")]
+    public async Task<ActionResult<IEnumerable<Product>>> GetCompaniesProducts(string userName)
+    {
+        try
+        {
+            var user = await _userManager.FindByNameAsync(userName);
+            var products = _productRepository.GetAllProductsByUser(user);
+            return Ok(products);
+        }
+        catch (Exception e)
+        {
+            return NotFound("Product not found");
+        }
+    }
 
     [HttpGet("GetProduct")]
     public ActionResult<Product> GetProduct(int id)
