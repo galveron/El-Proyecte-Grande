@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { notification } from 'antd';
 import { Modal } from 'flowbite-react';
 
@@ -10,9 +10,12 @@ notification.config({
 
 function EditCustomer({ user, showEdit, setShowEdit, setUser }) {
     const [email, setEmail] = useState(user.email);
-    const [username, setUsername] = useState(user.userName);
     const [phoneNum, setPhoneNum] = useState(user.phoneNumber);
 
+    useEffect(() => {
+        setEmail(user.email)
+        setPhoneNum(user.phoneNumber)
+    }, [user])
     async function fetchUser() {
         if (user) {
             let url = `http://localhost:5036/User/GetUser`;
@@ -31,7 +34,7 @@ function EditCustomer({ user, showEdit, setShowEdit, setUser }) {
     async function handleSave(e) {
         e.preventDefault();
         try {
-            const res = await fetch(`http://localhost:5036/User/UpdateCustomer?userName=${username}&email=${email}&phoneNumber=${phoneNum}`, {
+            const res = await fetch(`http://localhost:5036/User/UpdateCustomer?userName=${user.userName}&email=${email}&phoneNumber=${phoneNum}`, {
                 method: 'PATCH',
                 credentials: 'include',
                 headers: { 'Content-Type': 'application/json' }
@@ -76,7 +79,7 @@ function EditCustomer({ user, showEdit, setShowEdit, setUser }) {
                             </tr>
                         </tbody>
                     </table>
-                    <button onClick={e => handleSave(e)}>Save</button>
+                    <button onClick={e => { handleSave(e), setShowEdit(false) }}>Save</button>
                 </div>
             </Modal.Body>
         </Modal>

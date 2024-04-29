@@ -113,7 +113,9 @@ function ProductCard({ product, user, handleSetUser, userRole, setCustomer }) {
 
     return (
         <div className='productCard'>
-            <img className='img' src={product.images.length !== 0 ? product.images[0].imageURL : '/plant1.jpg'} />
+            <div className='image-container'>
+                <img className='img' src={product.images.length !== 0 ? product.images[0].imageURL : '/plant1.jpg'} />
+            </div>
             {(userRole === "Customer" || userRole === "") && (<button className='save' onClick={isFavourite ? removeFavourite : addFavourite}>
                 {isFavourite ? <i className="fa-solid fa-heart"></i> : <i className="fa-regular fa-heart"></i>}
             </button>)}
@@ -127,8 +129,8 @@ function ProductCard({ product, user, handleSetUser, userRole, setCustomer }) {
                 </ul>
                 <ul className='details-data'>
                     <li>{product.seller.company ? product.seller.company.name : "na"}</li>
-                    <li>{product.price}$</li>
-                    <li>{product.quantity}</li>
+                    <li>{product.price}Ft</li>
+                    <li>{product.quantity}db</li>
                 </ul>
             </div>
             {(userRole === "Customer" || userRole === "") && <button className='add-to-cart' onClick={addToCart}>Add to Cart</button>}

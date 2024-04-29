@@ -93,7 +93,7 @@ function CartModal({ token, setIsShowCart, isShowCart, user }) {
                     <button className="closeModalButton" onClick={() => setIsShowCart(false)}>X</button>
                 </div>
                 {customer.cartItems && customer.cartItems.length > 0 ? customer.cartItems.map((item) => {
-                    return (<div key={item.id} className="cartItem">
+                    return (<div key={item.productId} className="cartItem">
                         <div><p><span style={{ fontWeight: '400' }}>
                             Name: </span> {item.product.name} | <span style={{ fontWeight: '600' }}>
                                 Price: </span> {item.quantity * item.product.price}Ft | <span style={{ fontWeight: '600' }}>
